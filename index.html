@@ -6,70 +6,516 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root{--rose:#b96070;--ink:#38272b;--paper:#fffaf8;--muted:#806e70}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif}h1,h2,h3,.serif{font-family:'Playfair Display',serif}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;border-radius:999px;padding:.85rem 1.35rem;font-weight:700;transition:.2s}.btn-main{background:var(--rose);color:white;box-shadow:0 9px 24px #b9607029}.btn-main:hover{background:#a94f60;transform:translateY(-1px)}.btn-light{background:white;color:var(--ink);border:1px solid #ead9d7}.field{width:100%;border:1px solid #eadcda;background:#fff;border-radius:13px;padding:13px 15px;outline:none}.field:focus{border-color:#c97984;box-shadow:0 0 0 3px #b960701a}.label{display:block;font-size:.84rem;font-weight:700;margin:0 0 7px;color:#5f4b4e}.soft-card{background:#fff;border:1px solid #f0e5e2;border-radius:22px;box-shadow:0 14px 35px #593a3510}.tag{display:inline-flex;border-radius:99px;padding:6px 11px;background:#f9e9e9;color:#98525e;font-size:.74rem;font-weight:700;letter-spacing:.03em}.status{display:inline-flex;border-radius:99px;padding:6px 10px;font-size:.73rem;font-weight:700;background:#fff1d7;color:#8b641f}.status.confirmada{background:#e5f4eb;color:#387452}.status.verificada{background:#e8effe;color:#4961a6}.status.cancelada{background:#fce6e4;color:#a34e4b}.hidden-view{display:none!important}.serif{font-weight:600}.dashboard-card{border:1px solid #eee3e0;border-radius:18px;background:#fff;overflow:hidden}.receipt-img{width:100%;height:220px;object-fit:cover;background:#f8f2ef}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;max-width:calc(100% - 32px);background:#38272b;color:#fff;padding:13px 18px;border-radius:13px;box-shadow:0 10px 35px #0002}.nav-link{font-size:.9rem;color:#6e5c5e;font-weight:600}.nav-link:hover{color:var(--rose)}
+    :root{--rose:#b96070;--ink:#38272b;--paper:#fffaf8;--muted:#806e70}*{box-sizing:border-box}html{overflow-x:clip}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:clip}h1,h2,h3,.serif{font-family:'Playfair Display',serif}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;border-radius:999px;padding:.85rem 1.35rem;font-weight:700;transition:.2s}.btn-main{background:var(--rose);color:white;box-shadow:0 9px 24px #b9607029}.btn-main:hover{background:#a94f60;transform:translateY(-1px)}.btn-light{background:white;color:var(--ink);border:1px solid #ead9d7}.field{width:100%;min-width:0;border:1px solid #eadcda;background:#fff;border-radius:13px;padding:13px 15px;outline:none}.field:focus{border-color:#c97984;box-shadow:0 0 0 3px #b960701a}.label{display:block;font-size:.84rem;font-weight:700;margin:0 0 7px;color:#5f4b4e}.soft-card{min-width:0;background:#fff;border:1px solid #f0e5e2;border-radius:22px;box-shadow:0 14px 35px #593a3510}.tag{display:inline-flex;border-radius:99px;padding:6px 11px;background:#f9e9e9;color:#98525e;font-size:.74rem;font-weight:700;letter-spacing:.03em}.status{display:inline-flex;border-radius:99px;padding:6px 10px;font-size:.73rem;font-weight:700;background:#fff1d7;color:#8b641f}.status.confirmada,.status.atendida{background:#e5f4eb;color:#387452}.status.verificada{background:#e8effe;color:#4961a6}.status.cancelada{background:#fce6e4;color:#a34e4b}.hidden-view{display:none!important}.serif{font-weight:600}.dashboard-card{min-width:0;border:1px solid #eee3e0;border-radius:18px;background:#fff;overflow:hidden}.receipt-img{width:100%;height:220px;object-fit:cover;background:#f8f2ef}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;width:max-content;max-width:calc(100% - 24px);background:#38272b;color:#fff;padding:13px 18px;border-radius:13px;box-shadow:0 10px 35px #0002}.nav-link{font-size:.9rem;color:#6e5c5e;font-weight:600}.nav-link:hover{color:var(--rose)}@media(max-width:640px){.btn{min-height:44px;padding:.7rem 1rem}.receipt-img{height:200px}.toast{bottom:12px;padding:11px 14px}#staffPanel{padding-top:1.5rem;padding-bottom:2rem}#staffPanel .soft-card{border-radius:16px}#staffPanel nav .btn{flex:1 1 auto}#staffPanel .dashboard-card .p-5{padding:1rem}#bookingForm .field{font-size:16px}#siteFooter .flex.gap-5{gap:1rem;flex-wrap:wrap}}
+  </style>
+  <style>
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:44px;padding:.6rem .9rem;border-radius:999px;border:1px solid #ead9d7;background:#fff;color:var(--ink);font-size:.85rem;font-weight:700;transition:.2s;white-space:nowrap}
+    .icon-btn:hover{border-color:#d9a9ad;background:#fff7f5;transform:translateY(-1px)}
+    .icon-btn.danger{color:#98525e;border-color:#e6c9c9}
+    .icon-btn.danger:hover{background:#fdf0ef}
+    .mobile-nav-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;flex:0 0 38px;border-radius:999px;border:1px solid #ead9d7;background:#fff;color:#6e5c5e;font-size:.95rem;transition:.2s}
+    .mobile-nav-btn:hover{border-color:#d9a9ad;background:#fff7f5;color:#a55160}
+    .mobile-nav-btn.login{color:#a55160;border-color:#e6c9c9}
+    .mobile-nav-btn.text-btn{width:auto;flex:0 0 auto;padding:0 .6rem;gap:.35rem;font-size:.72rem;font-weight:800}
+    .mobile-nav-btn.text-btn i{font-size:.9rem}
+    .home-user-meta{display:none;flex-direction:column;line-height:1.05;min-width:0;text-align:left}
+    .home-user-name{display:block;font-size:.68rem;font-weight:800;max-width:74px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .home-user-role{display:block;font-size:.56rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#98525e}
+    .home-desktop-label{display:none;flex-direction:column;line-height:1.1}
+    @media(min-width:1024px){.home-desktop-label{display:flex}}
+    body.panel-return-mode .home-user-meta{display:flex}
+    body.panel-return-mode #mobileActions [data-home-button]{width:auto;flex:0 0 auto;padding:0 .45rem;gap:.3rem}
+    .mobile-menu-item{display:flex;align-items:center;gap:.75rem;width:100%;text-align:left;padding:.8rem 1rem;border-radius:14px;font-weight:700;color:var(--ink);font-size:.95rem;transition:.2s}
+    .mobile-menu-item i{width:22px;text-align:center;color:#a55160;font-size:1.05rem}
+    .mobile-menu-item:hover{background:#fdf1ef}
+    .menu-profile{background:#fdf1ef;border:1px solid #f0dcd8;gap:.6rem;margin-bottom:.35rem}
+    .menu-profile .user-meta{line-height:1.15;min-width:0;flex:1}
+    .menu-profile-name{display:block;font-size:.85rem;font-weight:800;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .menu-profile-role{display:block;font-size:.62rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#98525e}
+    .menu-profile-go{width:auto!important;margin-left:auto;color:#a55160;font-size:.65rem;font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:.2rem}
+    .reminder-card{border-color:#e3b2b9;background:linear-gradient(135deg,#fff6f4,#fff)}
+    .reminder-btn{padding:1rem 1.6rem!important;font-size:1rem!important;box-shadow:0 10px 28px #b9607040!important}
+    .reminder-badge{background:#fff;color:var(--rose);border-radius:999px;padding:.1rem .45rem;font-size:.72rem;font-weight:800}
+    .receipt-modal{position:fixed;inset:0;z-index:90;background:#1c1114cc;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem}
+    .receipt-modal-dialog{width:min(100%,720px);max-height:88vh;background:#fff;border-radius:22px;box-shadow:0 24px 70px #0005;display:flex;flex-direction:column;overflow:hidden}
+    .receipt-modal-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1.1rem;border-bottom:1px solid #f0e5e2}
+    .receipt-modal-close{width:40px;height:40px;flex:0 0 40px;border-radius:999px;border:1px solid #ead9d7;background:#fff;color:#98525e;display:grid;place-items:center;font-size:1.05rem;transition:.2s}
+    .receipt-modal-close:hover{background:#fdf0ef;border-color:#e6c9c9}
+    .receipt-modal-body{padding:1rem;overflow:auto;display:grid;place-items:center;background:#fbf6f4}
+    .receipt-modal-body img{max-width:100%;max-height:70vh;object-fit:contain;border-radius:12px}
+    body.receipt-modal-open{overflow:hidden}
+    .live-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:999px;padding:.35rem .7rem;background:#e9f6ee;color:#2f7a51;font-size:.7rem;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+    .live-dot{width:8px;height:8px;border-radius:50%;background:#3aa76a;animation:livePulse 2s infinite}
+    @keyframes livePulse{0%{box-shadow:0 0 0 0 #3aa76a80}70%{box-shadow:0 0 0 7px #3aa76a00}100%{box-shadow:0 0 0 0 #3aa76a00}}
+    .live-badge.updated{background:#fdf0ef;color:#98525e}
+    .live-badge.updated .live-dot{background:#b96070}
+    .availability-slot{display:flex;align-items:center;gap:.5rem;border:1px solid #eadcda;border-radius:.75rem;padding:.6rem .7rem;font-size:.82rem;background:#fff;cursor:pointer}
+    .availability-slot:has(input:checked){background:#fdf0ef;border-color:#d99aa3;color:#98525e;font-weight:700}
+    .availability-slot.occupied{opacity:.55;cursor:not-allowed}
+    .availability-slot.exception{border-style:dashed}
+    .availability-hours.availability-closed{opacity:.5}
+    .week-grid{display:grid;grid-template-columns:38px repeat(7,minmax(72px,1fr));gap:3px;overflow:auto}
+    .week-head{font-size:.66rem;font-weight:800;color:#98525e;text-align:center;padding:.25rem .15rem;background:#fbf3f1;border-radius:.45rem;white-space:nowrap}
+    .week-time{font-size:.62rem;color:#806e70;text-align:right;padding:.3rem .2rem 0 0;white-space:nowrap}
+    .week-cell{min-height:28px;border:1px dashed #eadcda;border-radius:.45rem;padding:1px;display:flex;flex-direction:column;gap:1px}
+    .week-event{border-radius:.35rem;padding:1px 4px;font-size:.58rem;line-height:1.15;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:2px;width:100%;flex:1 1 0;min-height:0;text-align:left}
+    .week-event:hover{filter:brightness(.97)}
+    .week-event .wk-more{font-size:.55rem;opacity:.85;flex-shrink:0}
+    .week-event.pendiente_verificacion{background:#fff4d8;color:#8a6714}
+    .week-event.verificada{background:#e8f2ff;color:#265d97}
+    .week-event.confirmada{background:#e6f6ea;color:#2f7a51}
+    .week-event.atendida{background:#eef0f3;color:#555}
+    .week-event.cancelada{background:#fde8e8;color:#9b3b3b;text-decoration:line-through}
+    .appointment-modal{position:fixed;inset:0;background:rgba(42,31,33,.55);display:grid;place-items:center;padding:1rem;z-index:80}
+    .appointment-modal.hidden-view{display:none}
+    .appointment-modal-dialog{width:min(720px,100%);max-height:min(90vh,900px);overflow:auto;background:#fff;border-radius:1rem;border:1px solid #eadcda;box-shadow:0 18px 44px #00000022}
+    .appointment-modal-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1rem;border-bottom:1px solid #f0e5e3;position:sticky;top:0;background:#fff;z-index:1}
+    .appointment-modal-body{padding:1rem}
+    section[id]{scroll-margin-top:84px}
+    .user-chip{display:flex;align-items:center;gap:.55rem;min-width:0;background:#fff;border:1px solid #ead9d7;border-radius:999px;padding:.3rem .65rem .3rem .35rem;box-shadow:0 4px 12px #593a350d}
+    .user-avatar{width:32px;height:32px;flex:0 0 32px;border-radius:50%;display:grid;place-items:center;background:var(--rose);color:#fff;font-weight:700;font-size:.78rem;letter-spacing:.02em}
+    .user-meta{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+    .user-name{font-size:.82rem;font-weight:700;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .user-role{font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#98525e}
+    .role-pill{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;padding:.3rem .65rem;font-size:.72rem;font-weight:700;background:#f9e9e9;color:#98525e;white-space:nowrap}
+    .role-pill.admin{background:#e8effe;color:#4961a6}
+    .role-pill.profesional{background:#e5f4eb;color:#387452}
+    .panel-tabs{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.4rem;scrollbar-width:thin;scrollbar-color:#e3c9c6 transparent}
+    .panel-tabs .btn{flex:0 0 auto;white-space:nowrap}
+    .panel-tabs::-webkit-scrollbar{height:5px}
+    .panel-tabs::-webkit-scrollbar-thumb{background:#e3c9c6;border-radius:99px}
+    .stat-card{display:flex;align-items:center;gap:.75rem;min-width:0}
+    .stat-icon{width:42px;height:42px;flex:0 0 42px;border-radius:14px;display:grid;place-items:center;background:#f9e9e9;color:#a55160;font-size:1.15rem}
+    .stat-value{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;line-height:1}
+    .stat-label{font-size:.75rem;color:var(--muted);line-height:1.2}
+    .input-icon{position:relative}
+    .input-icon>i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#a98b8e;pointer-events:none;font-size:1rem}
+    .input-icon .field{padding-left:42px}
+    .detail-line{display:flex;align-items:flex-start;gap:.5rem}
+    .detail-line i{color:#a55160;margin-top:.15rem;flex:0 0 auto}
+    .card-actions{display:flex;flex-wrap:wrap;gap:.5rem}
+    .card-actions>*{flex:1 1 auto}
+    .section-icon{width:36px;height:36px;flex:0 0 36px;border-radius:12px;display:grid;place-items:center;background:#f9e9e9;color:#a55160;font-size:1rem}
+    .team-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 0}
+    .team-item+.team-item{border-top:1px solid #f0e5e2}
+    @media(max-width:640px){
+      .user-name{max-width:78px}
+      .user-chip{padding:.25rem .45rem .25rem .25rem;gap:.4rem}
+      .icon-btn .label{display:none}
+      .icon-btn{padding:.6rem .75rem}
+      .stat-card{padding:.9rem;gap:.55rem}
+      .stat-icon{width:34px;height:34px;flex-basis:34px;font-size:1rem}
+      .stat-value{font-size:1.2rem}
+      .card-actions>*{width:100%}
+      .panel-tabs .btn{font-size:.82rem}
+    }
+    @media(max-width:420px){
+      header small{display:none}
+      #userArea>button:first-of-type{display:none}
+      .user-name{max-width:62px}
+      .user-role{font-size:.58rem}
+      .user-chip{padding:.25rem}
+    }
+    @media(max-width:767px){#userArea{display:none!important}body.panel-return-mode header a>span:last-child{display:none}body.panel-return-mode #mobileActions{gap:.4rem}#staffNavControls .icon-btn .label{display:none}#staffNavControls .icon-btn{padding:.55rem .65rem;min-height:38px}}
+    @media(max-width:520px){#liveBadgeText{display:none}#liveBadge{padding:.3rem .45rem;gap:0}#staffNavControls{gap:.35rem}}
+    @media(max-width:380px){header .max-w-7xl>a>span:last-child{display:none}}
   </style>
 </head>
 <body>
   <header class="sticky top-0 z-40 border-b border-rose-100/70 bg-[#fffaf8]/90 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto px-5 h-[76px] flex items-center justify-between">
-      <a href="#inicio" class="flex items-center gap-3"><span class="w-11 h-11 rounded-full bg-[#f5e2e1] text-[#a55160] grid place-items-center serif text-xl">JB</span><span><b class="serif text-lg block leading-tight">LashStudio</b><small class="text-[10px] tracking-[.22em] uppercase text-[#927d7e]">by Pastora</small></span></a>
-      <nav class="hidden md:flex items-center gap-8"><a class="nav-link" href="#servicios">Servicios</a><a class="nav-link" href="#estudio">El estudio</a><button class="nav-link" onclick="showLookup()">Consultar mi cita</button><a href="#reservar" class="btn btn-main !py-3 !px-5 text-sm">Reservar cita</a></nav>
-      <button class="md:hidden text-sm font-bold" onclick="showLookup()">Consultar cita</button>
+      <div class="max-w-7xl mx-auto px-3 sm:px-5 h-[68px] sm:h-[76px] flex items-center justify-between gap-2">
+      <a href="#inicio" onclick="handleBrandClick(event)" class="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0"><span class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#f5e2e1] text-[#a55160] grid place-items-center serif text-lg sm:text-xl">JB</span><span class="min-w-0"><b class="serif text-base sm:text-lg block leading-tight">LashStudio</b><small class="text-[9px] sm:text-[10px] tracking-[.13em] sm:tracking-[.22em] uppercase text-[#927d7e]">By Julieth Bonilla</small></span></a>
+      <nav id="publicNav" class="hidden md:flex items-center gap-6"><a class="nav-link" href="#servicios"><i class="bi bi-grid-3x3-gap mr-1"></i>Servicios</a><a class="nav-link" href="#estudio"><i class="bi bi-heart mr-1"></i>El estudio</a><button class="nav-link" onclick="showLookup()"><i class="bi bi-calendar2-check mr-1"></i>Consultar mi cita</button><button class="nav-link" onclick="showStaffLogin()"><i class="bi bi-shield-lock mr-1"></i>Iniciar sesión</button><a href="#reservar" class="btn btn-main !py-3 !px-5 text-sm"><i class="bi bi-calendar-plus"></i>Reservar cita</a></nav>
+      <div id="staffNavControls" class="hidden-view items-center gap-1.5 sm:gap-2 min-w-0">
+        <span id="liveBadge" class="live-badge hidden-view"><span class="live-dot"></span><span id="liveBadgeText">En vivo</span></span>
+        <button id="navRefreshBtn" class="icon-btn" onclick="loadStaffAppointments()" title="Actualizar agenda" aria-label="Actualizar agenda"><i class="bi bi-arrow-clockwise"></i><span class="label hidden lg:inline">Actualizar</span></button>
+      </div>
+      <div id="mobileActions" class="md:hidden flex items-center gap-1.5">
+        <button class="mobile-nav-btn" data-home-button onclick="handleHomeClick()" title="Inicio" aria-label="Inicio"><i class="bi bi-house-door"></i></button>
+        <button class="mobile-nav-btn text-btn" onclick="showLookup()" title="Consultar mi cita" aria-label="Consultar mi cita"><i class="bi bi-calendar2-check"></i><span>Consultar</span></button>
+        <button id="mobileLogin" class="mobile-nav-btn login text-btn" onclick="menuAction('login')" title="Ingresar al panel" aria-label="Ingresar al panel"><i class="bi bi-shield-lock"></i><span>Ingresar</span></button>
+        <button id="mobileLogout" class="mobile-nav-btn login hidden-view" onclick="signOutStaff()" title="Cerrar sesión" aria-label="Cerrar sesión"><i class="bi bi-box-arrow-right"></i></button>
+        <button id="mobileMenuButton" class="mobile-nav-btn" onclick="toggleMobileMenu()" title="Más opciones" aria-label="Más opciones" aria-expanded="false" aria-controls="mobileMenu"><i class="bi bi-list"></i></button>
+      </div>
+      <div id="userArea" class="hidden-view items-center gap-2 min-w-0">
+        <div class="hidden md:block"><div class="user-chip"><span id="headerUserAvatar" class="user-avatar">—</span><span class="user-meta"><span id="headerUserName" class="user-name">Equipo</span><span id="headerUserRole" class="user-role">Sesión activa</span></span></div></div>
+        <button class="icon-btn" onclick="showStaffPanel()" title="Volver a mi panel"><i class="bi bi-speedometer2"></i><span class="label hidden lg:inline">Mi panel</span></button>
+        <button class="icon-btn" data-home-button onclick="handleHomeClick()" title="Ver sitio público"><i class="bi bi-house-door"></i><span class="home-desktop-label">Sitio</span></button>
+        <button class="icon-btn" onclick="showLookup()" title="Consultar mi cita"><i class="bi bi-calendar2-check"></i><span class="label hidden lg:inline">Consultar</span></button>
+        <button class="icon-btn danger" onclick="signOutStaff()" title="Cerrar sesión"><i class="bi bi-box-arrow-right"></i><span class="label hidden lg:inline">Salir</span></button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden-view md:hidden absolute top-full left-0 right-0 bg-white border-t border-rose-100 shadow-2xl p-3">
+      <button id="menuPanel" class="mobile-menu-item menu-profile hidden-view" onclick="menuAction('panel')" title="Volver a mi panel"><i class="bi bi-person-badge"></i><span class="user-meta"><span id="menuPanelName" class="menu-profile-name">Equipo</span><span id="menuPanelRole" class="menu-profile-role">Sesión activa</span></span><span class="menu-profile-go">Mi panel <i class="bi bi-chevron-right"></i></span></button>
+      <button class="mobile-menu-item" onclick="menuGo('servicios')"><i class="bi bi-grid-3x3-gap"></i>Servicios</button>
+      <button class="mobile-menu-item" onclick="menuGo('estudio')"><i class="bi bi-heart"></i>El estudio</button>
+      <button class="mobile-menu-item" onclick="menuGo('reservar')"><i class="bi bi-calendar-plus"></i>Reservar cita</button>
+      <button id="menuAccount" class="mobile-menu-item hidden-view" onclick="menuAction('cuenta')"><i class="bi bi-shield-check"></i>Mi cuenta</button>
     </div>
   </header>
 
   <main id="publicView">
     <section id="inicio" class="relative overflow-hidden">
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_40%,#f1d6d1_0%,transparent_47%),linear-gradient(120deg,#fffaf8,#f9edeb_60%,#f6e6e2)]"></div>
-      <div class="relative max-w-7xl mx-auto px-5 py-20 md:py-28 grid md:grid-cols-[1.05fr_.95fr] gap-12 items-center">
-        <div><span class="tag">BELLEZA CON DETALLE · BOGOTÁ</span><h1 class="serif text-5xl md:text-7xl leading-[1.06] mt-6">Una mirada<br><em class="text-[#b96070]">que habla</em> por ti.</h1><p class="mt-6 text-lg text-[#806e70] max-w-lg leading-8">Diseños de pestañas hechos para ti, con técnica, cuidado y un toque de elegancia.</p><div class="mt-8 flex gap-3 flex-wrap"><a class="btn btn-main" href="#reservar">Encuentra tu momento <span>↗</span></a><button class="btn btn-light" onclick="showLookup()">Ya tengo una cita</button></div><div class="mt-10 flex items-center gap-3 text-sm text-[#806e70]"><span class="text-[#b96070] text-lg">✦</span> Atención personalizada con Pastora, especialista máster</div></div>
-        <div class="relative max-w-md mx-auto w-full"><div class="aspect-[4/5] rounded-[48%_48%_22px_22px] bg-gradient-to-br from-[#ebc9c4] via-[#f6e3df] to-[#d8a9a1] p-4 shadow-[0_25px_70px_#7d444326]"><div class="w-full h-full rounded-[48%_48%_16px_16px] border border-white/60 bg-[radial-gradient(ellipse_at_55%_40%,#fff9f5_0%,#f6deda_45%,#c98e88_100%)] flex items-center justify-center"><div class="text-center text-[#8d5b5b]"><span class="text-7xl">✧</span><p class="serif text-3xl mt-2">Tu belleza,<br>en primer plano.</p></div></div></div><div class="absolute -bottom-5 -left-7 soft-card p-4 flex items-center gap-3"><span class="w-11 h-11 rounded-full bg-[#f9e9e9] grid place-items-center text-xl">♡</span><span><b class="block text-sm">Hecho con cuidado</b><small class="text-[#927d7e]">Cada detalle cuenta</small></span></div></div>
+      <div class="relative max-w-7xl mx-auto px-5 py-14 sm:py-20 md:py-28 grid md:grid-cols-[1.05fr_.95fr] gap-9 md:gap-12 items-center">
+        <div><span class="tag">BELLEZA CON DETALLE · POPAYAN.</span><h1 class="serif text-5xl md:text-7xl leading-[1.06] mt-6">Una mirada<br><em class="text-[#b96070]">que habla</em> por ti.</h1><p class="mt-6 text-lg text-[#806e70] max-w-lg leading-8">Diseños de pestañas hechos para ti, con técnica, cuidado y elegancia.</p><div class="mt-8 flex gap-3 flex-wrap"><a class="btn btn-main" href="#reservar"><i class="bi bi-calendar-plus"></i>Encuentra tu momento</a><button class="btn btn-light" onclick="showLookup()"><i class="bi bi-calendar2-check"></i>Ya tengo una cita</button></div><div class="mt-10 flex items-center gap-3 text-sm text-[#806e70]"><span class="text-[#b96070] text-lg">✦</span> Atención personalizada con Julieth Bonilla, especialista máster</div></div>
+        <div class="relative max-w-md mx-auto w-full"><div class="aspect-[4/5] rounded-[48%_48%_22px_22px] bg-gradient-to-br from-[#ebc9c4] via-[#f6e3df] to-[#d8a9a1] p-4 shadow-[0_25px_70px_#7d444326]"><div class="w-full h-full rounded-[48%_48%_16px_16px] border border-white/60 bg-[radial-gradient(ellipse_at_55%_40%,#fff9f5_0%,#f6deda_45%,#c98e88_100%)] flex items-center justify-center"><div class="text-center text-[#8d5b5b]"><span class="text-7xl">✧</span><p class="serif text-3xl mt-2">Tu belleza,<br>en primer plano.</p></div></div></div><div class="absolute -bottom-5 -left-3 sm:-left-7 soft-card p-3 sm:p-4 flex items-center gap-3"><span class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#f9e9e9] grid place-items-center text-xl">♡</span><span><b class="block text-sm">Hecho con cuidado</b><small class="text-[#927d7e]">Cada detalle cuenta</small></span></div></div>
       </div>
     </section>
 
     <section id="servicios" class="max-w-7xl mx-auto px-5 py-20"><div class="text-center max-w-xl mx-auto"><span class="tag">SERVICIOS</span><h2 class="serif text-4xl md:text-5xl mt-4">El diseño ideal para ti</h2><p class="mt-4 text-[#806e70]">Una experiencia pensada para resaltar tu mirada y hacerte sentir increíble.</p></div><div id="serviceGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-11"></div></section>
 
-    <section id="estudio" class="bg-[#f7eeeb] py-16"><div class="max-w-7xl mx-auto px-5 grid md:grid-cols-2 gap-10 items-center"><div><span class="tag">EL ESTUDIO</span><h2 class="serif text-4xl mt-4">Un espacio para<br>sentirte tú.</h2><p class="mt-4 text-[#806e70] leading-7">Pastora te acompaña en cada paso: desde elegir el estilo que más te favorece hasta cuidar tus pestañas después de tu cita.</p></div><div class="grid grid-cols-2 gap-3"><div class="soft-card p-5"><span class="text-2xl">✦</span><b class="block mt-3">Atención experta</b><p class="text-sm text-[#806e70] mt-1">Técnica y dedicación en cada aplicación.</p></div><div class="soft-card p-5"><span class="text-2xl">♡</span><b class="block mt-3">Diseño a tu medida</b><p class="text-sm text-[#806e70] mt-1">Un resultado que se siente tuyo.</p></div></div></div></section>
+    <section id="estudio" class="bg-[#f7eeeb] py-12 sm:py-16"><div class="max-w-7xl mx-auto px-4 sm:px-5 grid md:grid-cols-2 gap-7 md:gap-10 items-center"><div><span class="tag">EL ESTUDIO</span><h2 class="serif text-3xl sm:text-4xl mt-4">Un espacio para<br>sentirte tú.</h2><p class="mt-4 text-[#806e70] leading-7">Studio Julieth te acompaña en cada paso: desde elegir el estilo que más te favorece hasta cuidar tus pestañas después de tu cita.</p></div><div class="grid sm:grid-cols-2 gap-3"><div class="soft-card p-4 sm:p-5"><span class="text-2xl">✦</span><b class="block mt-3">Atención experta</b><p class="text-sm text-[#806e70] mt-1">Técnica y dedicación en cada aplicación.</p></div><div class="soft-card p-4 sm:p-5"><span class="text-2xl">♡</span><b class="block mt-3">Diseño a tu medida</b><p class="text-sm text-[#806e70] mt-1">Un resultado que se siente tuyo.</p></div></div></div></section>
 
-    <section id="reservar" class="max-w-7xl mx-auto px-5 py-20"><div class="text-center max-w-xl mx-auto"><span class="tag">RESERVA EN LÍNEA</span><h2 class="serif text-4xl mt-4">Tu próxima cita empieza aquí</h2><p class="text-[#806e70] mt-3">Completa tus datos y adjunta el comprobante del abono de $20.000 COP.</p></div>
-      <div class="max-w-3xl mx-auto mt-10 grid md:grid-cols-[1fr_.8fr] gap-5 items-start"><form id="bookingForm" class="soft-card p-6 md:p-8 space-y-4"><div><label class="label" for="nombre">Nombre completo</label><input class="field" id="nombre" required maxlength="120" autocomplete="name" placeholder="Tu nombre"></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="cedula">Número de cédula</label><input class="field" id="cedula" required maxlength="30" inputmode="numeric" placeholder="Cédula"></div><div><label class="label" for="telefono">Celular</label><input class="field" id="telefono" required maxlength="20" type="tel" autocomplete="tel" placeholder="Tu número de contacto"></div></div><div><label class="label" for="servicio">Servicio</label><select class="field" id="servicio" required></select></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="fecha">Fecha preferida</label><input class="field" id="fecha" type="date" required></div><div><label class="label" for="hora">Hora preferida</label><input class="field" id="hora" type="time" required></div></div><div class="rounded-2xl bg-[#fbf3f1] p-4"><div class="flex justify-between items-center"><b>Abono obligatorio</b><b class="text-[#a55160]">$20.000 COP</b></div><p class="text-sm text-[#806e70] mt-2 leading-6">Realiza el pago por uno de los medios indicados por el estudio y carga aquí la imagen del comprobante. La cita quedará pendiente hasta que el equipo lo verifique.</p></div><div><label class="label" for="comprobante">Comprobante de pago</label><input class="field !p-2.5" id="comprobante" type="file" accept="image/jpeg,image/png,image/webp" required><small class="block text-xs text-[#927d7e] mt-2">JPG, PNG o WEBP · máximo 5 MB</small><div id="receiptPreview" class="hidden-view mt-3"></div></div><button id="bookingSubmit" class="btn btn-main w-full" type="submit">Enviar solicitud de cita <span>↗</span></button><p class="text-xs text-center text-[#927d7e]">Al enviar aceptas que usemos tus datos para gestionar esta cita.</p></form>
-        <aside class="space-y-4"><div class="soft-card p-6"><span class="tag">MEDIOS DE PAGO</span><h3 class="serif text-xl mt-3">Abono de $20.000 COP</h3><p id="paymentInstructions" class="text-sm text-[#806e70] mt-2 leading-6 whitespace-pre-line">Consulta por WhatsApp los medios de pago disponibles antes de adjuntar tu comprobante.</p><a id="paymentHelp" class="text-[#a55160] font-bold mt-3 inline-block" href="https://wa.me/573117653423" target="_blank" rel="noopener">Solicitar datos de pago ↗</a></div><div class="soft-card p-6"><span class="tag">DESPUÉS DE ENVIAR</span><ol class="mt-5 space-y-5"><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">1</span><p class="text-sm leading-6"><b>Recibimos tu solicitud</b><br><span class="text-[#806e70]">La cita queda pendiente de revisión del comprobante.</span></p></li><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">2</span><p class="text-sm leading-6"><b>Verificamos el abono</b><br><span class="text-[#806e70]">El equipo revisa la imagen que adjuntaste.</span></p></li><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">3</span><p class="text-sm leading-6"><b>Confirmamos por WhatsApp</b><br><span class="text-[#806e70]">Te llega un mensaje con los datos de tu cita.</span></p></li></ol><button class="btn btn-light w-full mt-6" onclick="showLookup()">Consultar estado de mi cita</button></div></aside>
+    <section id="reservar" class="max-w-7xl mx-auto px-5 py-20"><div class="text-center max-w-xl mx-auto"><span class="tag">RESERVA EN LÍNEA</span><h2 class="serif text-4xl mt-4">Tu próxima cita empieza aquí</h2><p class="text-[#806e70] mt-3">Completa tus datos y agendaremos tu cita.</p></div>
+      <div class="max-w-3xl mx-auto mt-8 sm:mt-10 grid md:grid-cols-[1fr_.8fr] gap-4 sm:gap-5 items-start"><form id="bookingForm" class="soft-card p-4 sm:p-6 md:p-8 space-y-4"><div><label class="label" for="nombre"><i class="bi bi-person mr-1"></i>Nombre completo</label><div class="input-icon"><i class="bi bi-person"></i><input class="field" id="nombre" required maxlength="120" autocomplete="name" placeholder="Tu nombre"></div></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="cedula"><i class="bi bi-person-vcard mr-1"></i>Número de cédula</label><div class="input-icon"><i class="bi bi-person-vcard"></i><input class="field" id="cedula" required maxlength="30" inputmode="numeric" placeholder="Cédula"></div></div><div><label class="label" for="telefono"><i class="bi bi-phone mr-1"></i>Celular con WhatsApp</label><div class="input-icon"><i class="bi bi-phone"></i><input class="field" id="telefono" required maxlength="20" type="tel" autocomplete="tel" placeholder="Tu número de contacto"></div></div></div><div><label class="label" for="servicio"><i class="bi bi-scissors mr-1"></i>Servicio</label><div class="input-icon"><i class="bi bi-scissors"></i><select class="field" id="servicio" required></select></div></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="fecha"><i class="bi bi-calendar-event mr-1"></i>Fecha preferida</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input class="field" id="fecha" type="date" required></div></div><div><label class="label" for="hora"><i class="bi bi-clock mr-1"></i>Hora preferida</label><div class="input-icon"><i class="bi bi-clock"></i><select class="field" id="hora" required><option value="">Elige fecha y servicio</option></select></div><p id="horaHint" class="text-xs text-[#806e70] mt-1">Horarios de 6:00 a. m. a 8:00 p. m., en intervalos de 1 hora.</p></div></div><div class="rounded-2xl bg-[#fbf3f1] p-4"><div class="flex justify-between items-center"><b>Abono obligatorio</b><b class="text-[#a55160]">$20.000 COP</b></div><p class="text-sm text-[#806e70] mt-2 leading-6">Paga por Nequi al <b>311 765 3423</b> y adjunta el comprobante. La cita quedará pendiente hasta que verifiquemos el pago.</p></div><div><label class="label" for="comprobante"><i class="bi bi-image mr-1"></i>Comprobante de pago</label><input class="field !p-2.5" id="comprobante" type="file" accept="image/jpeg,image/png,image/webp" required><small class="block text-xs text-[#927d7e] mt-2">JPG, PNG o WEBP · máximo 5 MB</small><div id="receiptPreview" class="hidden-view mt-3"></div></div><label class="flex items-start gap-3 text-sm text-[#806e70]"><input id="depositTerms" type="checkbox" class="mt-1" required><span>Entiendo que el abono de $20.000 no es reembolsable si no asisto a la cita.</span></label><button id="bookingSubmit" class="btn btn-main w-full" type="submit"><i class="bi bi-send"></i>Enviar solicitud de cita</button><p class="text-xs text-center text-[#927d7e]">Al enviar aceptas que usemos tus datos para gestionar esta cita.</p></form>
+        <aside class="space-y-4"><div class="soft-card p-6"><span class="tag"><i class="bi bi-cash-coin mr-1"></i>MEDIOS DE PAGO</span><h3 class="serif text-xl mt-3">Abono de $20.000 COP por Nequi</h3><p class="text-lg font-bold text-[#a55160] mt-2"><i class="bi bi-phone mr-1"></i>311 765 3423</p><p id="paymentInstructions" class="text-sm text-[#806e70] mt-2 leading-6 whitespace-pre-line"></p><a id="paymentHelp" class="text-[#a55160] font-bold mt-3 inline-block" href="https://wa.me/573117653423" target="_blank" rel="noopener"><i class="bi bi-whatsapp mr-1"></i>Solicitar ayuda por WhatsApp</a></div><div class="soft-card p-6"><span class="tag"><i class="bi bi-list-check mr-1"></i>DESPUÉS DE ENVIAR</span><ol class="mt-5 space-y-5"><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">1</span><p class="text-sm leading-6"><b>Recibimos tu solicitud</b><br><span class="text-[#806e70]">La cita queda pendiente de revisión del comprobante.</span></p></li><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">2</span><p class="text-sm leading-6"><b>Verificamos el abono</b><br><span class="text-[#806e70]">El equipo revisa la imagen que adjuntaste.</span></p></li><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">3</span><p class="text-sm leading-6"><b>Confirmamos por WhatsApp</b><br><span class="text-[#806e70]">La profesional te enviará los datos de la cita.</span></p></li></ol><button class="btn btn-light w-full mt-6" onclick="showLookup()"><i class="bi bi-calendar2-check"></i>Consultar estado de mi cita</button></div></aside>
       </div>
     </section>
 
-    <section id="lookupView" class="hidden-view bg-[#f7eeeb] py-16"><div class="max-w-xl mx-auto px-5"><div class="soft-card p-7 md:p-9"><button class="text-sm font-bold text-[#a55160]" onclick="hideLookup()">← Volver</button><span class="tag mt-6">CONSULTA TU CITA</span><h2 class="serif text-3xl mt-3">Tus detalles, a la mano</h2><p class="text-sm text-[#806e70] mt-2">Ingresa la misma cédula y el teléfono que usaste al reservar.</p><form id="lookupForm" class="mt-6 space-y-4"><div><label class="label" for="lookupCedula">Cédula</label><input class="field" id="lookupCedula" required></div><div><label class="label" for="lookupTelefono">Celular</label><input class="field" id="lookupTelefono" required type="tel"></div><button class="btn btn-main w-full" type="submit">Buscar mis citas</button></form><div id="lookupResults" class="mt-5 space-y-3"></div></div></div></section>
+    <section id="lookupView" class="hidden-view bg-[#f7eeeb] py-16"><div class="max-w-xl mx-auto px-4 sm:px-5"><div class="soft-card p-5 sm:p-7 md:p-9"><button class="text-sm font-bold text-[#a55160]" onclick="hideLookup()"><i class="bi bi-arrow-left mr-1"></i>Volver</button><span class="tag mt-6"><i class="bi bi-calendar2-check mr-1"></i>CONSULTA TU CITA</span><h2 class="serif text-3xl mt-3">Tus detalles, a la mano</h2><p class="text-sm text-[#806e70] mt-2">Ingresa la misma cédula y el teléfono que usaste al reservar.</p><form id="lookupForm" class="mt-6 space-y-4"><div><label class="label" for="lookupCedula"><i class="bi bi-person-vcard mr-1"></i>Cédula</label><div class="input-icon"><i class="bi bi-person-vcard"></i><input class="field" id="lookupCedula" required placeholder="Tu número de cédula"></div></div><div><label class="label" for="lookupTelefono"><i class="bi bi-phone mr-1"></i>Celular</label><div class="input-icon"><i class="bi bi-phone"></i><input class="field" id="lookupTelefono" required type="tel" placeholder="Tu celular"></div></div><button class="btn btn-main w-full" type="submit"><i class="bi bi-search"></i>Buscar mis citas</button></form><div id="lookupResults" class="mt-5 space-y-3"></div></div></div></section>
 
-    <section id="staffLogin" class="hidden-view bg-[#fbf4f2] py-16"><div class="max-w-md mx-auto px-5"><div class="soft-card p-8"><span class="tag">ACCESO DEL EQUIPO</span><h2 class="serif text-3xl mt-3">Panel de citas</h2><p class="text-sm text-[#806e70] mt-2">Ingresa con la cuenta del estudio.</p><form id="loginForm" class="mt-6 space-y-4"><div><label class="label" for="email">Correo electrónico</label><input id="email" class="field" type="email" required autocomplete="username"></div><div><label class="label" for="password">Contraseña</label><input id="password" class="field" type="password" required autocomplete="current-password"></div><button class="btn btn-main w-full">Ingresar</button></form><button class="mt-5 text-sm font-bold text-[#a55160]" onclick="hideStaffLogin()">← Volver al sitio</button></div></div></section>
+    <section id="staffLogin" class="hidden-view bg-[#fbf4f2] py-12 sm:py-16"><div class="max-w-md mx-auto px-4 sm:px-5"><div class="soft-card p-5 sm:p-8"><span class="tag"><i class="bi bi-shield-lock mr-1"></i>ACCESO DEL EQUIPO</span><h2 class="serif text-3xl mt-3">Panel de citas</h2><p class="text-sm text-[#806e70] mt-2">Ingresa con la cuenta del estudio para ver tu agenda.</p><form id="loginForm" class="mt-6 space-y-4"><div><label class="label" for="email"><i class="bi bi-envelope mr-1"></i>Correo electrónico</label><div class="input-icon"><i class="bi bi-envelope"></i><input id="email" class="field" type="email" required autocomplete="username" placeholder="nombre@estudio.com"></div></div><div><label class="label" for="password"><i class="bi bi-lock mr-1"></i>Contraseña</label><div class="input-icon"><i class="bi bi-lock"></i><input id="password" class="field" type="password" required autocomplete="current-password" placeholder="Tu contraseña"></div></div><button id="loginSubmit" class="btn btn-main w-full"><i class="bi bi-box-arrow-in-right"></i>Ingresar al panel</button></form><button class="mt-5 text-sm font-bold text-[#a55160]" onclick="hideStaffLogin()"><i class="bi bi-arrow-left mr-1"></i>Volver al sitio</button></div></div></section>
 
-    <section id="staffPanel" class="hidden-view min-h-screen bg-[#fbf7f5] py-10"><div class="max-w-7xl mx-auto px-5"><div class="flex flex-wrap justify-between gap-4 items-center"><div><span class="tag">PANEL DEL ESTUDIO</span><h2 class="serif text-4xl mt-3">Agenda de citas</h2><p id="staffWelcome" class="text-[#806e70] mt-1"></p></div><div class="flex gap-2"><button class="btn btn-light" onclick="loadStaffAppointments()">Actualizar</button><button class="btn btn-main" onclick="signOutStaff()">Cerrar sesión</button></div></div><div id="staffStats" class="grid sm:grid-cols-3 gap-3 mt-8"></div><div id="staffAppointments" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-6"></div></div></section>
+    <section id="staffPanel" class="hidden-view min-h-screen bg-[#fbf7f5] py-5 sm:py-10"><div class="max-w-7xl mx-auto px-4 sm:px-5">
+      <nav id="staffTabs" class="panel-tabs" aria-label="Secciones del panel"></nav>
+      <div id="staffStats" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4"></div>
+      <section id="staffTabResumen" class="hidden-view mt-7">
+        <div class="soft-card p-4 sm:p-5 mb-4">
+          <div class="flex items-center gap-3"><span class="section-icon"><i class="bi bi-people"></i></span><div><h3 class="serif text-xl">Equipo del estudio</h3><p class="text-sm text-[#806e70]">Profesional que atiende y administra este espacio.</p></div></div>
+          <div id="adminTeam" class="mt-3 grid sm:grid-cols-2 gap-x-6"></div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-4"><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-inbox text-[#a55160]"></i>Solicitudes por revisar</h3><div id="adminPending" class="grid gap-4 mt-4"></div></div><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-calendar-check text-[#a55160]"></i>Agenda confirmada</h3><div id="adminUpcoming" class="grid gap-4 mt-4"></div></div></div>
+      </section>
+      <section id="staffTabAgenda" class="mt-7">
+        <div class="flex items-center gap-3 mb-3"><span class="section-icon"><i class="bi bi-calendar3"></i></span><div><h3 id="agendaSectionTitle" class="serif text-2xl">Mi agenda</h3><p id="agendaSectionHint" class="text-sm text-[#806e70]">Vista semanal. Toca una cita para ver sus detalles y acciones.</p></div></div>
+        <div class="soft-card p-3 sm:p-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><div class="flex items-center gap-1.5"><button class="btn btn-light !py-1 !px-2.5 text-xs" onclick="changeWeek(-1)" title="Semana anterior"><i class="bi bi-chevron-left"></i></button><button class="btn btn-light !py-1 !px-2.5 text-xs" onclick="changeWeek(0)">Hoy</button><button class="btn btn-light !py-1 !px-2.5 text-xs" onclick="changeWeek(1)" title="Semana siguiente"><i class="bi bi-chevron-right"></i></button></div><b id="weekRangeLabel" class="text-xs sm:text-sm text-[#98525e]"></b></div>
+          <div id="weekCalendar" class="week-grid"></div>
+          <p class="text-[11px] text-[#806e70] mt-2"><i class="bi bi-info-circle mr-1"></i>La agenda se muestra siempre. Toca una cita para ver detalles y acciones.</p>
+        </div>
+        <div id="proQuickSummary" class="hidden-view mt-5"><h4 class="serif text-xl mb-3">Resumen de tu panel</h4><div id="proQuickSummaryGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div></div>
+      </section>
+      <section id="staffTabNuevas" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-inbox"></i></span><div><h3 class="serif text-2xl">Nuevas citas</h3><p class="text-sm text-[#806e70]">Solicitudes con comprobante pendiente de verificación.</p></div></div><div id="proNewAppointments" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div></section>
+      <section id="staffTabConfirmar" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-hourglass-split"></i></span><div><h3 class="serif text-2xl">Por confirmar</h3><p class="text-sm text-[#806e70]">Abonos verificados listos para enviar la confirmación.</p></div></div><div id="proConfirmAppointments" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div></section>
+      <section id="staffTabRecordatorios" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-bell"></i></span><div><h3 class="serif text-2xl">Recordatorios para mañana</h3><p class="text-sm text-[#806e70]">Envía recordatorios por WhatsApp a las citas confirmadas de mañana.</p></div></div><div class="soft-card reminder-card p-4 sm:p-5 max-w-2xl"><div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"><div><p id="reminderSummary" class="text-sm text-[#806e70]" aria-live="polite"></p></div><button id="reminderStart" class="btn btn-main reminder-btn w-full sm:w-auto" onclick="startTomorrowReminders()"><i class="bi bi-whatsapp"></i>Iniciar recordatorios</button></div><div id="reminderProgress" class="mt-3 hidden-view"></div></div></section>
+      <section id="staffTabDisponibilidad" class="hidden-view mt-7">
+        <div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-clock"></i></span><div><h3 class="serif text-2xl">Disponibilidad</h3><p class="text-sm text-[#806e70]">Configura tu horario base por día de la semana y marca excepciones para fechas puntuales. Los cambios se reflejan en el formulario de reserva.</p></div></div>
+        <div class="grid xl:grid-cols-2 gap-5">
+          <div class="soft-card p-4 sm:p-6">
+            <div class="flex items-center justify-between gap-3"><div><span class="tag"><i class="bi bi-calendar-week mr-1"></i>HORARIO SEMANAL</span><h4 class="serif text-xl mt-2">Horario base</h4><p class="text-sm text-[#806e70] mt-1">Se repite cada semana. Las excepciones por fecha lo reemplazan solo ese día.</p></div></div>
+            <div class="mt-4"><label class="label" for="weeklyDay">Día de la semana</label><select id="weeklyDay" class="field" onchange="renderWeeklyDay()"></select></div>
+            <div class="flex flex-wrap gap-2 mt-3"><button type="button" class="btn btn-light !py-1.5 !px-3 text-xs" onclick="selectAllWeeklyHours(true)"><i class="bi bi-check-all"></i>Todos</button><button type="button" class="btn btn-light !py-1.5 !px-3 text-xs" onclick="selectAllWeeklyHours(false)"><i class="bi bi-x-lg"></i>Ninguno</button></div>
+            <div id="weeklyHours" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3"></div>
+            <button id="weeklySave" type="button" class="btn btn-main mt-4" onclick="saveWeeklySchedule(this)"><i class="bi bi-save"></i>Guardar horario del día</button>
+          </div>
+          <div class="soft-card p-4 sm:p-6">
+            <div><span class="tag"><i class="bi bi-calendar-event mr-1"></i>EXCEPCIÓN POR FECHA</span><h4 class="serif text-xl mt-2">Ajuste puntual</h4><p class="text-sm text-[#806e70] mt-1">Festivos, vacaciones o un día con horario distinto al habitual.</p></div>
+            <div class="grid sm:grid-cols-2 gap-4 items-end mt-4">
+              <div><label class="label" for="availabilityDate"><i class="bi bi-calendar-event mr-1"></i>Fecha</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input id="availabilityDate" class="field" type="date" required></div></div>
+              <label class="flex items-center gap-2 text-sm font-bold text-[#806e70] pb-2 cursor-pointer"><input id="availabilityClosed" type="checkbox" class="w-4 h-4 accent-[#a55160]" onchange="syncAvailabilityDayState()"><i class="bi bi-calendar-x"></i>Día no disponible</label>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3"><button type="button" class="btn btn-light !py-1.5 !px-3 text-xs" onclick="selectAllAvailabilityHours(true)"><i class="bi bi-check-all"></i>Todos</button><button type="button" class="btn btn-light !py-1.5 !px-3 text-xs" onclick="selectAllAvailabilityHours(false)"><i class="bi bi-x-lg"></i>Ninguno</button><button type="button" class="btn btn-light !py-1.5 !px-3 text-xs" onclick="resetExceptionToBase()"><i class="bi bi-arrow-counterclockwise"></i>Usar horario base</button></div>
+            <div id="availabilityHours" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3"></div>
+            <p id="availabilityHint" class="text-sm text-[#806e70] mt-3">Las horas con citas aparecen opacas. Los bordes punteados indican que difieren del horario base.</p>
+            <button id="availabilitySave" type="button" class="btn btn-main mt-4" onclick="saveAvailability(this)"><i class="bi bi-save"></i>Guardar excepción de la fecha</button>
+          </div>
+        </div>
+      </section>
+      <section id="staffTabHistorial" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-clock-history"></i></span><div><h3 class="serif text-2xl">Historial de atención</h3><p class="text-sm text-[#806e70]">Clientas atendidas y citas canceladas.</p></div></div><div id="staffHistory" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div></section>
+      <section id="staffTabServicios" class="hidden-view mt-7">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3"><span class="section-icon"><i class="bi bi-scissors"></i></span><div><h3 class="serif text-2xl">Servicios publicados</h3><p class="text-sm text-[#806e70]">Edita nombres, precios y duraciones, o agrega nuevos servicios. Los cambios se publican en el landing al guardar.</p></div></div>
+          <button id="newServiceToggle" class="btn btn-main w-full sm:w-auto" onclick="toggleNewServiceForm()" aria-expanded="false" aria-controls="newServiceForm"><i class="bi bi-plus-lg"></i>Nuevo servicio</button>
+        </div>
+        <div id="servicesPanelList" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+        <form id="newServiceForm" class="soft-card p-4 sm:p-6 mt-5 space-y-4 hidden-view">
+          <div class="flex items-start justify-between gap-3"><div><span class="tag"><i class="bi bi-plus-circle mr-1"></i>NUEVO SERVICIO</span><h4 class="serif text-xl mt-2">Agregar al catálogo</h4></div><button type="button" class="btn btn-light !py-1.5 !px-3" onclick="toggleNewServiceForm()" title="Cerrar formulario" aria-label="Cerrar formulario"><i class="bi bi-x-lg"></i></button></div>
+          <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="newServiceName">Nombre</label><input id="newServiceName" class="field" required maxlength="120" placeholder="Ej. Pestañas manga"></div><div><label class="label" for="newServicePrice">Precio (COP)</label><input id="newServicePrice" class="field" type="number" min="1" step="1" required placeholder="80000"></div></div>
+          <div><label class="label" for="newServiceDescription">Descripción</label><input id="newServiceDescription" class="field" maxlength="300" placeholder="Descripción corta para el landing"></div>
+          <div class="grid sm:grid-cols-3 gap-4"><div><label class="label" for="newServiceDuration">Duración (min)</label><input id="newServiceDuration" class="field" type="number" min="1" max="600" step="1" value="120" required></div><div><label class="label" for="newServiceIcon">Icono (si no hay imagen)</label><select id="newServiceIcon" class="field"></select></div><div><label class="label" for="newServiceOrder">Orden</label><input id="newServiceOrder" class="field" type="number" step="1" value="0"></div></div>
+          <div><label class="label" for="newServiceImagen">URL de la imagen de presentación</label><input id="newServiceImagen" class="field" maxlength="1000" placeholder="https://... (opcional)" oninput="setServicePreview('newServicePreview',this.value)"><div id="newServicePreview" class="mt-2"></div></div>
+          <div><label class="label" for="newServiceFile">Subir imagen (JPG, PNG o WEBP · máx. 5 MB)</label><input id="newServiceFile" class="field" type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadNewServiceImage(this)"></div>
+          <div class="flex flex-col sm:flex-row gap-2"><button id="newServiceSubmit" class="btn btn-main flex-1"><i class="bi bi-send"></i>Publicar servicio</button><button type="button" class="btn btn-light" onclick="toggleNewServiceForm()">Cancelar</button></div>
+        </form>
+      </section>
+      <section id="staffTabFinanzas" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-cash-coin"></i></span><div><h3 class="serif text-2xl">Panel de contabilidad</h3><p class="text-sm text-[#806e70]">Ingresos por citas atendidas y egresos registrados.</p></div></div><div id="financeStats" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div><div class="grid lg:grid-cols-[.8fr_1.2fr] gap-5 mt-5"><form id="expenseForm" class="soft-card p-4 sm:p-6 space-y-4"><div><span class="tag"><i class="bi bi-receipt mr-1"></i>REGISTRAR EGRESO</span><h3 class="serif text-2xl mt-3"><i class="bi bi-plus-circle mr-1"></i>Nuevo gasto</h3></div><div><label class="label" for="expenseDescription"><i class="bi bi-card-text mr-1"></i>Descripción</label><div class="input-icon"><i class="bi bi-card-text"></i><input id="expenseDescription" class="field" required maxlength="160" placeholder="Ej. Compra de adhesivo"></div></div><div><label class="label" for="expenseCategory"><i class="bi bi-tags mr-1"></i>Categoría</label><div class="input-icon"><i class="bi bi-tags"></i><select id="expenseCategory" class="field"><option value="insumos">Insumos</option><option value="arriendo">Arriendo</option><option value="gastos_varios">Gastos varios</option><option value="otro">Otro</option></select></div></div><div class="grid sm:grid-cols-2 gap-3"><div><label class="label" for="expenseAmount"><i class="bi bi-cash mr-1"></i>Valor (COP)</label><div class="input-icon"><i class="bi bi-cash"></i><input id="expenseAmount" class="field" type="number" min="1" step="1" required></div></div><div><label class="label" for="expenseDate"><i class="bi bi-calendar-event mr-1"></i>Fecha</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input id="expenseDate" class="field" type="date" required></div></div></div><button id="expenseSubmit" class="btn btn-main w-full"><i class="bi bi-save"></i>Guardar egreso</button></form><div class="space-y-4"><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-arrow-down-left-circle text-[#387452]"></i>Ingresos por citas atendidas</h3><div id="incomeLedger" class="mt-4 space-y-3 max-h-80 overflow-auto"></div></div><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-arrow-up-right-circle text-[#a34e4b]"></i>Egresos registrados</h3><div id="expenseLedger" class="mt-4 space-y-3 max-h-80 overflow-auto"></div></div></div></div></section>
+      <section id="staffTabCuenta" class="hidden-view mt-7 max-w-xl"><form id="passwordForm" class="soft-card p-4 sm:p-6 space-y-4"><span class="tag"><i class="bi bi-shield-check mr-1"></i>SEGURIDAD DE LA CUENTA</span><h3 class="serif text-2xl"><i class="bi bi-key mr-1"></i>Cambiar contraseña</h3><p class="text-sm text-[#806e70]">Confirma tu contraseña actual y define una nueva. El cambio se aplica de forma segura en Supabase.</p><div><label class="label" for="currentPassword"><i class="bi bi-lock mr-1"></i>Contraseña actual</label><div class="input-icon"><i class="bi bi-lock"></i><input id="currentPassword" class="field" type="password" autocomplete="current-password" required></div></div><div><label class="label" for="newPassword"><i class="bi bi-key mr-1"></i>Nueva contraseña</label><div class="input-icon"><i class="bi bi-key"></i><input id="newPassword" class="field" type="password" autocomplete="new-password" minlength="8" required></div></div><div><label class="label" for="confirmPassword"><i class="bi bi-key-fill mr-1"></i>Repite la nueva contraseña</label><div class="input-icon"><i class="bi bi-key-fill"></i><input id="confirmPassword" class="field" type="password" autocomplete="new-password" minlength="8" required></div></div><button class="btn btn-main"><i class="bi bi-shield-check"></i>Actualizar contraseña</button></form></section>
+    </div></section>
   </main>
-  <footer id="siteFooter" class="bg-[#38272b] text-white/70 py-10"><div class="max-w-7xl mx-auto px-5 flex flex-wrap items-center justify-between gap-5"><div><b class="serif text-white text-xl">LashStudio JB</b><p class="text-sm mt-1">Una mirada, tu esencia.</p></div><div class="flex gap-5 text-sm"><button onclick="showLookup()">Consultar cita</button><button onclick="showStaffLogin()">Acceso del equipo</button><a href="https://wa.me/573117653423" target="_blank" rel="noopener">WhatsApp</a></div></div><div class="max-w-7xl mx-auto px-5 mt-8 text-xs">© <span id="year"></span> LashStudio JB</div></footer>
+  <footer id="siteFooter" class="bg-[#38272b] text-white/70 py-10"><div class="max-w-7xl mx-auto px-5 flex flex-wrap items-center justify-between gap-5"><div><b class="serif text-white text-xl">LashStudio JB</b><p class="text-sm mt-1">Una mirada, tu esencia.</p></div><div class="flex flex-wrap gap-4 sm:gap-5 text-sm"><button onclick="showLookup()"><i class="bi bi-calendar2-check mr-1"></i>Consultar cita</button><button onclick="showStaffLogin()"><i class="bi bi-shield-lock mr-1"></i>Acceso del equipo</button><a href="https://wa.me/573117653423" target="_blank" rel="noopener"><i class="bi bi-whatsapp mr-1"></i>WhatsApp</a></div></div><div class="max-w-7xl mx-auto px-5 mt-8 text-xs">© <span id="year"></span> LashStudio JB</div></footer>
   <div id="toast" class="toast hidden-view" role="status"></div>
 
 <script>
 const $ = id => document.getElementById(id);
-let sb = null, toastTimer;
+let sb = null, toastTimer, staffProfile = null, staffCitas = [], staffEquipo = [], activeStaffTab = null, reminderQueue = [], reminderIndex = 0, sessionActive = false, agendaVersion = null, agendaPollTimer = null, liveBadgeTimer = null, timeSlots = defaultTimeSlots(), availabilitySeq = 0, weekOffset = 0, weeklySchedule = null, availabilityBase = [];
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const safeId = value => String(value ?? '').replace(/[^a-zA-Z0-9_-]/g, '');
-const serviceData = [
-  {id:'clasicas',name:'Pestañas clásicas',price:80000,duration:120,description:'Un acabado natural y delicado, pelo a pelo.',icon:'✧'},
-  {id:'hibrido',name:'Volumen híbrido',price:100000,duration:150,description:'Equilibrio entre definición y volumen.',icon:'❋'},
-  {id:'ruso',name:'Volumen ruso',price:120000,duration:180,description:'Abanicos ligeros para una mirada intensa.',icon:'✦'},
-  {id:'retoque',name:'Mantenimiento / retoque',price:50000,duration:90,description:'Renueva y conserva tu diseño.',icon:'♡'}
+let serviceData = [
+  {id:'clasicas',name:'Pestañas clásicas',price:80000,duration:120,description:'Un acabado natural y delicado, pelo a pelo.',icon:'bi bi-magic'},
+  {id:'hibrido',name:'Volumen híbrido',price:100000,duration:150,description:'Equilibrio entre definición y volumen.',icon:'bi bi-layers'},
+  {id:'ruso',name:'Volumen ruso',price:120000,duration:180,description:'Abanicos ligeros para una mirada intensa.',icon:'bi bi-stars'},
+  {id:'retoque',name:'Mantenimiento / retoque',price:50000,duration:90,description:'Renueva y conserva tu diseño.',icon:'bi bi-arrow-repeat'}
 ];
+let panelServices = [];
+const serviceIconOptions = ['bi bi-magic','bi bi-layers','bi bi-stars','bi bi-arrow-repeat','bi bi-scissors','bi bi-sparkles','bi bi-heart','bi bi-emoji-heart-eyes'];
 const money = n => '$' + Number(n).toLocaleString('es-CO') + ' COP';
 function toast(message){$('toast').textContent=message;$('toast').classList.remove('hidden-view');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden-view'),4200)}
+function initials(name){return String(name||'Equipo').trim().split(/\s+/).slice(0,2).map(word=>word[0]||'').join('').toUpperCase()||'JB'}
+function roleLabel(role){return role==='admin'?'Administración':'Profesional'}
+function roleIcon(role){return role==='admin'?'bi bi-shield-check':'bi bi-person-badge'}
+function syncAuthUi(session){
+  const authenticated=Boolean(session);
+  sessionActive=authenticated;
+  $('publicNav').classList.toggle('hidden-view',authenticated);
+  $('userArea').classList.toggle('hidden-view',!authenticated);
+  $('userArea').classList.toggle('flex',authenticated);
+  $('mobileLogout').classList.toggle('hidden-view',!authenticated);
+  $('mobileLogin').classList.toggle('hidden-view',authenticated);
+  $('menuPanel').classList.toggle('hidden-view',!authenticated);
+  $('menuAccount').classList.toggle('hidden-view',!authenticated);
+  const navControls=$('staffNavControls');
+  if(navControls){navControls.classList.toggle('hidden-view',!authenticated);navControls.classList.toggle('flex',authenticated)}
+  const liveBadge=$('liveBadge');if(liveBadge)liveBadge.classList.toggle('hidden-view',!authenticated);
+  if(authenticated)startAgendaPolling();else stopAgendaPolling();
+  updateHomeButton();
+  if(!authenticated){closeMobileMenu();return;}
+  const role=staffProfile?.role||'profesional';
+  const name=staffProfile?.nombre||session.user?.email||'Equipo';
+  $('headerUserName').textContent=name;
+  $('headerUserRole').textContent=roleLabel(role);
+  $('headerUserAvatar').textContent=initials(name);
+  $('menuPanelName').textContent=name;
+  $('menuPanelRole').textContent=roleLabel(role);
+}
+function handleBrandClick(event){if(!$('staffPanel').classList.contains('hidden-view')){event.preventDefault();showPublicHome()}}
+function updateHomeButton(){
+  const inPanel=sessionActive&&!$('staffPanel').classList.contains('hidden-view');
+  const role=staffProfile?.role||'profesional';
+  const name=staffProfile?.nombre||'Equipo';
+  const returning=sessionActive&&!inPanel;
+  const title=sessionActive?(inPanel?'Ver sitio público':`Volver a mi panel · ${name} · ${roleLabel(role)}`):'Inicio';
+  const icon=returning?'bi bi-person-badge':'bi bi-house-door';
+  document.body.classList.toggle('panel-return-mode',returning);
+  document.querySelectorAll('[data-home-button]').forEach(button=>{
+    button.title=title;
+    button.setAttribute('aria-label',title);
+    const elementIcon=button.querySelector('i');if(elementIcon)elementIcon.className=icon;
+    const label=button.querySelector('.home-desktop-label');
+    if(label)label.innerHTML=returning?`<span class="home-user-name" style="max-width:none">${esc(name)}</span><small class="home-user-role">${esc(roleLabel(role))}</small>`:'Sitio';
+    let meta=button.querySelector('.home-user-meta');
+    if(returning){
+      if(!meta){meta=document.createElement('span');meta.className='home-user-meta';button.appendChild(meta)}
+      meta.innerHTML=`<span class="home-user-name">${esc(name)}</span><span class="home-user-role">${esc(roleLabel(role))}</span>`;
+    }else if(meta){meta.remove()}
+  });
+}
+function handleHomeClick(){
+  const inPanel=!$('staffPanel').classList.contains('hidden-view');
+  if(sessionActive&&!inPanel){showStaffPanel();return}
+  showPublicHome();
+}
+function showStaffPanel(){hideAllViews();$('staffPanel').classList.remove('hidden-view');updateHomeButton();loadStaffAppointments()}
+function goToSection(id){const target=$(id);if(!target)return;if(target.classList.contains('hidden-view'))showPublicHome();target.scrollIntoView({behavior:'smooth',block:'start'})}
+function setMenuIcon(open){const icon=$('mobileMenuButton')?.querySelector('i');if(icon)icon.className=open?'bi bi-x-lg':'bi bi-list'}
+function purgeMenuLogout(){const menu=$('mobileMenu');if(!menu)return;menu.querySelectorAll('button').forEach(b=>{if(b.id==='menuLogout'||(b.getAttribute('onclick')||'').includes('signOut'))b.remove()})}
+function syncLogoutWithMenu(open){const logout=$('mobileLogout');if(logout)logout.classList.toggle('hidden-view',open||!sessionActive)}
+function closeMobileMenu(){const menu=$('mobileMenu'),button=$('mobileMenuButton');if(!menu||!button)return;menu.classList.add('hidden-view');button.setAttribute('aria-expanded','false');setMenuIcon(false);syncLogoutWithMenu(false)}
+function toggleMobileMenu(){const menu=$('mobileMenu'),button=$('mobileMenuButton');const open=menu.classList.contains('hidden-view');if(open)purgeMenuLogout();menu.classList.toggle('hidden-view',!open);button.setAttribute('aria-expanded',String(open));setMenuIcon(open);syncLogoutWithMenu(open)}
+function menuGo(id){closeMobileMenu();goToSection(id)}
+function menuAction(action){closeMobileMenu();if(action==='login'){showStaffLogin();return}if(action==='panel'||action==='cuenta'){activeStaffTab=action==='cuenta'?'cuenta':null;showStaffPanel();window.scrollTo({top:0,behavior:'smooth'})}}
+document.addEventListener('click',event=>{const menu=$('mobileMenu'),button=$('mobileMenuButton');if(!menu||menu.classList.contains('hidden-view'))return;if(menu.contains(event.target)||button.contains(event.target))return;closeMobileMenu()});
+window.addEventListener('resize',()=>{if(window.innerWidth>=768)closeMobileMenu()});
 function renderServices(){
-  $('serviceGrid').innerHTML=serviceData.map(s=>`<article class="soft-card p-6"><div class="w-12 h-12 rounded-2xl bg-[#f9e9e9] text-[#a55160] grid place-items-center text-2xl">${s.icon}</div><h3 class="serif text-xl mt-4">${s.name}</h3><p class="text-sm text-[#806e70] mt-2 min-h-10">${s.description}</p><div class="mt-5 flex items-end justify-between"><b>${money(s.price)}</b><span class="text-xs text-[#927d7e]">${s.duration} min</span></div></article>`).join('');
+  $('serviceGrid').innerHTML=serviceData.map(s=>`<article class="soft-card p-6">${s.imagen?`<img src="${esc(s.imagen)}" alt="${esc(s.name)}" loading="lazy" class="w-full h-44 object-cover rounded-2xl mb-4 bg-[#f9e9e9]">`:`<div class="w-12 h-12 rounded-2xl bg-[#f9e9e9] text-[#a55160] grid place-items-center text-2xl"><i class="${s.icon}"></i></div>`}<h3 class="serif text-xl ${s.imagen?'':'mt-4'}">${s.name}</h3><p class="text-sm text-[#806e70] mt-2 min-h-10">${s.description}</p><div class="mt-5 flex items-end justify-between"><b>${money(s.price)}</b><span class="text-xs text-[#927d7e]">${s.duration} min</span></div></article>`).join('');
   $('servicio').innerHTML='<option value="">Selecciona un servicio</option>'+serviceData.map(s=>`<option value="${s.id}">${s.name} · ${money(s.price)}</option>`).join('');
 }
-function hideAllViews(){['lookupView','staffLogin','staffPanel'].forEach(id=>$(id).classList.add('hidden-view'));$('publicView').classList.remove('hidden-view');$('siteFooter').classList.remove('hidden-view')}
-function showLookup(){hideAllViews();$('publicView').classList.add('hidden-view');$('siteFooter').classList.add('hidden-view');$('lookupView').classList.remove('hidden-view');window.scrollTo({top:0,behavior:'smooth'})}
-function hideLookup(){hideAllViews();$('lookupResults').innerHTML='';window.scrollTo({top:0,behavior:'smooth'})}
-function showStaffLogin(){hideAllViews();$('publicView').classList.add('hidden-view');$('siteFooter').classList.add('hidden-view');$('staffLogin').classList.remove('hidden-view');window.scrollTo({top:0,behavior:'smooth'})}
-function hideStaffLogin(){hideAllViews();window.scrollTo({top:0,behavior:'smooth'})}
+function fillServiceIcons(select,selected){
+  if(!select)return;
+  select.innerHTML=serviceIconOptions.map(icon=>`<option value="${icon}"${icon===selected?' selected':''}>${icon.replace('bi bi-','')}</option>`).join('');
+}
+async function refreshPublicServices(){
+  try{
+    const r=await fetch('/api/servicios');
+    if(!r.ok)return;
+    const data=await r.json();
+    if(!Array.isArray(data))return;
+    serviceData=data;renderServices();loadAvailableHours();
+  }catch(error){console.error('Error al actualizar el catálogo público:',error)}
+}
+function defaultTimeSlots(){return Array.from({length:15},(_,i)=>`${String(6+i).padStart(2,'0')}:00`)}
+function formatHour(value){
+  const [hours,minutes]=String(value||'').split(':').map(Number);
+  if(Number.isNaN(hours))return String(value||'');
+  return `${hours%12||12}:${String(minutes||0).padStart(2,'0')} ${hours>=12?'p. m.':'a. m.'}`;
+}
+async function loadAvailableHours(){
+  const select=$('hora');if(!select)return;
+  const fecha=$('fecha').value, servicio=$('servicio').value, seq=++availabilitySeq, previous=select.value;
+  select.innerHTML='<option value="">Cargando horarios…</option>';select.disabled=true;
+  if(!fecha||!servicio){select.innerHTML='<option value="">Elige fecha y servicio</option>';return}
+  try{
+    const r=await fetch(`/api/disponibilidad?fecha=${encodeURIComponent(fecha)}&servicio=${encodeURIComponent(servicio)}`);
+    const data=await r.json();
+    if(seq!==availabilitySeq)return;
+    if(!r.ok)throw Error(data.error||'No se pudieron cargar los horarios.');
+    const slots=Array.isArray(data.slots)&&data.slots.length?data.slots:timeSlots.map(hora=>({hora,disponible:true,motivo:null}));
+    select.innerHTML=`<option value="">Selecciona una hora</option>`+slots.map(slot=>`<option value="${esc(slot.hora)}"${slot.disponible?'':' disabled'}>${formatHour(slot.hora)}${slot.disponible?'':(slot.motivo==='ocupado'?' · ocupado':' · no disponible')}</option>`).join('');
+    const hint=$('horaHint');
+    if(hint)hint.textContent=data.diaBloqueado?'Ese día no hay atención. Elige otra fecha.':'Horarios de 6:00 a. m. a 8:00 p. m. Las horas ocupadas o no disponibles aparecen opacas.';
+    if(previous&&slots.some(slot=>slot.hora===previous&&slot.disponible))select.value=previous;
+  }catch(error){
+    if(seq!==availabilitySeq)return;
+    select.innerHTML='<option value="">Selecciona una hora</option>'+timeSlots.map(hora=>`<option value="${esc(hora)}">${formatHour(hora)}</option>`).join('');
+    const hint=$('horaHint');if(hint)hint.textContent='No se pudo consultar la disponibilidad. Confirma con el estudio antes de reservar.';
+  }finally{if(seq===availabilitySeq)select.disabled=false}
+}
+$('fecha').addEventListener('change',loadAvailableHours);
+$('servicio').addEventListener('change',loadAvailableHours);
+$('availabilityDate').addEventListener('change',loadAvailabilityPanel);
+function toggleNewServiceForm(open){
+  const form=$('newServiceForm'),button=$('newServiceToggle');if(!form||!button)return;
+  const shouldOpen=open===undefined?form.classList.contains('hidden-view'):open;
+  form.classList.toggle('hidden-view',!shouldOpen);
+  button.setAttribute('aria-expanded',String(shouldOpen));
+  button.innerHTML=shouldOpen?'<i class="bi bi-x-lg"></i>Cancelar':'<i class="bi bi-plus-lg"></i>Nuevo servicio';
+  if(shouldOpen){form.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newServiceName')?.focus(),250)}
+}
+function setServicePreview(containerId,url){
+  const el=$(containerId);if(!el)return;
+  el.innerHTML=url?`<img src="${esc(url)}" alt="Vista previa de la imagen del servicio" class="h-24 w-40 object-cover rounded-xl border border-[#ead7d3]">`:'<p class="text-xs text-[#927d7e]">Sin imagen: el landing mostrará el icono del servicio.</p>';
+}
+async function uploadServiceImageFile(input){
+  const file=input.files[0];if(!file)return null;
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type)){toast('Usa una imagen JPG, PNG o WEBP.');input.value='';return null}
+  if(file.size>5*1024*1024){toast('La imagen supera el máximo de 5 MB.');input.value='';return null}
+  const button=input.closest('article')?.querySelector('button');
+  if(button)button.disabled=true;
+  try{
+    toast('Subiendo imagen…');
+    const base64=await fileToBase64(file);
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch('/api/panel/servicios/imagen',{method:'POST',headers:authHeader(session),body:JSON.stringify({imagen:{mime:file.type,base64}})});
+    const d=await r.json();if(!r.ok)throw Error(d.error||'No se pudo subir la imagen.');
+    input.value='';
+    return d.url;
+  }catch(error){toast(error.message||'No se pudo subir la imagen.');return null}
+  finally{if(button)button.disabled=false}
+}
+async function uploadServiceImage(id,input){
+  const url=await uploadServiceImageFile(input);
+  if(!url)return;
+  $(`svcImagen-${id}`).value=url;
+  setServicePreview(`svcPreview-${id}`,url);
+  toast('Imagen subida. Guardando el servicio…');
+  await saveService(id);
+}
+async function uploadNewServiceImage(input){
+  const url=await uploadServiceImageFile(input);
+  if(!url)return;
+  $('newServiceImagen').value=url;
+  setServicePreview('newServicePreview',url);
+  toast('Imagen lista. Completa los datos y publica el servicio.');
+}
+function serviceCardEditor(s){
+  const id=safeId(s.id);
+  return `<article class="soft-card p-4 sm:p-5">
+    <div class="flex items-center justify-between gap-3 mb-3"><span class="section-icon"><i class="${esc(s.icon)}"></i></span><span class="text-xs font-bold ${s.active?'text-[#2f7a55]':'text-[#a34e4b]'}"><i class="bi ${s.active?'bi-check-circle-fill':'bi-x-circle-fill'}"></i> ${s.active?'Publicado':'Oculto'}</span></div>
+    <div class="grid sm:grid-cols-2 gap-3">
+      <div><label class="label" for="svcName-${id}">Nombre</label><input id="svcName-${id}" class="field" maxlength="120" value="${esc(s.name)}"></div>
+      <div><label class="label" for="svcPrice-${id}">Precio (COP)</label><input id="svcPrice-${id}" class="field" type="number" min="1" step="1" value="${Number(s.price)}"></div>
+      <div><label class="label" for="svcDuration-${id}">Duración (min)</label><input id="svcDuration-${id}" class="field" type="number" min="1" max="600" step="1" value="${Number(s.duration)}"></div>
+      <div><label class="label" for="svcOrder-${id}">Orden</label><input id="svcOrder-${id}" class="field" type="number" step="1" value="${Number(s.order)||0}"></div>
+      <div class="sm:col-span-2"><label class="label" for="svcDescription-${id}">Descripción</label><input id="svcDescription-${id}" class="field" maxlength="300" value="${esc(s.description)}"></div>
+      <div class="sm:col-span-2"><label class="label" for="svcIcon-${id}">Icono (si no hay imagen)</label><select id="svcIcon-${id}" class="field" data-service-icon="${id}"></select></div>
+      <div class="sm:col-span-2"><label class="label" for="svcImagen-${id}">URL de la imagen de presentación</label><input id="svcImagen-${id}" class="field" maxlength="1000" placeholder="https://... (opcional)" value="${esc(s.imagen||'')}" oninput="setServicePreview('svcPreview-${id}',this.value)"><div id="svcPreview-${id}" class="mt-2"></div></div>
+      <div class="sm:col-span-2"><label class="label" for="svcFile-${id}">Subir imagen (JPG, PNG o WEBP · máx. 5 MB)</label><input id="svcFile-${id}" class="field" type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadServiceImage('${id}',this)"></div>
+    </div>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <button class="btn btn-main" onclick="saveService('${id}',this)"><i class="bi bi-save"></i>Guardar y publicar</button>
+      <button class="btn btn-light" onclick="toggleService('${id}',${s.active?'false':'true'},this)"><i class="bi ${s.active?'bi-eye-slash':'bi-eye'}"></i>${s.active?'Ocultar':'Publicar'}</button>
+    </div>
+  </article>`;
+}
+function renderServicesPanel(){
+  const target=$('servicesPanelList');if(!target)return;
+  if(!panelServices.length){target.innerHTML='<div class="soft-card p-5 text-sm text-[#806e70] md:col-span-2 xl:col-span-3">Aún no hay servicios en el catálogo. Agrega el primero con el formulario de abajo.</div>';return}
+  target.innerHTML=panelServices.map(serviceCardEditor).join('');
+  panelServices.forEach(s=>{const id=safeId(s.id);fillServiceIcons($(`svcIcon-${id}`),s.icon);setServicePreview(`svcPreview-${id}`,s.imagen||'')});
+}
+async function loadServicesPanel(){
+  const target=$('servicesPanelList');if(!target)return;
+  target.innerHTML='<p class="text-sm text-[#806e70]">Cargando servicios…</p>';
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch('/api/panel/servicios',{headers:authHeader(session)});
+    const d=await r.json();
+    if(!r.ok)throw Error(d.error||'No se pudieron cargar los servicios.');
+    panelServices=d.servicios||[];renderServicesPanel();
+  }catch(error){
+    console.error('Error al cargar servicios del panel:',error);
+    target.innerHTML=`<div class="soft-card p-5 text-sm text-red-700 md:col-span-2 xl:col-span-3">${esc(error.message||'No se pudieron cargar los servicios.')}</div>`;
+  }
+}
+function servicePayload(id){
+  const current=panelServices.find(s=>safeId(s.id)===id);
+  return {
+    name:$(`svcName-${id}`).value.trim(),
+    price:Number($(`svcPrice-${id}`).value),
+    duration:Number($(`svcDuration-${id}`).value),
+    description:$(`svcDescription-${id}`).value.trim(),
+    icon:$(`svcIcon-${id}`).value,
+    imagen:$(`svcImagen-${id}`).value.trim(),
+    order:Number($(`svcOrder-${id}`).value)||0,
+    active:current?current.active!==false:true
+  };
+}
+async function saveService(id,button){
+  const payload=servicePayload(id);
+  if(!payload.name||!Number.isFinite(payload.price)||payload.price<1||!Number.isFinite(payload.duration)||payload.duration<1){toast('Revisa el nombre, el precio y la duración.');return}
+  if(button)button.disabled=true;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch(`/api/panel/servicios/${encodeURIComponent(id)}`,{method:'PUT',headers:authHeader(session),body:JSON.stringify(payload)});
+    const d=await r.json();if(!r.ok)throw Error(d.error||'No se pudo actualizar el servicio.');
+    toast('Servicio actualizado y publicado en el landing.');
+    await Promise.all([loadServicesPanel(),refreshPublicServices()]);
+  }catch(error){toast(error.message||'No se pudo actualizar el servicio.')}finally{if(button)button.disabled=false}
+}
+async function toggleService(id,active,button){
+  const payload={...servicePayload(id),active};
+  if(button)button.disabled=true;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch(`/api/panel/servicios/${encodeURIComponent(id)}`,{method:'PUT',headers:authHeader(session),body:JSON.stringify(payload)});
+    const d=await r.json();if(!r.ok)throw Error(d.error||'No se pudo cambiar el estado del servicio.');
+    toast(active?'Servicio publicado en el landing.':'Servicio oculto del landing.');
+    await Promise.all([loadServicesPanel(),refreshPublicServices()]);
+  }catch(error){toast(error.message||'No se pudo cambiar el estado del servicio.')}finally{if(button)button.disabled=false}
+}
+$('newServiceForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const payload={name:$('newServiceName').value.trim(),price:Number($('newServicePrice').value),duration:Number($('newServiceDuration').value),description:$('newServiceDescription').value.trim(),icon:$('newServiceIcon').value,imagen:$('newServiceImagen').value.trim(),order:Number($('newServiceOrder').value)||0,active:true};
+  const button=$('newServiceSubmit');button.disabled=true;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch('/api/panel/servicios',{method:'POST',headers:authHeader(session),body:JSON.stringify(payload)});
+    const d=await r.json();if(!r.ok)throw Error(d.error||'No se pudo publicar el servicio.');
+    $('newServiceForm').reset();$('newServiceDuration').value=120;$('newServiceOrder').value=0;
+    fillServiceIcons($('newServiceIcon'));setServicePreview('newServicePreview','');toggleNewServiceForm(false);
+    toast('Servicio publicado en el landing.');
+    await Promise.all([loadServicesPanel(),refreshPublicServices()]);
+  }catch(error){toast(error.message||'No se pudo publicar el servicio.')}finally{button.disabled=false}
+});
+function hideAllViews(){['inicio','servicios','estudio','reservar','lookupView','staffLogin','staffPanel'].forEach(id=>$(id).classList.add('hidden-view'));$('siteFooter').classList.add('hidden-view');updateHomeButton()}
+function showPublicHome(){hideAllViews();['inicio','servicios','estudio','reservar'].forEach(id=>$(id).classList.remove('hidden-view'));$('siteFooter').classList.remove('hidden-view');window.scrollTo({top:0,behavior:'smooth'})}
+function showLookup(){hideAllViews();$('lookupView').classList.remove('hidden-view');window.scrollTo({top:0,behavior:'smooth'})}
+function hideLookup(){$('lookupResults').innerHTML='';showPublicHome()}
+function showStaffLogin(){hideAllViews();$('staffLogin').classList.remove('hidden-view');window.scrollTo({top:0,behavior:'smooth'})}
+function hideStaffLogin(){showPublicHome()}
 function statusLabel(s){return ({pendiente_verificacion:'Pendiente de verificación',verificada:'Abono verificado',confirmada:'Cita confirmada',cancelada:'Cancelada',atendida:'Atendida'})[s]||'Estado actualizado'}
 function formatDate(date){return new Date(date+'T12:00:00').toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
 function appointmentCard(c){return `<article class="soft-card p-5"><div class="flex justify-between items-start gap-3"><div><p class="text-xs uppercase tracking-wider text-[#927d7e]">${esc(c.servicio)}</p><p class="serif text-xl mt-1">${formatDate(c.fecha)}</p></div><span class="status ${esc(c.estado)}">${esc(statusLabel(c.estado))}</span></div><p class="mt-2 text-sm text-[#806e70]">${esc(c.hora)} · Abono ${money(c.abono||20000)}</p></article>`}
@@ -77,31 +523,424 @@ $('lookupForm').addEventListener('submit',async e=>{e.preventDefault();const tar
 
 $('comprobante').addEventListener('change',()=>{const file=$('comprobante').files[0],preview=$('receiptPreview');if(!file){preview.classList.add('hidden-view');return}if(file.size>5*1024*1024){$('comprobante').value='';preview.classList.add('hidden-view');toast('La imagen supera el máximo de 5 MB.');return}const url=URL.createObjectURL(file);preview.innerHTML=`<img src="${url}" alt="Vista previa del comprobante" class="max-h-48 rounded-xl border border-[#eadcda]"><p class="text-xs text-[#806e70] mt-1">${file.name}</p>`;preview.classList.remove('hidden-view')});
 function fileToBase64(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=reject;reader.readAsDataURL(file)})}
-$('bookingForm').addEventListener('submit',async e=>{e.preventDefault();const file=$('comprobante').files[0];if(!file){toast('Adjunta la imagen del comprobante para continuar.');return}const button=$('bookingSubmit');button.disabled=true;button.textContent='Enviando solicitud…';try{const base64=await fileToBase64(file);const response=await fetch('/api/citas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:$('nombre').value,cedula:$('cedula').value,telefono:$('telefono').value,servicio:$('servicio').value,fecha:$('fecha').value,hora:$('hora').value,comprobante:{mime:file.type,base64}})});const result=await response.json();if(!response.ok)throw Error(result.error);$('bookingForm').reset();$('receiptPreview').classList.add('hidden-view');toast('Solicitud recibida. Tu cita está pendiente de verificar el abono.');window.scrollTo({top:document.getElementById('reservar').offsetTop-85,behavior:'smooth'})}catch(err){toast(err.message||'No se pudo enviar la solicitud. Intenta de nuevo.')}finally{button.disabled=false;button.innerHTML='Enviar solicitud de cita <span>↗</span>'}});
+$('bookingForm').addEventListener('submit',async e=>{e.preventDefault();const file=$('comprobante').files[0];if(!file){toast('Adjunta la imagen del comprobante para continuar.');return}const button=$('bookingSubmit');button.disabled=true;button.innerHTML='<i class="bi bi-hourglass-split"></i>Enviando solicitud…';try{const base64=await fileToBase64(file);const response=await fetch('/api/citas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:$('nombre').value,cedula:$('cedula').value,telefono:$('telefono').value,servicio:$('servicio').value,fecha:$('fecha').value,hora:$('hora').value,aceptaNoReembolso:$('depositTerms').checked,comprobante:{mime:file.type,base64}})});const result=await response.json();if(!response.ok)throw Error(result.error);$('bookingForm').reset();$('receiptPreview').classList.add('hidden-view');loadAvailableHours();toast('Solicitud recibida. Tu cita está pendiente de verificar el abono.');window.scrollTo({top:document.getElementById('reservar').offsetTop-85,behavior:'smooth'})}catch(err){toast(err.message||'No se pudo enviar la solicitud. Intenta de nuevo.')}finally{button.disabled=false;button.innerHTML='<i class="bi bi-send"></i>Enviar solicitud de cita'}});
 
-async function loadStaffAppointments(){
-  const{data:{session}}=await sb.auth.getSession();
+const WEEKDAY_NAMES=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+function syncAvailabilityDayState(){
+  const closed=Boolean($('availabilityClosed')?.checked),container=$('availabilityHours');
+  if(container)container.classList.toggle('availability-closed',closed);
+  document.querySelectorAll('#availabilityHours input[type="checkbox"]').forEach(input=>{if(input.dataset.occupied!=='true')input.disabled=closed});
+}
+function selectAllAvailabilityHours(selectAll){
+  document.querySelectorAll('#availabilityHours input[type="checkbox"]').forEach(input=>{if(!input.disabled)input.checked=Boolean(selectAll)});
+}
+function selectAllWeeklyHours(selectAll){
+  document.querySelectorAll('#weeklyHours input[type="checkbox"]').forEach(input=>{input.checked=Boolean(selectAll)});
+}
+function renderWeeklyDay(){
+  const target=$('weeklyHours');if(!target||!weeklySchedule)return;
+  const dia=Number($('weeklyDay').value);
+  const day=(weeklySchedule.dias||[]).find(d=>Number(d.dia_semana)===dia)||{horas:[...timeSlots]};
+  const active=new Set(day.horas||[]);
+  target.innerHTML=timeSlots.map(hora=>`<label class="availability-slot"><input type="checkbox" value="${esc(hora)}"${active.has(hora)?' checked':''}><span>${formatHour(hora)}</span></label>`).join('');
+}
+async function loadWeeklySchedule(){
+  const select=$('weeklyDay');if(!select)return;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch('/api/panel/horario-semana',{headers:authHeader(session)});
+    const data=await r.json();
+    if(!r.ok)throw Error(data.error||'No se pudo cargar el horario semanal.');
+    weeklySchedule=data;
+    const preferred=select.value!==''?Number(select.value):1;
+    select.innerHTML=(data.dias||[]).map(d=>`<option value="${d.dia_semana}">${esc(d.nombre||WEEKDAY_NAMES[d.dia_semana])}</option>`).join('');
+    select.value=String((data.dias||[]).some(d=>Number(d.dia_semana)===preferred)?preferred:(data.dias?.[0]?.dia_semana??1));
+    renderWeeklyDay();
+  }catch(error){
+    $('weeklyHours').innerHTML=`<p class="text-sm text-red-700 col-span-full">${esc(error.message||'No se pudo cargar el horario semanal.')}</p>`;
+  }
+}
+async function saveWeeklySchedule(button){
+  if(!weeklySchedule){toast('El horario semanal no está cargado.');return}
+  const dia=Number($('weeklyDay').value);
+  const horas=[...document.querySelectorAll('#weeklyHours input[type="checkbox"]')].filter(i=>i.checked).map(i=>i.value);
+  button.disabled=true;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch('/api/panel/horario-semana',{method:'POST',headers:authHeader(session),body:JSON.stringify({dia_semana:dia,horas})});
+    const data=await r.json();
+    if(!r.ok)throw Error(data.error||'No se pudo guardar el horario semanal.');
+    const target=(weeklySchedule.dias||[]).find(d=>Number(d.dia_semana)===dia);if(target)target.horas=horas;
+    toast('Horario semanal guardado.');
+    await loadAvailabilityPanel();
+  }catch(error){toast(error.message||'No se pudo guardar el horario semanal.')}finally{button.disabled=false}
+}
+function renderExceptionHours(data){
+  const target=$('availabilityHours');if(!target)return;
+  const blocked=new Set(data.horasBloqueadas||[]),occupied=new Set(data.ocupadas||[]),base=new Set(data.base||availabilityBase||[]);
+  availabilityBase=[...base];
+  const slots=(data.horarios&&data.horarios.length?data.horarios:timeSlots);
+  target.innerHTML=slots.map(hora=>{
+    const isOccupied=occupied.has(hora);
+    const checked=isOccupied||!blocked.has(hora);
+    const isException=!isOccupied&&checked!==base.has(hora);
+    return `<label class="availability-slot${isOccupied?' occupied':''}${isException?' exception':''}"><input type="checkbox" value="${esc(hora)}"${checked?' checked':''}${isOccupied?' disabled data-occupied="true"':''}><span>${formatHour(hora)}${isOccupied?' · ocupado':''}${isException?' · excepción':''}</span></label>`;
+  }).join('');
+  $('availabilityClosed').checked=Boolean(data.diaBloqueado);
+  syncAvailabilityDayState();
+  const dayName=WEEKDAY_NAMES[data.diaSemana??new Date(($('availabilityDate').value||bogotaToday())+'T12:00:00').getDay()]||'ese día';
+  $('availabilityHint').textContent=data.diaBloqueado?`Día marcado como no disponible. El horario base de ${dayName.toLowerCase()} no aplica en esta fecha.`:`Base: ${dayName.toLowerCase()}. Las horas ocupadas no se pueden cambiar y los bordes punteados son excepciones al horario base.`;
+}
+async function loadAvailabilityPanel(){
+  const target=$('availabilityHours');if(!target)return;
+  if(!weeklySchedule)await loadWeeklySchedule();
+  const fecha=$('availabilityDate').value;
+  if(!fecha){target.innerHTML='<p class="text-sm text-[#806e70] col-span-full">Elige una fecha para ver sus horarios.</p>';return}
+  target.innerHTML='<p class="text-sm text-[#806e70] col-span-full">Cargando horarios…</p>';
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch(`/api/panel/disponibilidad?fecha=${encodeURIComponent(fecha)}`,{headers:authHeader(session)});
+    const data=await r.json();
+    if(!r.ok)throw Error(data.error||'No se pudo cargar la disponibilidad.');
+    renderExceptionHours(data);
+  }catch(error){
+    target.innerHTML=`<p class="text-sm text-red-700 col-span-full">${esc(error.message||'No se pudo cargar la disponibilidad.')}</p>`;
+  }
+}
+function resetExceptionToBase(){
+  const base=new Set(availabilityBase||[]);
+  $('availabilityClosed').checked=false;
+  document.querySelectorAll('#availabilityHours input[type="checkbox"]').forEach(input=>{if(input.dataset.occupied!=='true')input.checked=base.has(input.value)});
+  syncAvailabilityDayState();
+}
+async function saveAvailability(button){
+  const fecha=$('availabilityDate').value;
+  if(!fecha){toast('Elige una fecha para guardar.');return}
+  const diaBloqueado=Boolean($('availabilityClosed').checked);
+  const horasDisponibles=[...document.querySelectorAll('#availabilityHours input[type="checkbox"]')].filter(input=>input.checked).map(input=>input.value);
+  button.disabled=true;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch('/api/panel/disponibilidad',{method:'POST',headers:authHeader(session),body:JSON.stringify({fecha,diaBloqueado,horasDisponibles})});
+    const data=await r.json();
+    if(!r.ok)throw Error(data.error||'No se pudo guardar la disponibilidad.');
+    toast(diaBloqueado?'Día marcado como no disponible.':'Excepción guardada para esa fecha.');
+    await loadAvailabilityPanel();
+  }catch(error){toast(error.message||'No se pudo guardar la disponibilidad.')}finally{button.disabled=false}
+}
+async function postAppointmentAction(path,body,message){
+  const {data:{session}}=await sb.auth.getSession();
+  const r=await fetch(path,{method:'POST',headers:authHeader(session),body:JSON.stringify(body||{})});
+  const data=await r.json();
+  if(!r.ok)throw Error(data.error||message);
+  await loadStaffAppointments();
+  closeAppointmentModal();
+  return data;
+}
+async function rejectReceipt(id){
+  const cita=staffCitas.find(c=>safeId(c.id)===id);
+  const motivo=window.prompt('Motivo del rechazo del comprobante (ej. imagen ilegible, abono no visto):');
+  if(motivo===null)return;
+  if(!String(motivo).trim()){toast('Indica un motivo para rechazar.');return}
+  try{
+    await postAppointmentAction(`/api/panel/citas/${id}/rechazar`,{motivo},'No se pudo rechazar.');
+    toast('Comprobante rechazado y cita cancelada.');
+    if(cita&&window.confirm('¿Abrir WhatsApp para avisarle que debe volver a agendar con un comprobante válido?')){
+      const w=window.open(whatsappUrl(cita,'rejected'),'_blank');
+      if(!w)toast('Permite ventanas emergentes para abrir WhatsApp.');
+    }
+  }catch(error){toast(error.message)}
+}
+async function cancelAppointment(id){
+  const motivo=window.prompt('Motivo de la cancelación:');
+  if(motivo===null)return;
+  if(!String(motivo).trim()){toast('Indica un motivo para cancelar.');return}
+  try{await postAppointmentAction(`/api/panel/citas/${id}/cancelar`,{motivo},'No se pudo cancelar.');toast('Cita cancelada.')}catch(error){toast(error.message)}
+}
+async function rescheduleAppointment(id){
+  const cita=staffCitas.find(c=>safeId(c.id)===id);if(!cita){toast('No se encontró la cita.');return}
+  const fecha=window.prompt('Nueva fecha (AAAA-MM-DD):',cita.fecha||bogotaToday());
+  if(fecha===null)return;
+  const hora=window.prompt('Nueva hora (HH:MM, intervalos de 1 hora desde 06:00):',String(cita.hora||'').slice(0,5));
+  if(hora===null)return;
+  try{await postAppointmentAction(`/api/panel/citas/${id}/reagendar`,{fecha:String(fecha).trim(),hora:String(hora).trim()},'No se pudo reagendar.');toast('Cita reagendada.')}catch(error){toast(error.message)}
+}
+function weekStart(offset=0){
+  const [y,m,d]=bogotaToday().split('-').map(Number);
+  const base=new Date(Date.UTC(y,m-1,d));base.setUTCDate(base.getUTCDate()+offset*7);
+  const day=base.getUTCDay();const diff=(day===0?-6:1-day);
+  base.setUTCDate(base.getUTCDate()+diff);return base.toISOString().slice(0,10);
+}
+function addDays(dateStr,days){const [y,m,d]=dateStr.split('-').map(Number);const dt=new Date(Date.UTC(y,m-1,d+days));return dt.toISOString().slice(0,10)}
+function changeWeek(dir){if(dir===0)weekOffset=0;else weekOffset+=dir;renderWeekCalendar()}
+function openAppointmentDetail(id){
+  const c=(staffCitas||[]).find(x=>safeId(x.id)===id);
+  if(!c){toast('No se encontró la cita.');return}
+  $('appointmentModalTitle').textContent=`${c.nombre||'Cita'} · ${String(c.hora||'').slice(0,5)}`;
+  $('appointmentModalContent').innerHTML=`<div class="max-w-xl mx-auto">${staffAppointmentCard(c)}</div>`;
+  $('appointmentModal').classList.remove('hidden-view');
+  document.body.classList.add('receipt-modal-open');
+}
+function closeAppointmentModal(){
+  const modal=$('appointmentModal');if(!modal)return;
+  modal.classList.add('hidden-view');
+  $('appointmentModalContent').innerHTML='';
+  if($('receiptModal')?.classList.contains('hidden-view'))document.body.classList.remove('receipt-modal-open');
+}
+function renderWeekCalendar(){
+  const target=$('weekCalendar');if(!target)return;
+  const start=weekStart(weekOffset),end=addDays(start,6);
+  const short=(ds)=>{const [y,m,d]=ds.split('-').map(Number);return new Date(Date.UTC(y,m-1,d)).toLocaleDateString('es-CO',{weekday:'short',day:'numeric',timeZone:'UTC'})};
+  $('weekRangeLabel').textContent=`${formatDate(start)} — ${formatDate(end)}`;
+  const citas=(staffCitas||[]).filter(c=>c.fecha>=start&&c.fecha<=end);
+  const byKey=new Map();
+  citas.forEach(c=>{const key=`${c.fecha}|${String(c.hora||'').slice(0,5)}`;if(!byKey.has(key))byKey.set(key,[]);byKey.get(key).push(c)});
+  let html='<div></div>';
+  for(let i=0;i<7;i++){const ds=addDays(start,i);html+=`<div class="week-head">${esc(short(ds))}</div>`}
+  (timeSlots.length?timeSlots:defaultTimeSlots()).forEach(slot=>{
+    html+=`<div class="week-time">${formatHour(slot)}</div>`;
+    for(let i=0;i<7;i++){
+      const ds=addDays(start,i),items=byKey.get(`${ds}|${slot}`)||[];
+      html+=`<div class="week-cell">${items.map(c=>`<button class="week-event ${esc(c.estado)}" title="${esc(c.nombre)} · ${esc(c.servicio)} · ${esc(statusLabel(c.estado))}" onclick="openAppointmentDetail('${safeId(c.id)}')"><span class="truncate">${esc(String(c.nombre||'').split(' ')[0]||'Cita')}</span><span class="wk-more"><i class="bi bi-eye"></i></span></button>`).join('')}</div>`;
+    }
+  });
+  target.innerHTML=html;
+}
+function showStaffTab(tab){
+  const tabs=['resumen','agenda','nuevas','confirmar','recordatorios','disponibilidad','historial','servicios','finanzas','cuenta'];
+  if(!tabs.includes(tab))tab=staffProfile?.role==='admin'?'resumen':'agenda';
+  activeStaffTab=tab;
+  tabs.forEach(name=>{ const section=$(`staffTab${name[0].toUpperCase()}${name.slice(1)}`); if(section) section.classList.toggle('hidden-view',name!==tab); const button=document.querySelector(`[data-staff-tab="${name}"]`);if(button){button.classList.toggle('btn-main',name===tab);button.classList.toggle('btn-light',name!==tab);button.setAttribute('aria-current',name===tab?'page':'false');} });
+  if(tab==='finanzas')loadFinances().catch(error=>console.error('Error al cargar contabilidad desde la pestaña:',error));
+  if(tab==='servicios')loadServicesPanel().catch(error=>console.error('Error al cargar servicios desde la pestaña:',error));
+  if(tab==='disponibilidad')loadAvailabilityPanel().catch(error=>console.error('Error al cargar disponibilidad desde la pestaña:',error));
+}
+function staffAppointmentCard(c){
+  const id=safeId(c.id),status=esc(c.estado),receipt=esc(c.comprobante_url),service=esc(c.servicio),name=esc(c.nombre),phone=esc(c.telefono),cedula=esc(c.cedula);
+  const staffLines=[
+    ['Verificó',c.verificada_por_nombre],
+    ['Confirmó',c.confirmada_por_nombre],
+    ['Atendió',c.atendida_por_nombre],
+    ['Canceló',c.cancelada_por_nombre],
+    ['Reagendó',c.reagendada_por_nombre],
+  ].filter(([,value])=>value).map(([label,value])=>`<p class="detail-line"><i class="bi bi-person-check"></i><span>${label}: ${esc(value)}</span></p>`).join('');
+  const extraLines=[
+    c.reagendada_desde_fecha?`<p class="detail-line"><i class="bi bi-arrow-repeat"></i><span>Reagendada desde ${formatDate(c.reagendada_desde_fecha)} · ${esc(String(c.reagendada_desde_hora||'').slice(0,5))}</span></p>`:'',
+    c.motivo_cancelacion?`<p class="detail-line text-[#9b3b3b]"><i class="bi bi-info-circle"></i><span>${esc(c.motivo_cancelacion)}</span></p>`:'',
+  ].join('');
+  const amountLabel=c.estado==='atendida'?'Total cobrado':'Valor del servicio';
+  const cancelBtn=`<button class="btn btn-light !py-2 !px-3 text-sm" onclick="cancelAppointment('${id}')"><i class="bi bi-x-circle"></i>Cancelar</button>`;
+  const rescheduleBtn=`<button class="btn btn-light !py-2 !px-3 text-sm" onclick="rescheduleAppointment('${id}')"><i class="bi bi-arrow-repeat"></i>Reagendar</button>`;
+  const rejectBtn=`<button class="btn btn-light !py-2 !px-3 text-sm" onclick="rejectReceipt('${id}')"><i class="bi bi-file-earmark-x"></i>Rechazar comprobante</button>`;
+  let actions='';
+  if(c.estado==='pendiente_verificacion') actions=`<button class="btn btn-main !py-2.5 !px-4 text-sm" onclick="verifyReceipt('${id}')"><i class="bi bi-cash-coin"></i>Verificar abono</button>${rejectBtn}${rescheduleBtn}${cancelBtn}`;
+  else if(c.estado==='verificada') actions=`<button class="btn btn-main !py-2.5 !px-4 text-sm" onclick="confirmAppointment('${id}')"><i class="bi bi-whatsapp"></i>Confirmar y avisar</button>${rejectBtn}${rescheduleBtn}${cancelBtn}`;
+  else if(c.estado==='confirmada') actions=`<a class="btn btn-light !py-2.5 !px-4 text-sm" target="_blank" rel="noopener" href="${esc(whatsappUrl(c,'confirm'))}"><i class="bi bi-whatsapp"></i>Reenviar confirmación</a><a class="btn btn-light !py-2.5 !px-4 text-sm" target="_blank" rel="noopener" href="${esc(whatsappUrl(c,'reminder'))}"><i class="bi bi-bell"></i>Enviar recordatorio</a><label class="block w-full text-sm text-[#806e70]"><span class="flex items-center gap-2 font-semibold"><i class="bi bi-cash"></i>Total cobrado (incluye el abono)</span><input id="charged-${id}" class="field mt-1" type="number" min="1" step="1" value="${Number(c.precio)||0}"></label><button class="btn btn-main !py-2.5 !px-4 text-sm" onclick="markAttended('${id}')"><i class="bi bi-check2-circle"></i>Marcar atendida</button>${rescheduleBtn}${cancelBtn}`;
+  else if(c.estado==='atendida') actions=`<span class="text-sm font-bold text-[#387452] flex items-center gap-2"><i class="bi bi-check-circle"></i>Ingreso registrado: ${money(c.monto_cobrado||c.precio)}</span>`;
+  else if(c.estado==='cancelada') actions=`<span class="text-sm font-bold text-[#9b3b3b] flex items-center gap-2"><i class="bi bi-x-circle"></i>Cita cancelada</span>`;
+  return `<article class="dashboard-card" data-cita-id="${id}"><div class="p-4 sm:p-5"><div class="flex justify-between gap-2"><div class="min-w-0"><p class="text-xs uppercase tracking-wider text-[#927d7e]">${service}</p><h3 class="serif text-xl mt-1 truncate">${name}</h3></div><span class="status ${status}">${esc(statusLabel(c.estado))}</span></div><div class="text-sm text-[#806e70] mt-3 space-y-1"><p class="detail-line"><i class="bi bi-calendar-event"></i><span>${formatDate(c.fecha)} · ${esc(String(c.hora||'').slice(0,5))}</span></p><p class="detail-line"><i class="bi bi-whatsapp"></i><span>WhatsApp: ${phone}</span></p><p class="detail-line"><i class="bi bi-person-vcard"></i><span>Identificación: ${cedula}</span></p><p class="detail-line"><i class="bi bi-cash-coin"></i><span>Abono: ${money(c.abono)} · ${amountLabel}: ${money(c.monto_cobrado||c.precio)}</span></p>${extraLines}${staffLines}</div></div>${receipt?`<button type="button" class="relative block w-full text-left" onclick="openReceiptModal('${id}')"><img class="receipt-img" src="${receipt}" alt="Comprobante de ${name}"><span class="absolute bottom-2 right-2 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-[#98525e]"><i class="bi bi-zoom-in mr-1"></i>Ver comprobante</span></button>`:'<div class="receipt-img grid place-items-center text-sm text-[#927d7e]"><i class="bi bi-image mr-2"></i>No hay comprobante adjunto</div>'}<div class="p-4 card-actions">${actions}</div></article>`;
+}
+function openReceiptModal(id){
+  const c=staffCitas.find(x=>safeId(x.id)===id);
+  if(!c||!c.comprobante_url){toast('No hay comprobante disponible.');return}
+  $('receiptModalImage').src=c.comprobante_url;
+  $('receiptModalTitle').textContent=`Comprobante de ${c.nombre||'la clienta'}`;
+  $('receiptModal').classList.remove('hidden-view');
+  document.body.classList.add('receipt-modal-open');
+  $('receiptModalClose').focus();
+}
+function closeReceiptModal(){
+  $('receiptModal').classList.add('hidden-view');
+  $('receiptModalImage').removeAttribute('src');
+  if($('appointmentModal')?.classList.contains('hidden-view'))document.body.classList.remove('receipt-modal-open');
+}
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  if(!$('receiptModal').classList.contains('hidden-view')){closeReceiptModal();return}
+  if(!$('appointmentModal').classList.contains('hidden-view'))closeAppointmentModal();
+});
+function agendaSignature(citas){return (citas||[]).map(c=>[c.id,c.estado,c.fecha,c.hora,c.created_at,c.monto_cobrado,c.verificada_por,c.confirmada_por,c.atendida_por].join('|')).sort().join(';')}
+function flashAgendaUpdate(){const badge=$('liveBadge'),text=$('liveBadgeText');if(!badge)return;badge.classList.add('updated');text.textContent='Agenda actualizada';clearTimeout(liveBadgeTimer);liveBadgeTimer=setTimeout(()=>{badge.classList.remove('updated');text.textContent='En vivo'},2500)}
+async function checkAgendaUpdates(){
+  if(!sessionActive||document.hidden)return;
+  if($('staffPanel').classList.contains('hidden-view'))return;
+  const modal=$('receiptModal');if(modal&&!modal.classList.contains('hidden-view'))return;
+  const apptModal=$('appointmentModal');if(apptModal&&!apptModal.classList.contains('hidden-view'))return;
+  try{
+    const session=(await sb.auth.getSession()).data.session;
+    if(!session)return;
+    const r=await fetch('/api/panel/citas/version',{headers:{Authorization:`Bearer ${session.access_token}`}});
+    if(!r.ok)return;
+    const {version}=await r.json();
+    if(agendaVersion!==null&&version!==agendaVersion){agendaVersion=version;await loadStaffAppointments({silent:true})}
+  }catch(error){/* se conserva la agenda visible si falla la consulta */}
+}
+function startAgendaPolling(){if(agendaPollTimer)return;agendaPollTimer=setInterval(checkAgendaUpdates,5000)}
+function stopAgendaPolling(){if(agendaPollTimer){clearInterval(agendaPollTimer);agendaPollTimer=null}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&sessionActive)checkAgendaUpdates()});
+async function loadStaffAppointments(options={}){
+  const silent=Boolean(options.silent);
+  const session=(await sb.auth.getSession()).data.session;
+  if(!session){syncAuthUi(null);showStaffLogin();return}
+  if(!silent)syncAuthUi(session);
+  try{
+    const r=await fetch('/api/panel/citas',{headers:{Authorization:`Bearer ${session.access_token}`}});
+    const data=await r.json();
+    if(!r.ok){if(r.status===401){syncAuthUi(null);showStaffLogin();return}toast(data.error);return}
+    staffProfile=data.perfil||{role:'profesional',nombre:'Equipo'};
+    staffCitas=data.citas||[];
+    agendaVersion=agendaSignature(staffCitas);
+    staffEquipo=data.equipo||[];
+    const role=staffProfile.role||staffProfile.rol||'profesional';
+    const isAdmin=role==='admin';
+    const tabs=isAdmin?[['resumen','Resumen','bi bi-grid-1x2'],['agenda','Agenda completa','bi bi-calendar3'],['recordatorios','Recordatorios','bi bi-bell'],['disponibilidad','Disponibilidad','bi bi-clock'],['historial','Historial','bi bi-clock-history'],['servicios','Servicios','bi bi-scissors'],['finanzas','Contabilidad','bi bi-cash-coin'],['cuenta','Seguridad','bi bi-shield-check']]:[['agenda','Mi agenda','bi bi-calendar3'],['nuevas','Nuevas citas','bi bi-inbox'],['confirmar','Por confirmar','bi bi-hourglass-split'],['recordatorios','Recordatorios','bi bi-bell'],['disponibilidad','Disponibilidad','bi bi-clock'],['historial','Historial de atención','bi bi-clock-history'],['servicios','Servicios','bi bi-scissors'],['finanzas','Contabilidad','bi bi-cash-coin'],['cuenta','Seguridad','bi bi-shield-check']];
+    if(!silent){
+      syncAuthUi(session);
+      $('staffTabs').innerHTML=tabs.map(([key,label,icon])=>`<button class="btn btn-light !py-2.5 !px-4 text-sm sm:text-base" data-staff-tab="${key}" onclick="showStaffTab('${key}')"><i class="${icon}"></i>${label}</button>`).join('');
+      const equipo=[...staffEquipo].sort((a,b)=>(a.rol==='admin'?1:0)-(b.rol==='admin'?1:0));
+      $('adminTeam').innerHTML=equipo.length?equipo.map(persona=>{
+        const personRole=persona.rol||'profesional';
+        return `<div class="team-item"><span class="user-avatar">${initials(persona.nombre)}</span><div class="min-w-0 flex-1"><b class="block text-sm truncate">${esc(persona.nombre)}</b><span class="role-pill ${personRole==='admin'?'admin':'profesional'} mt-1"><i class="${roleIcon(personRole)}"></i>${roleLabel(personRole)}</span>${persona.email?`<small class="block text-[#806e70] truncate mt-1"><i class="bi bi-envelope mr-1"></i>${esc(persona.email)}</small>`:''}</div></div>`;
+      }).join(''):'<p class="text-sm text-[#806e70]">Todavía no hay perfiles registrados en el equipo.</p>';
+    }
+
+    const pending=staffCitas.filter(c=>c.estado==='pendiente_verificacion').length,verified=staffCitas.filter(c=>c.estado==='verificada').length,upcoming=staffCitas.filter(c=>c.estado==='confirmada').length,attended=staffCitas.filter(c=>c.estado==='atendida').length;
+    const stats=isAdmin
+      ? [[pending,'Por revisar','bi bi-inbox'],[verified,'Abonos verificados','bi bi-cash-coin'],[upcoming,'Próximas confirmadas','bi bi-calendar-check'],[attended,'Atendidas','bi bi-check-circle']]
+      : [[pending,'Nuevas citas','bi bi-inbox'],[verified,'Por confirmar','bi bi-hourglass-split'],[upcoming,'En mi agenda','bi bi-calendar-check'],[attended,'Atendidas','bi bi-check-circle']];
+    $('staffStats').innerHTML=stats.map(([n,label,icon])=>`<div class="soft-card p-3 sm:p-4 stat-card"><span class="stat-icon"><i class="${icon}"></i></span><div class="min-w-0"><span class="stat-value block">${n}</span><span class="stat-label block">${label}</span></div></div>`).join('');
+
+    const sortAsc=(a,b)=>`${a.fecha} ${a.hora}`.localeCompare(`${b.fecha} ${b.hora}`);
+    const sortDesc=(a,b)=>`${b.fecha} ${b.hora}`.localeCompare(`${a.fecha} ${a.hora}`);
+    const nuevas=staffCitas.filter(c=>c.estado==='pendiente_verificacion').sort(sortAsc);
+    const porConfirmar=staffCitas.filter(c=>c.estado==='verificada').sort(sortAsc);
+    const confirmadas=staffCitas.filter(c=>c.estado==='confirmada').sort(sortAsc);
+    const active=isAdmin?staffCitas.filter(c=>['pendiente_verificacion','verificada','confirmada'].includes(c.estado)).sort(sortAsc):confirmadas;
+    const history=staffCitas.filter(c=>['atendida','cancelada'].includes(c.estado)).sort(sortDesc);
+    const emptyCard=(icon,message)=>`<div class="soft-card p-8 text-center text-[#806e70] md:col-span-2 xl:col-span-3"><i class="bi ${icon} block mb-2 text-2xl"></i>${message}</div>`;
+    const chargedValues=[];
+    if(silent)document.querySelectorAll('[id^="charged-"]').forEach(input=>{chargedValues.push({id:input.id,value:input.value})});
+    const focusedId=silent?(document.activeElement?.id||null):null;
+    const focusedPos=silent?(document.activeElement?.selectionStart??null):null;
+
+    $('agendaSectionTitle').textContent=isAdmin?'Agenda completa':'Mi agenda';
+    $('agendaSectionHint').textContent=isAdmin?'Vista semanal de todas las citas. Toca una cita para ver detalles y acciones.':'Vista semanal de tus citas. Toca una cita para ver detalles y acciones.';
+    $('proNewAppointments').innerHTML=nuevas.length?nuevas.map(staffAppointmentCard).join(''):emptyCard('bi bi-inbox','No hay nuevas citas por revisar.');
+    $('proConfirmAppointments').innerHTML=porConfirmar.length?porConfirmar.map(staffAppointmentCard).join(''):emptyCard('bi bi-hourglass-split','No hay citas por confirmar.');
+    $('staffHistory').innerHTML=history.length?history.map(staffAppointmentCard).join(''):emptyCard('bi bi-clock-history','Aún no hay citas atendidas o canceladas.');
+    const needsReview=staffCitas.filter(c=>['pendiente_verificacion','verificada'].includes(c.estado)).sort(sortAsc);
+    $('adminPending').innerHTML=needsReview.length?needsReview.slice(0,4).map(staffAppointmentCard).join(''):'<p class="text-sm text-[#806e70]">No hay solicitudes por revisar.</p>';
+    $('adminUpcoming').innerHTML=confirmadas.slice(0,4).map(staffAppointmentCard).join('')||'<p class="text-sm text-[#806e70]">Aún no hay citas confirmadas.</p>';
+    renderWeekCalendar();
+    if(silent){
+      document.querySelectorAll('[id^="charged-"]').forEach((input,index)=>{const saved=chargedValues[index];if(saved&&saved.id===input.id)input.value=saved.value});
+      if(focusedId){const el=$(focusedId);if(el){el.focus();if(focusedPos!=null&&el.setSelectionRange){try{el.setSelectionRange(focusedPos,focusedPos)}catch(error){}}}}
+    }
+
+    if(isAdmin){$('proQuickSummary').classList.add('hidden-view')}else{
+      $('proQuickSummary').classList.remove('hidden-view');
+      const summary=[['nuevas','Nuevas citas',pending,'bi bi-inbox'],['confirmar','Por confirmar',verified,'bi bi-hourglass-split'],['historial','Historial',history.length,'bi bi-clock-history'],['finanzas','Contabilidad',attended,'bi bi-cash-coin']];
+      $('proQuickSummaryGrid').innerHTML=summary.map(([key,label,count,icon])=>`<button class="soft-card p-4 text-left hover:border-[#d9a9ad] transition" onclick="showStaffTab('${key}')"><span class="stat-icon"><i class="${icon}"></i></span><span class="stat-value block mt-3">${count}</span><span class="stat-label block">${label}</span><span class="text-xs text-[#a55160] font-bold mt-2 inline-flex items-center gap-1"><i class="bi bi-arrow-right"></i>Abrir panel</span></button>`).join('');
+      try{
+        await loadFinances();
+      }catch(error){
+        console.error('No se pudo cargar la contabilidad; el panel de agenda permanece disponible.',error);
+      }
+    }
+
+    const preferred=activeStaffTab&&tabs.some(([key])=>key===activeStaffTab)?activeStaffTab:(isAdmin?'resumen':'agenda');
+    updateReminderSummary();
+    if(silent)flashAgendaUpdate();else showStaffTab(preferred);
+  }catch(error){
+    console.error('Error al cargar la agenda del panel:',error);
+    toast('No se pudo cargar la agenda. Revisa tu conexión e intenta actualizar.');
+  }
+}
+function bogotaToday(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bogota',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function tomorrowDate(){const [y,m,d]=bogotaToday().split('-').map(Number);return new Date(Date.UTC(y,m-1,d+1)).toISOString().slice(0,10)}
+function tomorrowCitas(){return staffCitas.filter(c=>c.fecha===tomorrowDate()&&c.estado==='confirmada')}
+function updateReminderSummary(){const count=tomorrowCitas().length;$('reminderSummary').textContent=count?`Tienes ${count} cita(s) confirmada(s) para mañana. Pulsa el botón para abrir cada recordatorio en WhatsApp.`:'No hay citas confirmadas para mañana.';$('reminderSummary').classList.toggle('text-[#a34e4b]',count>0);$('reminderSummary').classList.toggle('font-bold',count>0);$('reminderStart').disabled=false;$('reminderStart').innerHTML=count?`<i class="bi bi-whatsapp"></i>Enviar ${count} recordatorio(s) <span class="reminder-badge">${count}</span>`:'<i class="bi bi-whatsapp"></i>Iniciar recordatorios'}
+function authHeader(session){if(!session){syncAuthUi(null);showStaffLogin();throw Error('Tu sesión venció. Inicia sesión de nuevo.')}return{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'}}
+async function verifyReceipt(id){const{data:{session}}=await sb.auth.getSession();const r=await fetch(`/api/panel/citas/${encodeURIComponent(id)}/verificar`,{method:'POST',headers:authHeader(session)});const d=await r.json();if(!r.ok){toast(d.error);return}toast('Abono verificado. Ya puedes confirmar la cita.');await loadStaffAppointments();closeAppointmentModal()}
+function whatsappUrl(c,kind='confirm'){
+  const digits=String(c.telefono||'').replace(/\D/g,'');
+  const phone=digits.startsWith('57')?digits:`57${digits}`;
+  const hora=String(c.hora||'').slice(0,5);
+  const link=new URL('#reservar', location.href).href;
+  let message;
+  if(kind==='reminder'){
+    message=`Hola ${c.nombre} 👋\n\nTe recordamos que tienes una cita para ${c.servicio}.\n\n📅 Fecha: ${formatDate(c.fecha)}\n⏰ Hora: ${hora}\n\nPor favor llega 5 minutos antes para mantener el orden de la agenda.\n\n¡Te esperamos! ✨\n— LashStudio JB`;
+  }else if(kind==='rejected'){
+    message=`Hola ${c.nombre}, te escribimos de LashStudio JB.\n\nNo pudimos verificar tu comprobante de abono, ya que la imagen no es clara o no corresponde a la transferencia.\n\nPor favor agenda tu cita nuevamente y adjunta una foto o pantallazo claro de la transferencia.\n\nPuedes agendar aquí: ${link}\n\n— LashStudio JB`;
+  }else{
+    message=`Hola ${c.nombre}, recibimos tu abono de $20.000 COP y tu cita está confirmada.\n\nServicio: ${c.servicio}\nFecha: ${formatDate(c.fecha)}\nHora: ${hora}\n\n¡Te esperamos! — LashStudio JB`;
+  }
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
+async function confirmAppointment(id){const whatsAppWindow=window.open('about:blank','_blank');const{data:{session}}=await sb.auth.getSession();const r=await fetch(`/api/panel/citas/${encodeURIComponent(id)}/confirmar`,{method:'POST',headers:authHeader(session)});const d=await r.json();if(!r.ok){if(whatsAppWindow)whatsAppWindow.close();toast(d.error);return}toast('Cita confirmada. Revisa y envía el mensaje en WhatsApp.');if(whatsAppWindow)whatsAppWindow.location=whatsappUrl(d.cita,'confirm');else toast('Cita confirmada; permite ventanas emergentes para abrir WhatsApp.');await loadStaffAppointments();closeAppointmentModal()}
+async function markAttended(id){const amount=Number($(`charged-${id}`).value);if(!Number.isSafeInteger(amount)||amount<1){toast('Ingresa el valor total cobrado por el servicio.');return}const{data:{session}}=await sb.auth.getSession();const r=await fetch(`/api/panel/citas/${encodeURIComponent(id)}/atendida`,{method:'POST',headers:authHeader(session),body:JSON.stringify({monto:amount})});const d=await r.json();if(!r.ok){toast(d.error);return}toast(`Atención registrada. Ingreso de ${money(amount)} agregado a contabilidad.`);await loadStaffAppointments();closeAppointmentModal()}
+function startTomorrowReminders(){reminderQueue=tomorrowCitas();reminderIndex=0;if(!reminderQueue.length){toast('No hay citas confirmadas para mañana.');return}openNextReminder()}
+function openNextReminder(){if(reminderIndex>=reminderQueue.length){$('reminderProgress').innerHTML='<p class="text-sm text-[#387452]">Terminaste de abrir los recordatorios. Recuerda pulsar Enviar en cada chat de WhatsApp.</p>';return}const c=reminderQueue[reminderIndex++],tab=window.open(whatsappUrl(c,'reminder'),'_blank');$('reminderProgress').classList.remove('hidden-view');$('reminderProgress').innerHTML=`<p class="text-sm text-[#806e70]">Recordatorio ${reminderIndex} de ${reminderQueue.length}: ${esc(c.nombre)}. ${tab?'Envía el mensaje en WhatsApp y vuelve para continuar.':'El navegador bloqueó la ventana. Permite ventanas emergentes e inténtalo de nuevo.'}</p>${reminderIndex<reminderQueue.length?'<button class="btn btn-light !py-2 mt-3" onclick="openNextReminder()"><i class="bi bi-whatsapp"></i>Abrir siguiente recordatorio</button>':''}`}
+async function loadFinances(){
+  const session=(await sb.auth.getSession()).data.session;
   if(!session){showStaffLogin();return}
-  const r=await fetch('/api/panel/citas',{headers:{Authorization:`Bearer ${session.access_token}`}});
+  const r=await fetch('/api/panel/finanzas',{headers:authHeader(session)});
   const data=await r.json();
   if(!r.ok){toast(data.error);return}
-  $('staffWelcome').textContent=`Hola, ${data.perfil.nombre||'equipo'} · ${data.perfil.rol==='admin'?'Administración':'Profesional'}`;
-  const pending=data.citas.filter(c=>c.estado==='pendiente_verificacion').length;
-  const verified=data.citas.filter(c=>c.estado==='verificada').length;
-  const upcoming=data.citas.filter(c=>c.estado==='confirmada').length;
-  $('staffStats').innerHTML=[[pending,'Por revisar'],[verified,'Abono verificado'],[upcoming,'Confirmadas']].map(([n,label])=>`<div class="soft-card p-4"><span class="text-2xl serif">${n}</span><span class="text-sm text-[#806e70] ml-2">${label}</span></div>`).join('');
-  $('staffAppointments').innerHTML=data.citas.length?data.citas.map(c=>{
-    const id=safeId(c.id), status=esc(c.estado), receipt=esc(c.comprobante_url), service=esc(c.servicio), name=esc(c.nombre), phone=esc(c.telefono), cedula=esc(c.cedula);
-    return `<article class="dashboard-card"><div class="p-5"><div class="flex justify-between gap-2"><div><p class="text-xs uppercase tracking-wider text-[#927d7e]">${service}</p><h3 class="serif text-xl mt-1">${name}</h3></div><span class="status ${status}">${esc(statusLabel(c.estado))}</span></div><div class="text-sm text-[#806e70] mt-3 space-y-1"><p>📅 ${formatDate(c.fecha)} · ${esc(c.hora)}</p><p>📱 ${phone}</p><p>🪪 Cédula: ${cedula}</p><p>Abono recibido: ${money(c.abono)}</p></div></div>${receipt?`<a href="${receipt}" target="_blank" rel="noopener"><img class="receipt-img" src="${receipt}" alt="Comprobante de ${name}"></a>`:'<div class="receipt-img grid place-items-center text-sm text-[#927d7e]">No hay comprobante adjunto</div>'}<div class="p-4 flex flex-wrap gap-2">${c.estado==='pendiente_verificacion'?`<button class="btn btn-main !py-2.5 !px-4 text-sm" onclick="verifyReceipt('${id}')">Marcar abono verificado</button>`:''}${c.estado==='verificada'?`<button class="btn btn-main !py-2.5 !px-4 text-sm" onclick="confirmAppointment('${id}')">Confirmar y avisar por WhatsApp</button>`:''}${c.estado==='confirmada'?`<a class="btn btn-light !py-2.5 !px-4 text-sm" target="_blank" rel="noopener" href="${whatsappUrl(c)}">Abrir WhatsApp ↗</a>`:''}</div></article>`;
-  }).join(''):'<div class="soft-card p-8 text-center text-[#806e70] md:col-span-2 xl:col-span-3">Todavía no hay citas.</div>';
+  const incomes=data.ingresos||[],expenses=data.egresos||[],month=bogotaToday().slice(0,7);
+  const incomeTotal=incomes.reduce((n,x)=>n+Number(x.monto),0),expenseTotal=expenses.reduce((n,x)=>n+Number(x.monto),0);
+  const monthIncome=incomes.filter(x=>String(x.fecha).startsWith(month)).reduce((n,x)=>n+Number(x.monto),0),monthExpenses=expenses.filter(x=>String(x.fecha).startsWith(month)).reduce((n,x)=>n+Number(x.monto),0);
+  const cards=[[money(monthIncome-monthExpenses),'Balance del mes','bi bi-graph-up'],[money(incomeTotal),'Ingresos acumulados','bi bi-arrow-down-left-circle'],[money(expenseTotal),'Egresos acumulados','bi bi-arrow-up-right-circle']];
+  $('financeStats').innerHTML=cards.map(([n,label,icon])=>`<div class="soft-card p-4 stat-card"><span class="stat-icon"><i class="${icon}"></i></span><div class="min-w-0"><span class="text-lg sm:text-xl serif block break-words">${n}</span><span class="stat-label block">${label}</span></div></div>`).join('');
+  $('incomeLedger').innerHTML=incomes.length?incomes.map(x=>`<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm"><i class="bi bi-check-circle text-[#387452] mr-1"></i>${esc(x.descripcion)}</b><small class="text-[#806e70]"><i class="bi bi-calendar-event mr-1"></i>${formatDate(x.fecha)}</small></span><b class="text-[#387452] whitespace-nowrap">+${money(x.monto)}</b></div>`).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>Los servicios aparecerán aquí cuando se marquen como atendidos.</p>';
+  $('expenseLedger').innerHTML=expenses.length?expenses.map(x=>`<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm"><i class="bi bi-receipt text-[#a34e4b] mr-1"></i>${esc(x.descripcion)}</b><small class="text-[#806e70]">${esc({insumos:'Insumos',arriendo:'Arriendo',gastos_varios:'Gastos varios',otro:'Otro'}[x.categoria]||x.categoria)} · ${formatDate(x.fecha)}</small></span><b class="text-[#a34e4b] whitespace-nowrap">−${money(x.monto)}</b></div>`).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>Todavía no hay egresos registrados.</p>';
 }
-function authHeader(session){return{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'}}
-async function verifyReceipt(id){const{data:{session}}=await sb.auth.getSession();const r=await fetch(`/api/panel/citas/${encodeURIComponent(id)}/verificar`,{method:'POST',headers:authHeader(session)});const d=await r.json();if(!r.ok){toast(d.error);return}toast('Abono verificado. Ya puedes confirmar la cita.');loadStaffAppointments()}
-function whatsappUrl(c){const digits=String(c.telefono).replace(/\D/g,'');const phone=digits.startsWith('57')?digits:`57${digits}`;const message=`Hola ${c.nombre}, recibimos tu abono de $20.000 COP y tu cita está confirmada.\n\nServicio: ${c.servicio}\nFecha: ${formatDate(c.fecha)}\nHora: ${c.hora}\n\n¡Te esperamos! — LashStudio JB`;return`https://wa.me/${phone}?text=${encodeURIComponent(message)}`}
-async function confirmAppointment(id){const whatsAppWindow=window.open('about:blank','_blank');const{data:{session}}=await sb.auth.getSession();const r=await fetch(`/api/panel/citas/${encodeURIComponent(id)}/confirmar`,{method:'POST',headers:authHeader(session)});const d=await r.json();if(!r.ok){if(whatsAppWindow)whatsAppWindow.close();toast(d.error);return}toast('Cita confirmada. Preparando el mensaje de WhatsApp.');if(whatsAppWindow){whatsAppWindow.location=whatsappUrl(d.cita)}else{toast('La cita quedó confirmada. Permite ventanas emergentes para abrir WhatsApp.')}loadStaffAppointments()}
-async function signOutStaff(){await sb.auth.signOut();hideStaffLogin();toast('Sesión cerrada.')}
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();const button=e.submitter;button.disabled=true;try{const{error}=await sb.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;hideAllViews();$('publicView').classList.add('hidden-view');$('siteFooter').classList.add('hidden-view');$('staffPanel').classList.remove('hidden-view');await loadStaffAppointments()}catch(err){toast(err.message||'No se pudo iniciar sesión.')}finally{button.disabled=false}});
-async function initialize(){renderServices();$('year').textContent=new Date().getFullYear();const localToday=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);$('fecha').min=localToday;try{const r=await fetch('/api/config');const config=await r.json();if(config.paymentInstructions)$('paymentInstructions').textContent=config.paymentInstructions;sb=window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey);const{data:{session}}=await sb.auth.getSession();if(session){hideAllViews();$('publicView').classList.add('hidden-view');$('siteFooter').classList.add('hidden-view');$('staffPanel').classList.remove('hidden-view');loadStaffAppointments()}}catch(err){console.error('No se pudo iniciar el acceso del equipo.',err)}}
+async function signOutStaff(){
+  closeMobileMenu();
+  try{
+    if(sb)await sb.auth.signOut();
+  }catch(error){
+    console.error('No se pudo cerrar la sesión en Supabase:',error);
+    try{if(sb)await sb.auth.signOut({scope:'local'})}catch(localError){console.error('No se pudo limpiar la sesión local:',localError)}
+  }finally{
+    staffProfile=null;staffCitas=[];staffEquipo=[];panelServices=[];activeStaffTab=null;sessionActive=false;
+    syncAuthUi(null);showPublicHome();toast('Sesión cerrada correctamente.');
+  }
+}
+$('expenseDate').value=bogotaToday();
+$('expenseForm').addEventListener('submit',async e=>{e.preventDefault();const button=$('expenseSubmit'),{data:{session}}=await sb.auth.getSession();button.disabled=true;try{const r=await fetch('/api/panel/egresos',{method:'POST',headers:authHeader(session),body:JSON.stringify({descripcion:$('expenseDescription').value,categoria:$('expenseCategory').value,monto:Number($('expenseAmount').value),fecha:$('expenseDate').value})}),d=await r.json();if(!r.ok)throw Error(d.error);$('expenseForm').reset();$('expenseDate').value=bogotaToday();toast('Egreso registrado.');loadFinances()}catch(error){toast(error.message||'No se pudo registrar el egreso.')}finally{button.disabled=false;button.innerHTML='<i class="bi bi-save"></i>Guardar egreso'}});
+$('passwordForm').addEventListener('submit',async e=>{e.preventDefault();const current=$('currentPassword').value,next=$('newPassword').value;if(next!==$('confirmPassword').value){toast('Las nuevas contraseñas no coinciden.');return}const{data:{session}}=await sb.auth.getSession();const button=e.submitter;button.disabled=true;try{const{error:authError}=await sb.auth.signInWithPassword({email:session.user.email,password:current});if(authError)throw Error('La contraseña actual no es correcta.');const{error}=await sb.auth.updateUser({password:next});if(error)throw error;$('passwordForm').reset();toast('Contraseña actualizada correctamente.')}catch(error){toast(error.message||'No se pudo cambiar la contraseña.')}finally{button.disabled=false;button.innerHTML='<i class="bi bi-shield-check"></i>Actualizar contraseña'}});
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();const button=e.submitter;button.disabled=true;button.innerHTML='<i class="bi bi-hourglass-split"></i>Verificando…';try{const{data,error}=await sb.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;syncAuthUi(data.session);hideAllViews();$('staffPanel').classList.remove('hidden-view');await loadStaffAppointments()}catch(err){toast(err.message||'No se pudo iniciar sesión.')}finally{button.disabled=false;button.innerHTML='<i class="bi bi-box-arrow-in-right"></i>Ingresar al panel'}});
+async function initialize(){
+  renderServices();fillServiceIcons($('newServiceIcon'));setServicePreview('newServicePreview','');refreshPublicServices();$('year').textContent=new Date().getFullYear();
+  const localToday=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $('fecha').min=localToday;$('expenseDate').value=bogotaToday();$('availabilityDate').value=bogotaToday();
+  try{
+    const r=await fetch('/api/config');const config=await r.json();
+    timeSlots=Array.isArray(config.horarios)&&config.horarios.length?config.horarios:defaultTimeSlots();
+    if(config.paymentInstructions)$('paymentInstructions').textContent=config.paymentInstructions;
+    sb=window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey);
+    sb.auth.onAuthStateChange((event,session)=>{
+      syncAuthUi(session);
+      if(event==='SIGNED_OUT'){staffProfile=null;staffCitas=[];staffEquipo=[];activeStaffTab=null;showPublicHome()}
+    });
+    const{data:{session}}=await sb.auth.getSession();
+    syncAuthUi(session);
+    if(session){hideAllViews();$('staffPanel').classList.remove('hidden-view');loadStaffAppointments()}
+  }catch(err){console.error('No se pudo iniciar el acceso del equipo.',err)}
+}
 initialize();
 </script>
+  <div id="appointmentModal" class="appointment-modal hidden-view" role="dialog" aria-modal="true" aria-label="Detalle de cita" onclick="if(event.target===this)closeAppointmentModal()">
+    <div class="appointment-modal-dialog">
+      <div class="appointment-modal-head"><h3 id="appointmentModalTitle" class="serif text-lg">Detalle de la cita</h3><button class="receipt-modal-close" onclick="closeAppointmentModal()" title="Cerrar" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button></div>
+      <div class="appointment-modal-body"><div id="appointmentModalContent"></div></div>
+    </div>
+  </div>
+  <div id="receiptModal" class="receipt-modal hidden-view" role="dialog" aria-modal="true" aria-label="Comprobante" onclick="if(event.target===this)closeReceiptModal()">
+    <div class="receipt-modal-dialog">
+      <div class="receipt-modal-head"><h3 id="receiptModalTitle" class="serif text-lg">Comprobante</h3><button id="receiptModalClose" class="receipt-modal-close" onclick="closeReceiptModal()" title="Cerrar comprobante" aria-label="Cerrar comprobante"><i class="bi bi-x-lg"></i></button></div>
+      <div class="receipt-modal-body"><img id="receiptModalImage" src="" alt="Comprobante de la clienta"></div>
+    </div>
+  </div>
 </body></html>
