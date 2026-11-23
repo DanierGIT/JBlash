@@ -12,7 +12,7 @@ create table if not exists public.perfiles (
 create table if not exists public.citas (
   id uuid primary key default gen_random_uuid(),
   nombre text not null,
-  cedula text not null,
+  cedula text,
   telefono text not null,
   servicio text not null,
   servicio_id text not null,
@@ -36,11 +36,14 @@ create table if not exists public.citas (
   reagendada_desde_hora time,
   reagendada_por uuid references public.perfiles(id),
   reagendada_en timestamptz,
+  eliminada boolean not null default false,
+  eliminada_en timestamptz,
   created_at timestamptz not null default now()
 );
 
 -- Compatibilidad con la tabla citas previa del sitio, si ya existía.
 alter table public.citas add column if not exists cedula text;
+alter table public.citas alter column cedula drop not null;
 alter table public.citas add column if not exists servicio_id text;
 alter table public.citas add column if not exists precio integer;
 alter table public.citas add column if not exists abono integer not null default 20000;
@@ -59,6 +62,8 @@ alter table public.citas add column if not exists reagendada_desde_fecha date;
 alter table public.citas add column if not exists reagendada_desde_hora time;
 alter table public.citas add column if not exists reagendada_por uuid references public.perfiles(id);
 alter table public.citas add column if not exists reagendada_en timestamptz;
+alter table public.citas add column if not exists eliminada boolean not null default false;
+alter table public.citas add column if not exists eliminada_en timestamptz;
 alter table public.citas add column if not exists created_at timestamptz not null default now();
 
 create table if not exists public.ingresos (
@@ -100,9 +105,9 @@ create table if not exists public.servicios (
 -- automáticamente en el landing a través de /api/servicios.
 insert into public.servicios (id, nombre, descripcion, precio, duracion, icono, orden) values
   ('clasicas', 'Pestañas clásicas', 'Un acabado natural y delicado, pelo a pelo.', 80000, 120, 'bi bi-magic', 0),
-  ('hibrido', 'Volumen híbrido', 'Equilibrio entre definición y volumen.', 100000, 150, 'bi bi-layers', 1),
-  ('ruso', 'Volumen ruso', 'Abanicos ligeros para una mirada intensa.', 120000, 180, 'bi bi-stars', 2),
-  ('retoque', 'Mantenimiento / retoque', 'Renueva y conserva tu diseño.', 50000, 90, 'bi bi-arrow-repeat', 3)
+  ('hibrido', 'Volumen híbrido', 'Equilibrio entre definición y volumen.', 100000, 150, 'bi bi-magic', 1),
+  ('ruso', 'Volumen ruso', 'Abanicos ligeros para una mirada intensa.', 120000, 180, 'bi bi-magic', 2),
+  ('retoque', 'Mantenimiento / retoque', 'Renueva y conserva tu diseño.', 50000, 90, 'bi bi-magic', 3)
 on conflict (id) do nothing;
 
 -- Si ya existía la tabla, asegura la columna de imagen sin borrar datos.
@@ -183,7 +188,7 @@ begin
     raise exception 'El valor cobrado debe ser mayor que cero.';
   end if;
   select * into v_cita from public.citas where id = p_cita_id for update;
-  if not found or v_cita.estado <> 'confirmada' then
+  if not found or coalesce(v_cita.eliminada, false) or v_cita.estado <> 'confirmada' then
     raise exception 'La cita debe estar confirmada para marcarse como atendida.';
   end if;
 

@@ -17,10 +17,10 @@ const publicClient = supabaseConfigured ? createClient(SUPABASE_URL, SUPABASE_AN
 const adminClient = supabaseConfigured ? createClient(SUPABASE_URL, SERVICE_ROLE_KEY) : null;
 
 const defaultServices = [
-  { id: 'clasicas', name: 'Pestañas clásicas', price: 80000, duration: 120, description: 'Un acabado natural y delicado, pelo a pelo.', icon: 'bi bi-magic', imagen: '', active: true, order: 0 },
-  { id: 'hibrido', name: 'Volumen híbrido', price: 100000, duration: 150, description: 'Equilibrio entre definición y volumen.', icon: 'bi bi-layers', imagen: '', active: true, order: 1 },
-  { id: 'ruso', name: 'Volumen ruso', price: 120000, duration: 180, description: 'Abanicos ligeros para una mirada intensa.', icon: 'bi bi-stars', imagen: '', active: true, order: 2 },
-  { id: 'retoque', name: 'Mantenimiento / retoque', price: 50000, duration: 90, description: 'Renueva y conserva tu diseño.', icon: 'bi bi-arrow-repeat', imagen: '', active: true, order: 3 },
+  { id: 'clasicas', name: 'Pestañas clásicas', price: 80000, duration: 90, description: 'Un acabado natural y delicado, pelo a pelo.', icon: 'bi bi-magic', imagen: '', active: true, order: 0 },
+  { id: 'hibrido', name: 'Volumen híbrido', price: 100000, duration: 90, description: 'Equilibrio entre definición y volumen.', icon: 'bi bi-magic', imagen: '', active: true, order: 1 },
+  { id: 'ruso', name: 'Volumen ruso', price: 120000, duration: 90, description: 'Abanicos ligeros para una mirada intensa.', icon: 'bi bi-magic', imagen: '', active: true, order: 2 },
+  { id: 'retoque', name: 'Mantenimiento / retoque', price: 50000, duration: 90, description: 'Renueva y conserva tu diseño.', icon: 'bi bi-magic', imagen: '', active: true, order: 3 },
 ];
 const serviceIcons = ['bi bi-magic','bi bi-layers','bi bi-stars','bi bi-arrow-repeat','bi bi-scissors','bi bi-sparkles','bi bi-heart','bi bi-emoji-heart-eyes'];
 function mapService(row){return { id: row.id, name: row.nombre, price: Number(row.precio), duration: Number(row.duracion), description: row.descripcion || '', icon: row.icono || 'bi bi-magic', imagen: row.imagen_url || '', active: row.activo !== false, order: Number(row.orden) || 0 };}
@@ -44,7 +44,12 @@ function validateServicePayload(body){
 
 const SLOT_START_HOUR = 6;
 const SLOT_END_HOUR = 20;
-const TIME_SLOTS = Array.from({ length: SLOT_END_HOUR - SLOT_START_HOUR + 1 }, (_, i) => `${String(SLOT_START_HOUR + i).padStart(2, '0')}:00`);
+const SLOT_STEP_MINUTES = 30;
+const SERVICE_DURATION_MINUTES = 90;
+const TIME_SLOTS = Array.from({ length: ((SLOT_END_HOUR - SLOT_START_HOUR) * 60) / SLOT_STEP_MINUTES + 1 }, (_, i) => {
+  const total = SLOT_START_HOUR * 60 + i * SLOT_STEP_MINUTES;
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+});
 function minutesOfTime(value){const [h,m]=String(value||'').split(':').map(Number);return (h||0)*60+(m||0)}
 function isValidDate(value){return /^\d{4}-\d{2}-\d{2}$/.test(value||'') && !Number.isNaN(new Date(`${value}T00:00:00Z`).valueOf()) && new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value}
 const WEEKDAY_LABELS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
@@ -59,8 +64,8 @@ async function weeklySlots(diaSemana){
 async function availabilityFor(fecha, servicioId, excludeId){
   let services=defaultServices;
   try{services=await getServices(true)}catch(error){console.error('Error consultando servicios para disponibilidad:',error.message)}
-  const duration=services.find(item=>item.id===servicioId)?.duration||60;
-  let citasQuery=adminClient.from('citas').select('hora,servicio_id').eq('fecha',fecha).neq('estado','cancelada');
+  const duration=SERVICE_DURATION_MINUTES;
+  let citasQuery=adminClient.from('citas').select('hora,servicio_id').eq('fecha',fecha).neq('estado','cancelada').eq('eliminada',false);
   if(excludeId)citasQuery=citasQuery.neq('id',excludeId);
   const [{data:dias,error:diasError},{data:excepciones,error:excepcionesError},{data:citas,error:citasError},base]=await Promise.all([
     adminClient.from('dias_bloqueados').select('fecha').eq('fecha',fecha),
@@ -75,7 +80,7 @@ async function availabilityFor(fecha, servicioId, excludeId){
   const ocupadas=new Set();
   (citas||[]).forEach(cita=>{
     const start=minutesOfTime(cita.hora);
-    const end=start+(services.find(item=>item.id===cita.servicio_id)?.duration||60);
+    const end=start+SERVICE_DURATION_MINUTES;
     TIME_SLOTS.forEach(slot=>{const sm=minutesOfTime(slot);if(sm<end&&start<sm+duration)ocupadas.add(slot)});
   });
   return { diaBloqueado:(isMissingTable(diasError)?[]:(dias||[])).length>0, diaSemana:weekdayOf(fecha), base:[...base], horasBloqueadas, ocupadas:[...ocupadas], disponibles };
@@ -100,8 +105,14 @@ async function requireStaff(req, res, next) {
   req.staff = { id: authData.user.id, role: profile.rol, nombre: profile.nombre || authData.user.email, email: authData.user.email || null };
   next();
 }
+function requireAdmin(req, res, next) {
+  return requireStaff(req, res, () => {
+    if (req.staff.role !== 'admin') return res.status(403).json({ error: 'Solo administración puede realizar esta acción.' });
+    next();
+  });
+}
 
-app.get('/api/config', (_req, res) => res.json({ supabaseUrl: SUPABASE_URL || '', supabaseAnonKey: SUPABASE_ANON_KEY || '', paymentInstructions: process.env.PAYMENT_INSTRUCTIONS || '', horarios: TIME_SLOTS }));
+app.get('/api/config', (_req, res) => res.json({ supabaseUrl: SUPABASE_URL || '', supabaseAnonKey: SUPABASE_ANON_KEY || '', paymentInstructions: process.env.PAYMENT_INSTRUCTIONS || 'Abono de $20.000 COP. Medios de pago: Nequi 3117653423, llave Bre-B @31176534, Daviplata 3117653423, Bancolombia 912-1185-5661. No reembolsable si la clienta no asiste.', horarios: TIME_SLOTS }));
 app.get('/api/servicios', async (_req, res) => {try{res.json(await getServices())}catch(error){console.error('Error cargando servicios públicos:',error.message);res.json(defaultServices)}});
 
 app.get('/api/disponibilidad', async (req, res) => {
@@ -262,10 +273,11 @@ app.post('/api/citas', async (req, res) => {
   try{allServices=await getServices(true)}catch(error){console.error('Error consultando servicios para la cita:',error.message)}
   const service = allServices.find(item => item.id === servicio && item.active);
   const cleanPhone = String(telefono || '').replace(/\D/g, '');
+  const cleanCedula = String(cedula || '').trim();
   const selectedDate = /^\d{4}-\d{2}-\d{2}$/.test(fecha || '') ? new Date(`${fecha}T00:00:00Z`) : null;
   const validDate = selectedDate && !Number.isNaN(selectedDate.valueOf()) && selectedDate.toISOString().slice(0, 10) === fecha;
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bogota', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-  if (!nombre?.trim() || nombre.trim().length > 120 || !cedula?.trim() || cedula.trim().length > 30 || cleanPhone.length < 7 || cleanPhone.length > 15 || !service || !validDate || fecha < today || !/^([01]\d|2[0-3]):[0-5]\d$/.test(hora || '') || aceptaNoReembolso !== true) {
+  if (!nombre?.trim() || nombre.trim().length > 120 || cleanCedula.length > 30 || cleanPhone.length < 7 || cleanPhone.length > 15 || !service || !validDate || fecha < today || !/^([01]\d|2[0-3]):[0-5]\d$/.test(hora || '') || aceptaNoReembolso !== true) {
     return res.status(400).json({ error: 'Revisa los datos de la cita e intenta de nuevo.' });
   }
   const bogotaTime = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
@@ -291,7 +303,7 @@ app.post('/api/citas', async (req, res) => {
     const { error: uploadError } = await adminClient.storage.from(BUCKET).upload(receiptPath, buffer, { contentType: comprobante.mime, upsert: false });
     if (uploadError) throw uploadError;
     const { data, error } = await adminClient.from('citas').insert({
-      nombre: nombre.trim(), cedula: cedula.trim(), telefono: cleanPhone, servicio: service.name,
+      nombre: nombre.trim(), cedula: cleanCedula || null, telefono: cleanPhone, servicio: service.name,
       servicio_id: service.id, precio: service.price, abono: 20000, fecha, hora: `${slot}:00`,
       comprobante_path: receiptPath, estado: 'pendiente_verificacion', acepta_no_reembolso: true, acepta_no_reembolso_en: new Date().toISOString(),
     }).select('id').single();
@@ -308,18 +320,23 @@ app.post('/api/citas', async (req, res) => {
 
 app.post('/api/citas/consultar', async (req, res) => {
   if (!requireAdminClient(res)) return;
-  const cedula = String(req.body?.cedula || '').trim();
   const telefono = String(req.body?.telefono || '').replace(/\D/g, '');
-  if (!cedula || telefono.length < 7) return res.status(400).json({ error: 'Ingresa la cédula y el teléfono usado al reservar.' });
-  const { data, error } = await adminClient.from('citas').select('id,servicio,fecha,hora,estado,abono,created_at')
-    .eq('cedula', cedula).eq('telefono', telefono).order('fecha', { ascending: true });
+  if (telefono.length < 7) return res.status(400).json({ error: 'Ingresa el número de celular que usaste al reservar.' });
+  const candidates = new Set([telefono]);
+  if (telefono.startsWith('57') && telefono.length > 10) candidates.add(telefono.slice(2));
+  if (!telefono.startsWith('57')) candidates.add(`57${telefono}`);
+  let query = adminClient.from('citas').select('id,servicio,fecha,hora,estado,abono,created_at').eq('eliminada', false);
+  const cedula = String(req.body?.cedula || '').trim();
+  if (cedula) query = query.eq('cedula', cedula);
+  query = candidates.size === 1 ? query.eq('telefono', telefono) : query.in('telefono', [...candidates]);
+  const { data, error } = await query.order('fecha', { ascending: true });
   if (error) return res.status(500).json({ error: 'No se pudo consultar la cita.' });
   res.json(data || []);
 });
 
 app.get('/api/panel/citas', requireStaff, async (req, res) => {
   const [{ data, error }, { data: profiles, error: profileError }, usersResult] = await Promise.all([
-    adminClient.from('citas').select('*').order('fecha', { ascending: true }).order('hora', { ascending: true }),
+    adminClient.from('citas').select('*').eq('eliminada', false).order('fecha', { ascending: true }).order('hora', { ascending: true }),
     adminClient.from('perfiles').select('id,nombre,rol'),
     adminClient.auth.admin.listUsers({ page: 1, perPage: 1000 }).catch(() => ({ data: { users: [] } })),
   ]);
@@ -343,7 +360,7 @@ app.get('/api/panel/citas', requireStaff, async (req, res) => {
 });
 
 app.get('/api/panel/citas/version', requireStaff, async (_req, res) => {
-  const { data, error } = await adminClient.from('citas').select('id,estado,fecha,hora,created_at,monto_cobrado,verificada_por,confirmada_por,atendida_por');
+  const { data, error } = await adminClient.from('citas').select('id,estado,fecha,hora,created_at,monto_cobrado,verificada_por,confirmada_por,atendida_por,eliminada').eq('eliminada', false);
   if (error) return res.status(500).json({ error: 'No se pudo verificar la agenda.' });
   const version = (data || [])
     .map(c => [c.id, c.estado, c.fecha, c.hora, c.created_at, c.monto_cobrado, c.verificada_por, c.confirmada_por, c.atendida_por].join('|'))
@@ -390,7 +407,7 @@ app.post('/api/panel/citas/:id/rechazar', requireStaff, async (req, res) => {
   if (!motivo) return res.status(400).json({ error: 'Indica el motivo del rechazo.' });
   const { data, error } = await adminClient.from('citas')
     .update({ estado: 'cancelada', motivo_cancelacion: `Comprobante rechazado: ${motivo}`, cancelada_por: req.staff.id, cancelada_en: new Date().toISOString() })
-    .in('estado', ['pendiente_verificacion', 'verificada'])
+    .in('estado', ['pendiente_verificacion', 'verificada']).eq('eliminada', false)
     .eq('id', req.params.id).select('id,estado').maybeSingle();
   if (error) {
     console.error('Error rechazando cita:', error.message);
@@ -405,7 +422,7 @@ app.post('/api/panel/citas/:id/cancelar', requireStaff, async (req, res) => {
   if (!motivo) return res.status(400).json({ error: 'Indica el motivo de la cancelación.' });
   const { data, error } = await adminClient.from('citas')
     .update({ estado: 'cancelada', motivo_cancelacion: motivo, cancelada_por: req.staff.id, cancelada_en: new Date().toISOString() })
-    .in('estado', ['pendiente_verificacion', 'verificada', 'confirmada'])
+    .in('estado', ['pendiente_verificacion', 'verificada', 'confirmada']).eq('eliminada', false)
     .eq('id', req.params.id).select('id,estado').maybeSingle();
   if (error) {
     console.error('Error cancelando cita:', error.message);
@@ -423,6 +440,7 @@ app.post('/api/panel/citas/:id/reagendar', requireStaff, async (req, res) => {
   }
   const { data: cita, error: findError } = await adminClient.from('citas').select('*').eq('id', req.params.id).maybeSingle();
   if (findError || !cita) return res.status(404).json({ error: 'No se encontró la cita.' });
+  if (cita.eliminada) return res.status(404).json({ error: 'La cita no existe.' });
   if (['atendida', 'cancelada'].includes(cita.estado)) return res.status(409).json({ error: 'No se puede reagendar una cita atendida o cancelada.' });
   let availability;
   try { availability = await availabilityFor(fecha, cita.servicio_id, cita.id); }
@@ -432,10 +450,88 @@ app.post('/api/panel/citas/:id/reagendar', requireStaff, async (req, res) => {
   if (availability.horasBloqueadas.includes(slot)) return res.status(409).json({ error: 'Ese horario no está disponible. Elige otra hora.' });
   if (availability.ocupadas.includes(slot)) return res.status(409).json({ error: 'Ese horario ya está ocupado. Elige otra hora.' });
   const update = { fecha, hora: `${slot}:00`, reagendada_desde_fecha: cita.fecha, reagendada_desde_hora: cita.hora, reagendada_por: req.staff.id, reagendada_en: new Date().toISOString() };
-  const { data, error } = await adminClient.from('citas').update(update).eq('id', req.params.id).select('*').maybeSingle();
+  const { data, error } = await adminClient.from('citas').update(update).eq('id', req.params.id).eq('eliminada', false).select('*').maybeSingle();
   if (error) {
     console.error('Error reagendando cita:', error.message);
     return res.status(500).json({ error: isMissingTable(error) || error.code === '42703' ? 'Ejecuta supabase-schema.sql en Supabase > SQL Editor para habilitar esta acción.' : 'No se pudo reagendar la cita.' });
+  }
+  res.json({ exito: true, cita: data });
+});
+
+app.delete('/api/panel/citas/:id', requireAdmin, async (req, res) => {
+  const { data: cita, error: findError } = await adminClient.from('citas').select('*').eq('id', req.params.id).maybeSingle();
+  if (findError || !cita || cita.eliminada) return res.status(404).json({ error: 'No se encontró la cita.' });
+  if (cita.estado === 'atendida') {
+    const { error: incomeError } = await adminClient.from('ingresos').delete().eq('cita_id', cita.id);
+    if (incomeError) return res.status(500).json({ error: 'No se pudo actualizar la contabilidad al eliminar la cita.' });
+  }
+  const { error } = await adminClient.from('citas').update({ eliminada: true, eliminada_en: new Date().toISOString() }).eq('id', cita.id).eq('eliminada', false);
+  if (error) return res.status(500).json({ error: isMissingTable(error) || error.code === '42703' ? 'Ejecuta supabase-schema.sql en Supabase > SQL Editor para habilitar esta acción.' : 'No se pudo eliminar la cita.' });
+  if (cita.comprobante_path) {
+    try { await adminClient.storage.from(BUCKET).remove([cita.comprobante_path]); } catch {}
+  }
+  res.json({ exito: true });
+});
+
+app.patch('/api/panel/citas/:id', requireAdmin, async (req, res) => {
+  const { data: cita, error: findError } = await adminClient.from('citas').select('*').eq('id', req.params.id).maybeSingle();
+  if (findError || !cita || cita.eliminada) return res.status(404).json({ error: 'No se encontró la cita.' });
+  const fecha = String(req.body?.fecha ?? cita.fecha).slice(0,10);
+  const hora = String(req.body?.hora ?? String(cita.hora).slice(0,5)).slice(0,5);
+  const servicioId = String(req.body?.servicio_id ?? cita.servicio_id ?? '').trim();
+  const estado = String(req.body?.estado ?? cita.estado).trim();
+  const precio = Number(req.body?.precio ?? cita.precio);
+  const montoCobradoRaw = req.body?.monto_cobrado;
+  const monto_cobrado = (montoCobradoRaw === null || montoCobradoRaw === '' || typeof montoCobradoRaw === 'undefined')
+    ? (estado === 'atendida' ? Number(cita.monto_cobrado || precio) : null)
+    : Number(montoCobradoRaw);
+  const estados = ['pendiente_verificacion','verificada','confirmada','cancelada','atendida'];
+  if (!isValidDate(fecha) || !/^\d{2}:\d{2}$/.test(hora) || !TIME_SLOTS.includes(hora)) return res.status(400).json({ error: 'Fecha u hora inválida. Usa intervalos de 30 minutos.' });
+  if (!estados.includes(estado)) return res.status(400).json({ error: 'Estado inválido.' });
+  if (!Number.isSafeInteger(precio) || precio < 1) return res.status(400).json({ error: 'Precio inválido.' });
+  if (estado === 'atendida' && (!Number.isSafeInteger(monto_cobrado) || monto_cobrado < 1)) return res.status(400).json({ error: 'Ingresa un monto cobrado válido para una cita atendida.' });
+  if (estado !== 'atendida' && monto_cobrado !== null && (!Number.isSafeInteger(monto_cobrado) || monto_cobrado < 1)) return res.status(400).json({ error: 'Monto cobrado inválido.' });
+  let services = defaultServices;
+  try { services = await getServices(true); } catch {}
+  const service = services.find(s => s.id === servicioId);
+  if (!service) return res.status(400).json({ error: 'Servicio inválido.' });
+  const slot = hora;
+  const changedTime = fecha !== String(cita.fecha).slice(0,10) || slot !== String(cita.hora).slice(0,5);
+  if (changedTime && estado !== 'cancelada') {
+    let availability;
+    try { availability = await availabilityFor(fecha, service.id, cita.id); }
+    catch { return res.status(500).json({ error: 'No se pudo validar la disponibilidad.' }); }
+    if (availability.diaBloqueado) return res.status(409).json({ error: 'Ese día no hay atención.' });
+    if (availability.horasBloqueadas.includes(slot)) return res.status(409).json({ error: 'Ese horario no está disponible.' });
+    if (availability.ocupadas.includes(slot)) return res.status(409).json({ error: 'Ese horario ya está ocupado.' });
+  }
+  const update = {
+    fecha,
+    hora: `${slot}:00`,
+    servicio_id: service.id,
+    servicio: service.name,
+    precio,
+    estado,
+    monto_cobrado: estado === 'atendida' ? monto_cobrado : (monto_cobrado ?? null),
+  };
+  if (estado === 'cancelada') { update.cancelada_en = cita.cancelada_en || new Date().toISOString(); update.cancelada_por = cita.cancelada_por || req.staff.id; }
+  if (estado === 'atendida') { update.atendida_por = cita.atendida_por || req.staff.id; }
+  if (estado !== 'atendida') { update.atendida_por = null; }
+  const { data, error } = await adminClient.from('citas').update(update).eq('id', cita.id).eq('eliminada', false).select('*').maybeSingle();
+  if (error) return res.status(500).json({ error: isMissingTable(error) || error.code === '42703' ? 'Ejecuta supabase-schema.sql en Supabase > SQL Editor para habilitar esta acción.' : 'No se pudo actualizar la cita.' });
+  if (cita.estado === 'atendida' && estado !== 'atendida') {
+    const { error: delIncomeError } = await adminClient.from('ingresos').delete().eq('cita_id', cita.id);
+    if (delIncomeError) return res.status(500).json({ error: 'Cita actualizada, pero no se pudo actualizar la contabilidad.' });
+  }
+  if (estado === 'atendida') {
+    const { error: upsertIncomeError } = await adminClient.from('ingresos').upsert({
+      cita_id: cita.id,
+      descripcion: 'Servicio: ' + service.name,
+      monto: monto_cobrado,
+      fecha,
+      registrado_por: cita.atendida_por || req.staff.id,
+    }, { onConflict: 'cita_id' });
+    if (upsertIncomeError) return res.status(500).json({ error: 'Cita actualizada, pero no se pudo actualizar la contabilidad.' });
   }
   res.json({ exito: true, cita: data });
 });
