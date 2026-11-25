@@ -60,15 +60,19 @@
     .week-grid{display:grid;grid-template-columns:38px repeat(7,minmax(72px,1fr));gap:3px;overflow:auto}
     .week-head{font-size:.66rem;font-weight:800;color:#98525e;text-align:center;padding:.25rem .15rem;background:#fbf3f1;border-radius:.45rem;white-space:nowrap}
     .week-time{font-size:.62rem;color:#806e70;text-align:right;padding:.3rem .2rem 0 0;white-space:nowrap}
-    .week-cell{min-height:28px;border:1px dashed #eadcda;border-radius:.45rem;padding:1px;display:flex;flex-direction:column;gap:1px}
-    .week-event{border-radius:.35rem;padding:1px 4px;font-size:.58rem;line-height:1.15;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:2px;width:100%;flex:1 1 0;min-height:0;text-align:left}
+    .week-cell{min-height:28px;border:1px dashed #eadcda;border-radius:.45rem;padding:1px;display:flex;flex-direction:column;gap:1px;position:relative;overflow:hidden}
+    .week-event{border-radius:.35rem;padding:1px 4px;font-size:.58rem;line-height:1.15;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:2px;width:100%;flex:1 1 0;min-height:0;text-align:left;border:2px solid rgba(60,30,35,.22);box-sizing:border-box}
     .week-event:hover{filter:brightness(.97)}
     .week-event .wk-more{font-size:.55rem;opacity:.85;flex-shrink:0}
-    .week-event.pendiente_verificacion{background:#fff4d8;color:#8a6714}
-    .week-event.verificada{background:#e8f2ff;color:#265d97}
-    .week-event.confirmada{background:#e6f6ea;color:#2f7a51}
-    .week-event.atendida{background:#eef0f3;color:#555}
-    .week-event.cancelada{background:#fde8e8;color:#9b3b3b;text-decoration:line-through}
+    .week-event.pendiente_verificacion{background:#fff4d8;color:#8a6714;border-color:#c9a227}
+    .week-event.verificada{background:#e8f2ff;color:#265d97;border-color:#5b8fc9}
+    .week-event.confirmada{background:#e6f6ea;color:#2f7a51;border-color:#5fa87a}
+    .week-event.atendida{background:#eef0f3;color:#555;border-color:#8a9099}
+    .week-event.cancelada{background:#fde8e8;color:#9b3b3b;text-decoration:line-through;border-color:#c76}
+    .week-event.wk-mid{border-top-left-radius:0;border-top-right-radius:0;border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-width:0;margin-top:-1px}
+    .week-event.wk-end{border-top-left-radius:0;border-top-right-radius:0;border-top-width:0;margin-top:-1px}
+    .week-event.wk-start{border-bottom-left-radius:0;border-bottom-right-radius:0}
+    .week-event.wk-tail{flex:0 0 50%;min-height:50%;max-height:50%;border-top-left-radius:0;border-top-right-radius:0;border-top-width:0;margin-top:-1px}
     .appointment-modal{position:fixed;inset:0;background:rgba(42,31,33,.55);display:grid;place-items:center;padding:1rem;z-index:80}
     .appointment-modal.hidden-view{display:none}
     .appointment-modal-dialog{width:min(720px,100%);max-height:min(90vh,900px);overflow:auto;background:#fff;border-radius:1rem;border:1px solid #eadcda;box-shadow:0 18px 44px #00000022}
@@ -166,12 +170,12 @@
       </div>
     </section>
 
-    <section id="servicios" class="max-w-7xl mx-auto px-5 py-20"><div class="text-center max-w-xl mx-auto"><span class="tag">SERVICIOS</span><h2 class="serif text-4xl md:text-5xl mt-4">El diseño ideal para ti</h2><p class="mt-4 text-[#806e70]">Una experiencia pensada para resaltar tu mirada y hacerte sentir increíble.</p></div><div id="serviceGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-11"></div></section>
+    <section id="servicios" class="max-w-7xl mx-auto px-5 py-20"><div class="text-center max-w-xl mx-auto"><span class="tag">SERVICIOS</span><h2 class="serif text-4xl md:text-5xl mt-4">El diseño ideal para ti</h2><p class="mt-4 text-[#806e70]">Una experiencia pensada para resaltar tu mirada y hacerte sentir increíble.</p></div><div id="serviceGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-11"></div><div id="servicesToggleWrap" class="text-center mt-6 hidden"></div></section>
 
     <section id="estudio" class="bg-[#f7eeeb] py-12 sm:py-16"><div class="max-w-7xl mx-auto px-4 sm:px-5 grid md:grid-cols-2 gap-7 md:gap-10 items-center"><div><span class="tag">EL ESTUDIO</span><h2 class="serif text-3xl sm:text-4xl mt-4">Un espacio para<br>sentirte tú.</h2><p class="mt-4 text-[#806e70] leading-7">Studio Julieth te acompaña en cada paso: desde elegir el estilo que más te favorece hasta cuidar tus pestañas después de tu cita.</p></div><div class="grid sm:grid-cols-2 gap-3"><div class="soft-card p-4 sm:p-5"><span class="text-2xl">✦</span><b class="block mt-3">Atención experta</b><p class="text-sm text-[#806e70] mt-1">Técnica y dedicación en cada aplicación.</p></div><div class="soft-card p-4 sm:p-5"><span class="text-2xl">♡</span><b class="block mt-3">Diseño a tu medida</b><p class="text-sm text-[#806e70] mt-1">Un resultado que se siente tuyo.</p></div></div></div></section>
 
     <section id="reservar" class="max-w-7xl mx-auto px-5 py-20"><div class="text-center max-w-xl mx-auto"><span class="tag">RESERVA EN LÍNEA</span><h2 class="serif text-4xl mt-4">Tu próxima cita empieza aquí</h2><p class="text-[#806e70] mt-3">Completa tus datos y agendaremos tu cita.</p></div>
-      <div class="max-w-3xl mx-auto mt-8 sm:mt-10 grid md:grid-cols-[1fr_.8fr] gap-4 sm:gap-5 items-start"><form id="bookingForm" class="soft-card p-4 sm:p-6 md:p-8 space-y-4"><div><label class="label" for="nombre"><i class="bi bi-person mr-1"></i>Nombre completo</label><div class="input-icon"><i class="bi bi-person"></i><input class="field" id="nombre" required maxlength="120" autocomplete="name" placeholder="Tu nombre"></div></div><div><label class="label" for="telefono"><i class="bi bi-phone mr-1"></i>Celular con WhatsApp</label><div class="input-icon"><i class="bi bi-phone"></i><input class="field" id="telefono" required maxlength="20" type="tel" autocomplete="tel" placeholder="Tu número de contacto"></div></div><div><label class="label" for="servicio"><i class="bi bi-scissors mr-1"></i>Servicio</label><div class="input-icon"><i class="bi bi-scissors"></i><select class="field" id="servicio" required></select></div></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="fecha"><i class="bi bi-calendar-event mr-1"></i>Fecha preferida</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input class="field" id="fecha" type="date" required></div></div><div><label class="label" for="hora"><i class="bi bi-clock mr-1"></i>Hora preferida</label><div class="input-icon"><i class="bi bi-clock"></i><select class="field" id="hora" required><option value="">Elige fecha y servicio</option></select></div><p id="horaHint" class="text-xs text-[#806e70] mt-1">Horarios de 6:00 a. m. a 8:00 p. m., en intervalos de 30 minutos. Cada servicio dura 1 hora y 30 minutos.</p></div></div><div class="rounded-2xl bg-[#fbf3f1] p-4"><div class="flex justify-between items-center"><b>Abono obligatorio</b><b class="text-[#a55160]">$20.000 COP</b></div><p class="text-sm text-[#806e70] mt-2 leading-6">Realiza el abono por cualquiera de estos medios y adjunta el comprobante. La cita quedará pendiente hasta que verifiquemos el pago.</p><ul class="text-sm text-[#806e70] mt-2 space-y-1 leading-6"><li><b>Nequi:</b> 3117653423</li><li><b>Llave Bre-B:</b> @31176534</li><li><b>Daviplata:</b> 3117653423</li><li><b>Bancolombia:</b> 912-1185-5661</li></ul></div><div><label class="label" for="comprobante"><i class="bi bi-image mr-1"></i>Comprobante de pago</label><input class="field !p-2.5" id="comprobante" type="file" accept="image/jpeg,image/png,image/webp" required><small class="block text-xs text-[#927d7e] mt-2">JPG, PNG o WEBP · máximo 5 MB</small><div id="receiptPreview" class="hidden-view mt-3"></div></div><label class="flex items-start gap-3 text-sm text-[#806e70]"><input id="depositTerms" type="checkbox" class="mt-1" required><span>Entiendo que el abono de $20.000 no es reembolsable si no asisto a la cita.</span></label><button id="bookingSubmit" class="btn btn-main w-full" type="submit"><i class="bi bi-send"></i>Enviar solicitud de cita</button><p class="text-xs text-center text-[#927d7e]">Al enviar aceptas que usemos tus datos para gestionar esta cita.</p></form>
+      <div class="max-w-3xl mx-auto mt-8 sm:mt-10 grid md:grid-cols-[1fr_.8fr] gap-4 sm:gap-5 items-start"><form id="bookingForm" class="soft-card p-4 sm:p-6 md:p-8 space-y-4"><div><label class="label" for="nombre"><i class="bi bi-person mr-1"></i>Nombre completo</label><div class="input-icon"><i class="bi bi-person"></i><input class="field" id="nombre" required maxlength="120" autocomplete="name" placeholder="Tu nombre"></div></div><div><label class="label" for="telefono"><i class="bi bi-phone mr-1"></i>Celular con WhatsApp</label><div class="input-icon"><i class="bi bi-phone"></i><input class="field" id="telefono" required maxlength="20" type="tel" autocomplete="tel" placeholder="Tu número de contacto"></div></div><div><label class="label" for="servicio"><i class="bi bi-scissors mr-1"></i>Servicio</label><div class="input-icon"><i class="bi bi-scissors"></i><select class="field" id="servicio" required></select></div></div><div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="fecha"><i class="bi bi-calendar-event mr-1"></i>Fecha preferida</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input class="field" id="fecha" type="date" required></div></div><div><label class="label" for="hora"><i class="bi bi-clock mr-1"></i>Hora preferida</label><div class="input-icon"><i class="bi bi-clock"></i><select class="field" id="hora" required><option value="">Elige fecha y servicio</option></select></div><p id="horaHint" class="text-xs text-[#806e70] mt-1"></p></div></div><div class="rounded-2xl bg-[#fbf3f1] p-4"><div class="flex justify-between items-center"><b>Abono obligatorio</b><b class="text-[#a55160]">$20.000 COP</b></div><p class="text-sm text-[#806e70] mt-2 leading-6">Realiza el abono por cualquiera de estos medios y adjunta el comprobante. La cita quedará pendiente hasta que verifiquemos el pago.</p><ul class="text-sm text-[#806e70] mt-2 space-y-1 leading-6"><li><b>Nequi:</b> 3117653423</li><li><b>Llave Bre-B:</b> @3117653423</li><li><b>Daviplata:</b> 3117653423</li><li><b>Bancolombia:</b> 912-1185-5661</li></ul></div><div><label class="label" for="comprobante"><i class="bi bi-image mr-1"></i>Comprobante de pago</label><input class="field !p-2.5" id="comprobante" type="file" accept="image/jpeg,image/png,image/webp" required><small class="block text-xs text-[#927d7e] mt-2">JPG, PNG o WEBP · máximo 5 MB</small><div id="receiptPreview" class="hidden-view mt-3"></div></div><label class="flex items-start gap-3 text-sm text-[#806e70]"><input id="depositTerms" type="checkbox" class="mt-1" required><span>Entiendo que el abono de $20.000 no es reembolsable si no asisto a la cita.</span></label><button id="bookingSubmit" class="btn btn-main w-full" type="submit"><i class="bi bi-send"></i>Enviar solicitud de cita</button><p class="text-xs text-center text-[#927d7e]">Al enviar aceptas que usemos tus datos para gestionar esta cita.</p></form>
         <aside class="space-y-4"><div class="soft-card p-6"><span class="tag"><i class="bi bi-cash-coin mr-1"></i>MEDIOS DE PAGO</span><h3 class="serif text-xl mt-3">Abono de $20.000 COP</h3><ul class="mt-3 space-y-2 text-sm text-[#806e70] leading-6"><li class="flex items-start gap-2"><i class="bi bi-phone text-[#a55160] mt-0.5"></i><span><b>Nequi:</b> 3117653423</span></li><li class="flex items-start gap-2"><i class="bi bi-key text-[#a55160] mt-0.5"></i><span><b>Llave Bre-B:</b> @3117653423</span></li><li class="flex items-start gap-2"><i class="bi bi-phone text-[#a55160] mt-0.5"></i><span><b>Daviplata:</b> 3117653423</span></li><li class="flex items-start gap-2"><i class="bi bi-bank text-[#a55160] mt-0.5"></i><span><b>Bancolombia:</b> 912-1185-5661</span></li></ul><p id="paymentInstructions" class="text-sm text-[#806e70] mt-3 leading-6 whitespace-pre-line"></p><a id="paymentHelp" class="text-[#a55160] font-bold mt-3 inline-block" href="https://wa.me/573117653423" target="_blank" rel="noopener"><i class="bi bi-whatsapp mr-1"></i>Solicitar ayuda por WhatsApp</a></div><div class="soft-card p-6"><span class="tag"><i class="bi bi-list-check mr-1"></i>DESPUÉS DE ENVIAR</span><ol class="mt-5 space-y-5"><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">1</span><p class="text-sm leading-6"><b>Recibimos tu solicitud</b><br><span class="text-[#806e70]">La cita queda pendiente de revisión del comprobante.</span></p></li><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">2</span><p class="text-sm leading-6"><b>Verificamos el abono</b><br><span class="text-[#806e70]">El equipo revisa la imagen que adjuntaste.</span></p></li><li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-full bg-[#f9e9e9] text-[#a55160] grid place-items-center font-bold">3</span><p class="text-sm leading-6"><b>Confirmamos por WhatsApp</b><br><span class="text-[#806e70]">La profesional te enviará los datos de la cita.</span></p></li></ol><button class="btn btn-light w-full mt-6" onclick="showLookup()"><i class="bi bi-calendar2-check"></i>Consultar estado de mi cita</button></div></aside>
       </div>
     </section>
@@ -200,7 +204,7 @@
         <div id="proQuickSummary" class="hidden-view mt-5"><h4 class="serif text-xl mb-3">Resumen de tu panel</h4><div id="proQuickSummaryGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div></div>
       </section>
       <section id="staffTabNuevas" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-inbox"></i></span><div><div class="flex items-center gap-2"><h3 class="serif text-2xl">Nuevas citas</h3><span id="nuevasSectionBadge" class="hidden"></span></div><p class="text-sm text-[#806e70]">Solicitudes con comprobante pendiente de verificación.</p></div></div><div id="proNewAppointments" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div></section>
-      <section id="staffTabConfirmar" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-hourglass-split"></i></span><div><h3 class="serif text-2xl">Por confirmar</h3><p class="text-sm text-[#806e70]">Abonos verificados listos para enviar la confirmación.</p></div></div><div id="proConfirmAppointments" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div></section>
+      <section id="staffTabConfirmar" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-hourglass-split"></i></span><div><h3 class="serif text-2xl">Por confirmar</h3><p class="text-sm text-[#806e70]">Abonos verificados listos para enviar la confirmación.</p></div></div><div id="proConfirmAppointments" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"></div></section>
       <section id="staffTabRecordatorios" class="hidden-view mt-7">
         <div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-bell"></i></span><div><h3 class="serif text-2xl">Recordatorios</h3><p class="text-sm text-[#806e70]">Envía recordatorios por WhatsApp: citas de mañana y retoques a los 15 días.</p></div></div>
         <div class="grid lg:grid-cols-2 gap-4">
@@ -231,7 +235,7 @@
           </div>
         </div>
       </section>
-      <section id="staffTabHistorial" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-clock-history"></i></span><div><h3 class="serif text-2xl">Historial de atención</h3><p class="text-sm text-[#806e70]">Clientas atendidas y citas canceladas.</p></div></div><div id="staffHistory" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div></section>
+      <section id="staffTabHistorial" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-clock-history"></i></span><div><h3 class="serif text-2xl">Historial de atención</h3><p class="text-sm text-[#806e70]">Clientas atendidas y citas canceladas.</p></div></div><div id="staffHistory" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"></div></section>
       <section id="staffTabServicios" class="hidden-view mt-7">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div class="flex items-center gap-3"><span class="section-icon"><i class="bi bi-scissors"></i></span><div><h3 class="serif text-2xl">Servicios publicados</h3><p class="text-sm text-[#806e70]">Edita nombres, precios y duraciones, o agrega nuevos servicios. Los cambios se publican en el landing al guardar.</p></div></div>
@@ -248,11 +252,77 @@
           <div class="flex flex-col sm:flex-row gap-2"><button id="newServiceSubmit" class="btn btn-main flex-1"><i class="bi bi-send"></i>Publicar servicio</button><button type="button" class="btn btn-light" onclick="toggleNewServiceForm()">Cancelar</button></div>
         </form>
       </section>
-      <section id="staffTabFinanzas" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-cash-coin"></i></span><div><h3 class="serif text-2xl">Panel de contabilidad</h3><p class="text-sm text-[#806e70]">Ingresos por citas atendidas y egresos registrados.</p></div></div><div id="financeStats" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div><div class="grid lg:grid-cols-[.8fr_1.2fr] gap-5 mt-5"><form id="expenseForm" class="soft-card p-4 sm:p-6 space-y-4"><div><span class="tag"><i class="bi bi-receipt mr-1"></i>REGISTRAR EGRESO</span><h3 class="serif text-2xl mt-3"><i class="bi bi-plus-circle mr-1"></i>Nuevo gasto</h3></div><div><label class="label" for="expenseDescription"><i class="bi bi-card-text mr-1"></i>Descripción</label><div class="input-icon"><i class="bi bi-card-text"></i><input id="expenseDescription" class="field" required maxlength="160" placeholder="Ej. Compra de adhesivo"></div></div><div><label class="label" for="expenseCategory"><i class="bi bi-tags mr-1"></i>Categoría</label><div class="input-icon"><i class="bi bi-tags"></i><select id="expenseCategory" class="field"><option value="insumos">Insumos</option><option value="arriendo">Arriendo</option><option value="gastos_varios">Gastos varios</option><option value="otro">Otro</option></select></div></div><div class="grid sm:grid-cols-2 gap-3"><div><label class="label" for="expenseAmount"><i class="bi bi-cash mr-1"></i>Valor (COP)</label><div class="input-icon"><i class="bi bi-cash"></i><input id="expenseAmount" class="field" type="number" min="1" step="1" required></div></div><div><label class="label" for="expenseDate"><i class="bi bi-calendar-event mr-1"></i>Fecha</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input id="expenseDate" class="field" type="date" required></div></div></div><button id="expenseSubmit" class="btn btn-main w-full"><i class="bi bi-save"></i>Guardar egreso</button></form><div class="space-y-4"><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-arrow-down-left-circle text-[#387452]"></i>Ingresos por citas atendidas</h3><div id="incomeLedger" class="mt-4 space-y-3 max-h-80 overflow-auto"></div></div><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-arrow-up-right-circle text-[#a34e4b]"></i>Egresos registrados</h3><div id="expenseLedger" class="mt-4 space-y-3 max-h-80 overflow-auto"></div></div></div></div></section>
+      <section id="staffTabFinanzas" class="hidden-view mt-7"><div class="flex items-center gap-3 mb-4"><span class="section-icon"><i class="bi bi-cash-coin"></i></span><div><h3 class="serif text-2xl">Panel de contabilidad</h3><p class="text-sm text-[#806e70]">Ingresos por citas atendidas y egresos registrados.</p></div></div><div id="financeStats" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div><div class="grid lg:grid-cols-[.8fr_1.2fr] gap-5 mt-5"><form id="expenseForm" class="soft-card p-4 sm:p-6 space-y-4"><div><span class="tag"><i class="bi bi-receipt mr-1"></i>REGISTRAR EGRESO</span><h3 class="serif text-2xl mt-3"><i class="bi bi-plus-circle mr-1"></i>Nuevo gasto</h3></div><div><label class="label" for="expenseDescription"><i class="bi bi-card-text mr-1"></i>Descripción</label><div class="input-icon"><i class="bi bi-card-text"></i><input id="expenseDescription" class="field" required maxlength="160" placeholder="Ej. Compra de adhesivo"></div></div><div><label class="label" for="expenseCategory"><i class="bi bi-tags mr-1"></i>Categoría</label><div class="input-icon"><i class="bi bi-tags"></i><select id="expenseCategory" class="field"><option value="insumos">Insumos</option><option value="arriendo">Arriendo</option><option value="gastos_varios">Gastos varios</option><option value="otro">Otro</option></select></div></div><div class="grid sm:grid-cols-2 gap-3"><div><label class="label" for="expenseAmount"><i class="bi bi-cash mr-1"></i>Valor (COP)</label><div class="input-icon"><i class="bi bi-cash"></i><input id="expenseAmount" class="field" type="number" min="1" step="1" required></div></div><div><label class="label" for="expenseDate"><i class="bi bi-calendar-event mr-1"></i>Fecha</label><div class="input-icon"><i class="bi bi-calendar-event"></i><input id="expenseDate" class="field" type="date" required></div></div></div><button id="expenseSubmit" class="btn btn-main w-full"><i class="bi bi-save"></i>Guardar egreso</button></form><div class="space-y-4"><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-arrow-down-left-circle text-[#387452]"></i>Ingresos por citas atendidas</h3><div id="incomeLedger" class="mt-4 space-y-3 max-h-80 overflow-auto"></div></div><div class="soft-card p-4 sm:p-6"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-arrow-up-right-circle text-[#a34e4b]"></i>Egresos registrados</h3><div id="expenseLedger" class="mt-4 space-y-3 max-h-80 overflow-auto"></div></div></div></div><div class="soft-card p-4 sm:p-6 mt-5"><h3 class="serif text-xl flex items-center gap-2"><i class="bi bi-clock-history text-[#98525e]"></i>Historial de ganancias por mes</h3><p class="text-sm text-[#806e70] mt-1">Al cambiar de mes, la ganancia del mes anterior se conserva en este historial.</p><div id="financeHistory" class="mt-4 space-y-3"></div></div></section>
       <section id="staffTabCuenta" class="hidden-view mt-7 max-w-xl"><form id="passwordForm" class="soft-card p-4 sm:p-6 space-y-4"><span class="tag"><i class="bi bi-shield-check mr-1"></i>SEGURIDAD DE LA CUENTA</span><h3 class="serif text-2xl"><i class="bi bi-key mr-1"></i>Cambiar contraseña</h3><p class="text-sm text-[#806e70]">Confirma tu contraseña actual y define una nueva. El cambio se aplica de forma segura en Supabase.</p><div><label class="label" for="currentPassword"><i class="bi bi-lock mr-1"></i>Contraseña actual</label><div class="input-icon"><i class="bi bi-lock"></i><input id="currentPassword" class="field" type="password" autocomplete="current-password" required></div></div><div><label class="label" for="newPassword"><i class="bi bi-key mr-1"></i>Nueva contraseña</label><div class="input-icon"><i class="bi bi-key"></i><input id="newPassword" class="field" type="password" autocomplete="new-password" minlength="8" required></div></div><div><label class="label" for="confirmPassword"><i class="bi bi-key-fill mr-1"></i>Repite la nueva contraseña</label><div class="input-icon"><i class="bi bi-key-fill"></i><input id="confirmPassword" class="field" type="password" autocomplete="new-password" minlength="8" required></div></div><button class="btn btn-main"><i class="bi bi-shield-check"></i>Actualizar contraseña</button></form></section>
     </div></section>
   </main>
-  <footer id="siteFooter" class="bg-[#38272b] text-white/70 py-10"><div class="max-w-7xl mx-auto px-5 flex flex-wrap items-center justify-between gap-5"><div><b class="serif text-white text-xl">LashStudio JB</b><p class="text-sm mt-1">Una mirada, tu esencia.</p></div><div class="flex flex-wrap gap-4 sm:gap-5 text-sm"><button onclick="showLookup()"><i class="bi bi-calendar2-check mr-1"></i>Consultar cita</button><button onclick="showStaffLogin()"><i class="bi bi-shield-lock mr-1"></i>Acceso del equipo</button><a href="https://wa.me/573117653423" target="_blank" rel="noopener"><i class="bi bi-whatsapp mr-1"></i>WhatsApp</a></div></div><div class="max-w-7xl mx-auto px-5 mt-8 text-xs">© <span id="year"></span> LashStudio JB</div></footer>
+  <footer id="siteFooter" class="bg-[#38272b] text-white/70 py-10">
+    <div class="relative z-10 max-w-7xl mx-auto px-5 flex flex-wrap items-center justify-between gap-5">
+      <div><b class="serif text-white text-xl">LashStudio JB</b><p class="text-sm mt-1">Una mirada, tu esencia.</p></div>
+      <div class="flex flex-wrap gap-4 sm:gap-5 text-sm">
+        <button onclick="showLookup()"><i class="bi bi-calendar2-check mr-1"></i>Consultar cita</button>
+        <button onclick="showStaffLogin()"><i class="bi bi-shield-lock mr-1"></i>Acceso del equipo</button>
+        <a href="https://wa.me/573117653423" target="_blank" rel="noopener"><i class="bi bi-whatsapp mr-1"></i>WhatsApp</a>
+      </div>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-5 mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div class="text-xs">© <span id="year"></span> LashStudio JB</div>
+      <div class="flex w-full items-center justify-between gap-3 bg-black rounded-xl px-3 py-2 shadow-sm sm:inline-flex sm:w-auto sm:justify-start sm:gap-2">
+        <div class="flex flex-col items-start gap-1">
+          <span class="text-[10px] uppercase tracking-[.18em] text-white/55 leading-none whitespace-nowrap">Desarrollado por:</span>
+          <a href="https://wa.me/573128192528" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-[11px] text-white/60 hover:text-white transition-colors"><i class="bi bi-whatsapp text-[12px]"></i><span>312 819 2528</span></a>
+        </div>
+        <svg viewBox="0 0 800 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logotipo Corporativo EYLEN-DM TECH & SOFT" style="display:block;width:132px;max-width:100%;height:auto;opacity:.9">
+          <defs>
+            <linearGradient id="eylen-metal-bright" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="45%" stop-color="#DCE5F0"/><stop offset="100%" stop-color="#9EB1C7"/></linearGradient>
+            <linearGradient id="eylen-metal-left-spine" x1="0%" y1="0%" x2="100%" y2="85%"><stop offset="0%" stop-color="#F8FAFC"/><stop offset="35%" stop-color="#CBD5E1"/><stop offset="75%" stop-color="#7E93AC"/><stop offset="100%" stop-color="#4A607A"/></linearGradient>
+            <linearGradient id="eylen-metal-mid-facet" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#B6C6D8"/><stop offset="55%" stop-color="#70859E"/><stop offset="100%" stop-color="#3C5069"/></linearGradient>
+            <linearGradient id="eylen-metal-dark-shadow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#475D78"/><stop offset="60%" stop-color="#273A52"/><stop offset="100%" stop-color="#162438"/></linearGradient>
+            <linearGradient id="eylen-metal-glass-blue" x1="15%" y1="0%" x2="85%" y2="100%"><stop offset="0%" stop-color="#E2F1FF" stop-opacity="0.92"/><stop offset="50%" stop-color="#8AB4DC" stop-opacity="0.78"/><stop offset="100%" stop-color="#3B6998" stop-opacity="0.88"/></linearGradient>
+            <linearGradient id="eylen-metal-bottom-bevel" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#627894"/><stop offset="50%" stop-color="#B0C2D6"/><stop offset="100%" stop-color="#F1F5F9"/></linearGradient>
+            <linearGradient id="eylen-cyan-beam-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="50%" stop-color="#7DF9FF"/><stop offset="100%" stop-color="#00F0FF"/></linearGradient>
+            <radialGradient id="eylen-node-halo" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/><stop offset="28%" stop-color="#5CEEFF" stop-opacity="0.95"/><stop offset="58%" stop-color="#00D8FF" stop-opacity="0.45"/><stop offset="100%" stop-color="#00B4D8" stop-opacity="0"/></radialGradient>
+            <radialGradient id="eylen-node-core" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="45%" stop-color="#80F8FF"/><stop offset="100%" stop-color="#00C8E6"/></radialGradient>
+            <filter id="eylen-cyan-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5.5" result="blur1"/><feGaussianBlur stdDeviation="12" result="blur2"/><feMerge><feMergeNode in="blur2"/><feMergeNode in="blur1"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="eylen-beam-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="eylen-emblem-drop-shadow" x="-20%" y="-20%" width="140%" height="145%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#020813" flood-opacity="0.65"/></filter>
+          </defs>
+          <g filter="url(#eylen-emblem-drop-shadow)">
+            <polygon points="334,126 392,92 384,116 346,144" fill="url(#eylen-metal-bright)" stroke="#FFFFFF" stroke-width="0.6" stroke-opacity="0.65"/>
+            <polygon points="392,92 480,104 452,126 384,116" fill="url(#eylen-metal-glass-blue)" stroke="#E2E8F0" stroke-width="0.6" stroke-opacity="0.5"/>
+            <polygon points="384,116 452,126 426,148 366,144" fill="url(#eylen-metal-dark-shadow)"/>
+            <polygon points="334,126 346,144 342,216 330,224" fill="url(#eylen-metal-left-spine)" stroke="#FFFFFF" stroke-width="0.5" stroke-opacity="0.4"/>
+            <polygon points="346,144 366,144 362,196 342,216" fill="url(#eylen-metal-mid-facet)"/>
+            <polygon points="330,224 342,216 338,290 326,294" fill="url(#eylen-metal-left-spine)" stroke="#FFFFFF" stroke-width="0.5" stroke-opacity="0.35"/>
+            <polygon points="342,216 362,218 358,272 338,290" fill="url(#eylen-metal-mid-facet)"/>
+            <polygon points="362,188 456,188 442,204 352,204" fill="url(#eylen-metal-bright)" stroke="#FFFFFF" stroke-width="0.5" stroke-opacity="0.5"/>
+            <polygon points="352,204 442,204 428,220 342,216" fill="url(#eylen-metal-mid-facet)"/>
+            <polygon points="362,218 428,220 402,248 358,256" fill="url(#eylen-metal-dark-shadow)"/>
+            <polygon points="358,272 414,256 436,268 380,286" fill="url(#eylen-metal-dark-shadow)"/>
+            <polygon points="414,256 446,246 462,266 436,268" fill="url(#eylen-metal-bright)" stroke="#FFFFFF" stroke-width="0.6" stroke-opacity="0.6"/>
+            <polygon points="380,286 436,268 462,266 406,316" fill="url(#eylen-metal-bottom-bevel)" stroke="#E2E8F0" stroke-width="0.5" stroke-opacity="0.45"/>
+            <polygon points="326,294 358,272 380,286 406,316" fill="url(#eylen-metal-mid-facet)" stroke="#CBD5E1" stroke-width="0.5" stroke-opacity="0.4"/>
+            <g stroke="#B8E6FF" stroke-width="1.15" stroke-opacity="0.72" fill="none">
+              <line x1="480" y1="104" x2="392" y2="92"/><line x1="480" y1="104" x2="346" y2="144"/><line x1="326" y1="294" x2="346" y2="144"/><line x1="326" y1="294" x2="380" y2="286"/><line x1="326" y1="294" x2="406" y2="316"/><line x1="402" y1="202" x2="346" y2="144" stroke-opacity="0.4"/><line x1="402" y1="202" x2="380" y2="286" stroke-opacity="0.4"/>
+            </g>
+            <g filter="url(#eylen-beam-glow)">
+              <line x1="326" y1="294" x2="480" y2="104" stroke="#00F0FF" stroke-width="5.5" stroke-opacity="0.45" stroke-linecap="round"/>
+              <line x1="326" y1="294" x2="480" y2="104" stroke="url(#eylen-cyan-beam-grad)" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="326" y1="294" x2="480" y2="104" stroke="#FFFFFF" stroke-width="0.9" stroke-opacity="0.85" stroke-linecap="round"/>
+            </g>
+            <g filter="url(#eylen-cyan-glow)"><circle cx="326" cy="294" r="22" fill="url(#eylen-node-halo)"/><circle cx="326" cy="294" r="7.5" fill="url(#eylen-node-core)"/><circle cx="326" cy="294" r="3" fill="#FFFFFF"/></g>
+            <g filter="url(#eylen-cyan-glow)"><circle cx="402" cy="202" r="20" fill="url(#eylen-node-halo)"/><circle cx="402" cy="202" r="6.8" fill="url(#eylen-node-core)"/><circle cx="402" cy="202" r="2.6" fill="#FFFFFF"/></g>
+            <g filter="url(#eylen-cyan-glow)"><circle cx="480" cy="104" r="23" fill="url(#eylen-node-halo)"/><circle cx="480" cy="104" r="8" fill="url(#eylen-node-core)"/><circle cx="480" cy="104" r="3.2" fill="#FFFFFF"/></g>
+          </g>
+          <g>
+            <text x="400" y="395" text-anchor="middle" fill="#FFFFFF" font-family="'Montserrat','Inter','Segoe UI',Arial,sans-serif" font-weight="800" font-size="56" letter-spacing="4">EYLEN-DM</text>
+            <text x="400" y="436" text-anchor="middle" fill="#B8C7D9" font-family="'Montserrat','Inter','Segoe UI',Arial,sans-serif" font-weight="700" font-size="23" letter-spacing="5.5">TECH &amp; SOFT</text>
+            <text x="400" y="476" text-anchor="middle" fill="#9FB1C6" font-family="'Inter','Segoe UI',Arial,sans-serif" font-weight="500" font-size="14.5" letter-spacing="4.2">THINK. BUILD. EVOLVE.</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </footer>
   <div id="toast" class="toast hidden-view" role="status"></div>
 
 <script>
@@ -260,6 +330,7 @@ const $ = id => document.getElementById(id);
 let sb = null, toastTimer, staffProfile = null, staffCitas = [], staffEquipo = [], activeStaffTab = null, reminderState = { tomorrow: { queue: [], index: 0, kind: 'reminder', progressId: 'reminderProgress', label: 'Recordatorio' }, retouch: { queue: [], index: 0, kind: 'retouch', progressId: 'retouchProgress', label: 'Recordatorio de retoque' } }, sessionActive = false, agendaVersion = null, agendaPollTimer = null, liveBadgeTimer = null, timeSlots = defaultTimeSlots(), availabilitySeq = 0, weekOffset = 0, weeklySchedule = null, availabilityBase = [], knownPendingIds = new Set(), notificationsPrimed = false;
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const safeId = value => String(value ?? '').replace(/[^a-zA-Z0-9_-]/g, '');
+let servicesExpanded = false;
 let serviceData = [
   {id:'clasicas',name:'Pestañas clásicas',price:80000,duration:120,description:'Un acabado natural y delicado, pelo a pelo.',icon:'bi bi-magic'},
   {id:'hibrido',name:'Volumen híbrido',price:100000,duration:150,description:'Equilibrio entre definición y volumen.',icon:'bi bi-layers'},
@@ -335,11 +406,20 @@ function menuGo(id){closeMobileMenu();goToSection(id)}
 function menuAction(action){closeMobileMenu();if(action==='login'){showStaffLogin();return}if(action==='panel'||action==='cuenta'){activeStaffTab=action==='cuenta'?'cuenta':null;showStaffPanel();window.scrollTo({top:0,behavior:'smooth'})}}
 document.addEventListener('click',event=>{const menu=$('mobileMenu'),button=$('mobileMenuButton');if(!menu||menu.classList.contains('hidden-view'))return;if(menu.contains(event.target)||button.contains(event.target))return;closeMobileMenu()});
 window.addEventListener('resize',()=>{if(window.innerWidth>=768)closeMobileMenu()});
+function toggleServicesExpanded(){servicesExpanded=!servicesExpanded;renderServices();if(!servicesExpanded){document.getElementById('servicios')?.scrollIntoView({behavior:'smooth',block:'start'});}}
 function renderServices(){
-  $('serviceGrid').innerHTML=serviceData.map(s=>{
+  const visible=(!servicesExpanded && serviceData.length>2)?serviceData.slice(0,2):serviceData;
+  $('serviceGrid').innerHTML=visible.map(s=>{
     const bg=s.imagen?`<div class="absolute inset-0 bg-center bg-cover" style="background-image:url('${esc(s.imagen).replace(/'/g,'%27')}')"></div><div class="absolute inset-0" style="background:rgba(255, 250, 248, 0.59)"></div>`:'';
     return `<article class="soft-card p-6 relative overflow-hidden ${s.imagen?'min-h-[220px]':''}">${bg}<div class="relative z-10" style="text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff,0 1px 2px rgba(255,255,255,.6)">${s.imagen?`<div class="w-12 h-12 rounded-2xl bg-white/80 text-[#a55160] grid place-items-center text-2xl backdrop-blur-[1px]" style="text-shadow:none"><i class="${s.icon}"></i></div>`:`<div class="w-12 h-12 rounded-2xl bg-[#f9e9e9] text-[#a55160] grid place-items-center text-2xl" style="text-shadow:none"><i class="${s.icon}"></i></div>`}<h3 class="serif text-xl mt-4 text-black">${s.name}</h3><p class="text-sm text-black/80 mt-2 min-h-10">${s.description}</p><div class="mt-5 flex items-end justify-between"><b class="text-black">${money(s.price)}</b><span class="text-xs text-black/70">${s.duration} min</span></div></div></article>`;
   }).join('');
+  const wrap=$('servicesToggleWrap');
+  if(wrap){
+    if(serviceData.length>2){
+      wrap.classList.remove('hidden');
+      wrap.innerHTML=`<button class="btn btn-light !px-6" onclick="toggleServicesExpanded()"><i class="bi ${servicesExpanded?'bi-chevron-up':'bi-chevron-down'}"></i>${servicesExpanded?'Ver menos servicios':`Ver más servicios (${serviceData.length-2})`}</button>`;
+    } else { wrap.classList.add('hidden'); wrap.innerHTML=''; }
+  }
   $('servicio').innerHTML='<option value="">Selecciona un servicio</option>'+serviceData.map(s=>`<option value="${s.id}">${s.name} · ${money(s.price)}</option>`).join('');
 }
 function fillServiceIcons(select,selected){
@@ -429,23 +509,38 @@ async function uploadNewServiceImage(input){
   setServicePreview('newServicePreview',url);
   toast('Imagen lista. Completa los datos y publica el servicio.');
 }
+function toggleServiceDetails(id,btn){
+  const details=$(`svcDetails-${id}`);
+  if(!details)return;
+  const open=details.classList.toggle('hidden-view')===false;
+  if(btn){btn.innerHTML=open?'<i class="bi bi-chevron-up"></i>Ocultar detalles':'<i class="bi bi-chevron-down"></i>Ver detalles';btn.setAttribute('aria-expanded',open?'true':'false')}
+}
 function serviceCardEditor(s){
   const id=safeId(s.id);
   return `<article class="soft-card p-4 sm:p-5">
-    <div class="flex items-center justify-between gap-3 mb-3"><span class="section-icon"><i class="${esc(s.icon)}"></i></span><span class="text-xs font-bold ${s.active?'text-[#2f7a55]':'text-[#a34e4b]'}"><i class="bi ${s.active?'bi-check-circle-fill':'bi-x-circle-fill'}"></i> ${s.active?'Publicado':'Oculto'}</span></div>
-    <div class="grid sm:grid-cols-2 gap-3">
-      <div><label class="label" for="svcName-${id}">Nombre</label><input id="svcName-${id}" class="field" maxlength="120" value="${esc(s.name)}"></div>
-      <div><label class="label" for="svcPrice-${id}">Precio (COP)</label><input id="svcPrice-${id}" class="field" type="number" min="1" step="1" value="${Number(s.price)}"></div>
-      <div><label class="label" for="svcDuration-${id}">Duración (min)</label><input id="svcDuration-${id}" class="field" type="number" min="1" max="600" step="1" value="${Number(s.duration)}"></div>
-      <div><label class="label" for="svcOrder-${id}">Orden</label><input id="svcOrder-${id}" class="field" type="number" step="1" value="${Number(s.order)||0}"></div>
-      <div class="sm:col-span-2"><label class="label" for="svcDescription-${id}">Descripción</label><input id="svcDescription-${id}" class="field" maxlength="300" value="${esc(s.description)}"></div>
-      <div class="sm:col-span-2"><label class="label" for="svcIcon-${id}">Icono (si no hay imagen)</label><select id="svcIcon-${id}" class="field" data-service-icon="${id}"></select></div>
-      <div class="sm:col-span-2"><label class="label" for="svcImagen-${id}">URL de la imagen de presentación</label><input id="svcImagen-${id}" class="field" maxlength="1000" placeholder="https://... (opcional)" value="${esc(s.imagen||'')}" oninput="setServicePreview('svcPreview-${id}',this.value)"><div id="svcPreview-${id}" class="mt-2"></div></div>
-      <div class="sm:col-span-2"><label class="label" for="svcFile-${id}">Subir imagen (JPG, PNG o WEBP · máx. 5 MB)</label><input id="svcFile-${id}" class="field" type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadServiceImage('${id}',this)"></div>
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center gap-2 mb-1"><span class="section-icon !w-9 !h-9 !text-base"><i class="${esc(s.icon)}"></i></span><span class="text-xs font-bold ${s.active?'text-[#2f7a55]':'text-[#a34e4b]'}"><i class="bi ${s.active?'bi-check-circle-fill':'bi-x-circle-fill'}"></i> ${s.active?'Publicado':'Oculto'}</span></div>
+        <h4 class="serif text-lg leading-tight truncate">${esc(s.name)}</h4>
+        <p class="text-sm text-[#806e70] mt-1">${money(s.price)} · ${Number(s.duration)} min</p>
+      </div>
+      <button class="btn btn-light !py-2 !px-3 text-sm shrink-0" aria-expanded="false" onclick="toggleServiceDetails('${id}',this)"><i class="bi bi-chevron-down"></i>Ver detalles</button>
     </div>
-    <div class="flex flex-wrap gap-2 mt-4">
-      <button class="btn btn-main" onclick="saveService('${id}',this)"><i class="bi bi-save"></i>Guardar y publicar</button>
-      <button class="btn btn-light" onclick="toggleService('${id}',${s.active?'false':'true'},this)"><i class="bi ${s.active?'bi-eye-slash':'bi-eye'}"></i>${s.active?'Ocultar':'Publicar'}</button>
+    <div id="svcDetails-${id}" class="hidden-view mt-4">
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="label" for="svcName-${id}">Nombre</label><input id="svcName-${id}" class="field" maxlength="120" value="${esc(s.name)}"></div>
+        <div><label class="label" for="svcPrice-${id}">Precio (COP)</label><input id="svcPrice-${id}" class="field" type="number" min="1" step="1" value="${Number(s.price)}"></div>
+        <div><label class="label" for="svcDuration-${id}">Duración (min)</label><input id="svcDuration-${id}" class="field" type="number" min="1" max="600" step="1" value="${Number(s.duration)}"></div>
+        <div><label class="label" for="svcOrder-${id}">Orden</label><input id="svcOrder-${id}" class="field" type="number" step="1" value="${Number(s.order)||0}"></div>
+        <div class="sm:col-span-2"><label class="label" for="svcDescription-${id}">Descripción</label><input id="svcDescription-${id}" class="field" maxlength="300" value="${esc(s.description)}"></div>
+        <div class="sm:col-span-2"><label class="label" for="svcIcon-${id}">Icono (si no hay imagen)</label><select id="svcIcon-${id}" class="field" data-service-icon="${id}"></select></div>
+        <div class="sm:col-span-2"><label class="label" for="svcImagen-${id}">URL de la imagen de presentación</label><input id="svcImagen-${id}" class="field" maxlength="1000" placeholder="https://... (opcional)" value="${esc(s.imagen||'')}" oninput="setServicePreview('svcPreview-${id}',this.value)"><div id="svcPreview-${id}" class="mt-2"></div></div>
+        <div class="sm:col-span-2"><label class="label" for="svcFile-${id}">Subir imagen (JPG, PNG o WEBP · máx. 5 MB)</label><input id="svcFile-${id}" class="field" type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadServiceImage('${id}',this)"></div>
+      </div>
+      <div class="flex flex-wrap gap-2 mt-4">
+        <button class="btn btn-main" onclick="saveService('${id}',this)"><i class="bi bi-save"></i>Guardar y publicar</button>
+        <button class="btn btn-light" onclick="toggleService('${id}',${s.active?'false':'true'},this)"><i class="bi ${s.active?'bi-eye-slash':'bi-eye'}"></i>${s.active?'Ocultar':'Publicar'}</button>
+      </div>
     </div>
   </article>`;
 }
@@ -768,16 +863,41 @@ function renderWeekCalendar(){
   const start=weekStart(weekOffset),end=addDays(start,6);
   const short=(ds)=>{const [y,m,d]=ds.split('-').map(Number);return new Date(Date.UTC(y,m-1,d)).toLocaleDateString('es-CO',{weekday:'short',day:'numeric',timeZone:'UTC'})};
   $('weekRangeLabel').textContent=`${formatDate(start)} — ${formatDate(end)}`;
-  const citas=(staffCitas||[]).filter(c=>c.fecha>=start&&c.fecha<=end);
+  const slots=timeSlots.length?timeSlots:defaultTimeSlots();
+  const slotIdx=new Map(slots.map((s,i)=>[s,i]));
+  const citas=(staffCitas||[]).filter(c=>c.fecha>=start&&c.fecha<=end&&c.estado!=='cancelada');
   const byKey=new Map();
-  citas.forEach(c=>{const key=`${c.fecha}|${String(c.hora||'').slice(0,5)}`;if(!byKey.has(key))byKey.set(key,[]);byKey.get(key).push(c)});
+  const push=(key,val)=>{if(!byKey.has(key))byKey.set(key,[]);byKey.get(key).push(val)};
+  citas.forEach(c=>{
+    const h=String(c.hora||'').slice(0,5);
+    const idx=slotIdx.has(h)?slotIdx.get(h):-1;
+    if(idx<0){push(`${c.fecha}|${h}`,{c,pos:'single'});return}
+    const span=Math.max(1,Math.ceil((Number(c.duracion_minutos)||90)/30));
+    for(let i=0;i<span;i++){
+      const si=idx+i;if(si>=slots.length)break;
+      const pos=span===1?'single':i===0?'start':i===span-1?'end':'mid';
+      push(`${c.fecha}|${slots[si]}`,{c,pos});
+    }
+    const tailIdx=idx+span;
+    if(tailIdx<slots.length) push(`${c.fecha}|${slots[tailIdx]}`,{c,pos:'tail'});
+  });
   let html='<div></div>';
   for(let i=0;i<7;i++){const ds=addDays(start,i);html+=`<div class="week-head">${esc(short(ds))}</div>`}
-  (timeSlots.length?timeSlots:defaultTimeSlots()).forEach(slot=>{
+  slots.forEach(slot=>{
     html+=`<div class="week-time">${formatHour(slot)}</div>`;
     for(let i=0;i<7;i++){
-      const ds=addDays(start,i),items=byKey.get(`${ds}|${slot}`)||[];
-      html+=`<div class="week-cell">${items.map(c=>`<button class="week-event ${esc(c.estado)}" title="${esc(c.nombre)} · ${esc(c.servicio)} · ${esc(statusLabel(c.estado))}" onclick="openAppointmentDetail('${safeId(c.id)}')"><span class="truncate">${esc(String(c.nombre||'').split(' ')[0]||'Cita')}</span><span class="wk-more"><i class="bi bi-eye"></i></span></button>`).join('')}</div>`;
+      const ds=addDays(start,i),items=(byKey.get(`${ds}|${slot}`)||[]).slice().sort((a,b)=>{const o={tail:0,start:1,mid:2,end:3,single:1};return (o[a.pos]??1)-(o[b.pos]??1)});
+      const hasTail=items.some(x=>x.pos==='tail');
+      html+=`<div class="week-cell">${items.map(({c,pos})=>{
+        const cls=['week-event',esc(c.estado)];
+        if(pos==='start'||pos==='mid'||pos==='end'||pos==='tail') cls.push('wk-'+pos);
+        if(hasTail&&pos==='start') cls.push('wk-tail');
+        const showLabel=pos==='start'||pos==='single';
+        const label=showLabel?esc(String(c.nombre||'').split(' ')[0]||'Cita'):'';
+        const eye=(pos==='start'||pos==='single')?'<span class="wk-more"><i class="bi bi-eye"></i></span>':'';
+        const title=`${esc(c.nombre)} · ${esc(c.servicio)} · ${esc(String(c.hora||'').slice(0,5))} · ${esc(statusLabel(c.estado))}`;
+        return `<button class="${cls.join(' ')}" title="${title}" onclick="openAppointmentDetail('${safeId(c.id)}')"><span class="truncate">${label}</span>${eye}</button>`;
+      }).join('')}</div>`;
     }
   });
   target.innerHTML=html;
@@ -790,6 +910,10 @@ function showStaffTab(tab){
   if(tab==='finanzas')loadFinances().catch(error=>console.error('Error al cargar contabilidad desde la pestaña:',error));
   if(tab==='servicios')loadServicesPanel().catch(error=>console.error('Error al cargar servicios desde la pestaña:',error));
   if(tab==='disponibilidad')loadAvailabilityPanel().catch(error=>console.error('Error al cargar disponibilidad desde la pestaña:',error));
+}
+function staffAppointmentCompactCard(c){
+  const id=safeId(c.id),status=esc(c.estado),service=esc(c.servicio),name=esc(c.nombre);
+  return `<article class="dashboard-card" data-cita-id="${id}"><div class="p-3 sm:p-4"><div class="flex justify-between gap-2 mb-2"><span class="status ${status} text-[11px]">${esc(statusLabel(c.estado))}</span></div><p class="text-[11px] uppercase tracking-wider text-[#927d7e] truncate">${service}</p><h3 class="serif text-base sm:text-lg mt-1 leading-tight truncate">${name}</h3><div class="text-xs text-[#806e70] mt-2 space-y-1"><p class="detail-line"><i class="bi bi-calendar-event"></i><span>${formatDate(c.fecha)} · ${esc(String(c.hora||'').slice(0,5))}</span></p><p class="detail-line"><i class="bi bi-whatsapp"></i><span>${esc(c.telefono)}</span></p></div><button class="btn btn-main !py-2 !px-3 text-sm w-full mt-3" onclick="openAppointmentDetail('${id}')"><i class="bi bi-eye"></i>Ver detalles</button></div></article>`;
 }
 function staffAppointmentCard(c){
   const id=safeId(c.id),status=esc(c.estado),receipt=esc(c.comprobante_url),service=esc(c.servicio),name=esc(c.nombre),phone=esc(c.telefono),cedula=esc(c.cedula);
@@ -926,8 +1050,8 @@ async function loadStaffAppointments(options={}){
     $('agendaSectionTitle').textContent=isAdmin?'Agenda completa':'Mi agenda';
     $('agendaSectionHint').textContent=isAdmin?'Vista semanal de todas las citas. Toca una cita para ver detalles y acciones.':'Vista semanal de tus citas. Toca una cita para ver detalles y acciones.';
     $('proNewAppointments').innerHTML=nuevas.length?nuevas.map(staffAppointmentCard).join(''):emptyCard('bi bi-inbox','No hay nuevas citas por revisar.');
-    $('proConfirmAppointments').innerHTML=porConfirmar.length?porConfirmar.map(staffAppointmentCard).join(''):emptyCard('bi bi-hourglass-split','No hay citas por confirmar.');
-    $('staffHistory').innerHTML=history.length?history.map(staffAppointmentCard).join(''):emptyCard('bi bi-clock-history','Aún no hay citas atendidas o canceladas.');
+    $('proConfirmAppointments').innerHTML=porConfirmar.length?porConfirmar.map(staffAppointmentCompactCard).join(''):emptyCard('bi bi-hourglass-split','No hay citas por confirmar.');
+    $('staffHistory').innerHTML=history.length?history.map(staffAppointmentCompactCard).join(''):emptyCard('bi bi-clock-history','Aún no hay citas atendidas o canceladas.');
     const needsReview=staffCitas.filter(c=>['pendiente_verificacion','verificada'].includes(c.estado)).sort(sortAsc);
     $('adminPending').innerHTML=needsReview.length?needsReview.slice(0,4).map(staffAppointmentCard).join(''):'<p class="text-sm text-[#806e70]">No hay solicitudes por revisar.</p>';
     $('adminUpcoming').innerHTML=confirmadas.slice(0,4).map(staffAppointmentCard).join('')||'<p class="text-sm text-[#806e70]">Aún no hay citas confirmadas.</p>';
@@ -1020,12 +1144,26 @@ async function loadFinances(){
   const data=await r.json();
   if(!r.ok){toast(data.error);return}
   const incomes=data.ingresos||[],expenses=data.egresos||[],month=bogotaToday().slice(0,7);
-  const incomeTotal=incomes.reduce((n,x)=>n+Number(x.monto),0),expenseTotal=expenses.reduce((n,x)=>n+Number(x.monto),0);
-  const monthIncome=incomes.filter(x=>String(x.fecha).startsWith(month)).reduce((n,x)=>n+Number(x.monto),0),monthExpenses=expenses.filter(x=>String(x.fecha).startsWith(month)).reduce((n,x)=>n+Number(x.monto),0);
-  const cards=[[money(monthIncome-monthExpenses),'Balance del mes','bi bi-graph-up'],[money(incomeTotal),'Ingresos acumulados','bi bi-arrow-down-left-circle'],[money(expenseTotal),'Egresos acumulados','bi bi-arrow-up-right-circle']];
+  const monthIncome=incomes.filter(x=>String(x.fecha).startsWith(month)).reduce((n,x)=>n+Number(x.monto),0);
+  const monthExpenses=expenses.filter(x=>String(x.fecha).startsWith(month)).reduce((n,x)=>n+Number(x.monto),0);
+  const cards=[[money(monthIncome-monthExpenses),'Ganancia Total','bi bi-graph-up-arrow'],[money(monthIncome),'Ingresos del mes','bi bi-arrow-down-left-circle'],[money(monthExpenses),'Egresos del mes','bi bi-arrow-up-right-circle']];
   $('financeStats').innerHTML=cards.map(([n,label,icon])=>`<div class="soft-card p-4 stat-card"><span class="stat-icon"><i class="${icon}"></i></span><div class="min-w-0"><span class="text-lg sm:text-xl serif block break-words">${n}</span><span class="stat-label block">${label}</span></div></div>`).join('');
-  $('incomeLedger').innerHTML=incomes.length?incomes.map(x=>`<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm"><i class="bi bi-check-circle text-[#387452] mr-1"></i>${esc(x.descripcion)}</b><small class="text-[#806e70]"><i class="bi bi-calendar-event mr-1"></i>${formatDate(x.fecha)}</small></span><b class="text-[#387452] whitespace-nowrap">+${money(x.monto)}</b></div>`).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>Los servicios aparecerán aquí cuando se marquen como atendidos.</p>';
-  $('expenseLedger').innerHTML=expenses.length?expenses.map(x=>`<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm"><i class="bi bi-receipt text-[#a34e4b] mr-1"></i>${esc(x.descripcion)}</b><small class="text-[#806e70]">${esc({insumos:'Insumos',arriendo:'Arriendo',gastos_varios:'Gastos varios',otro:'Otro'}[x.categoria]||x.categoria)} · ${formatDate(x.fecha)}</small></span><b class="text-[#a34e4b] whitespace-nowrap">−${money(x.monto)}</b></div>`).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>Todavía no hay egresos registrados.</p>';
+  const monthIncomes=incomes.filter(x=>String(x.fecha).startsWith(month));
+  const monthExpenseItems=expenses.filter(x=>String(x.fecha).startsWith(month));
+  $('incomeLedger').innerHTML=monthIncomes.length?monthIncomes.map(x=>`<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm"><i class="bi bi-check-circle text-[#387452] mr-1"></i>${esc(x.descripcion)}</b><small class="text-[#806e70]"><i class="bi bi-calendar-event mr-1"></i>${formatDate(x.fecha)}</small></span><b class="text-[#387452] whitespace-nowrap">+${money(x.monto)}</b></div>`).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>No hay ingresos registrados en este mes.</p>';
+  $('expenseLedger').innerHTML=monthExpenseItems.length?monthExpenseItems.map(x=>`<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm"><i class="bi bi-receipt text-[#a34e4b] mr-1"></i>${esc(x.descripcion)}</b><small class="text-[#806e70]">${esc({insumos:'Insumos',arriendo:'Arriendo',gastos_varios:'Gastos varios',otro:'Otro'}[x.categoria]||x.categoria)} · ${formatDate(x.fecha)}</small></span><b class="text-[#a34e4b] whitespace-nowrap">−${money(x.monto)}</b></div>`).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>No hay egresos registrados en este mes.</p>';
+  const monthKey=x=>String(x.fecha||'').slice(0,7);
+  const months=[...new Set([...incomes.map(monthKey),...expenses.map(monthKey)].filter(m=>m&&m!==month))].sort().reverse();
+  const monthLabel=ym=>{const [y,m]=ym.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('es-CO',{month:'long',year:'numeric',timeZone:'UTC'})};
+  const historyEl=$('financeHistory');
+  if(historyEl){
+    historyEl.innerHTML=months.length?months.map(ym=>{
+      const mi=incomes.filter(x=>monthKey(x)===ym).reduce((n,x)=>n+Number(x.monto),0);
+      const me=expenses.filter(x=>monthKey(x)===ym).reduce((n,x)=>n+Number(x.monto),0);
+      const gain=mi-me;
+      return `<div class="border-b border-[#f0e5e2] pb-3 flex flex-wrap sm:justify-between gap-2"><span class="min-w-0"><b class="block text-sm capitalize"><i class="bi bi-calendar3 text-[#98525e] mr-1"></i>${esc(monthLabel(ym))}</b><small class="text-[#806e70]">Ingresos: ${money(mi)} · Egresos: ${money(me)}</small></span><b class="${gain>=0?'text-[#387452]':'text-[#a34e4b]'} whitespace-nowrap">${gain>=0?'+':''}${money(gain)}</b></div>`;
+    }).join(''):'<p class="text-sm text-[#806e70]"><i class="bi bi-info-circle mr-1"></i>Aún no hay historial de meses anteriores.</p>';
+  }
 }
 async function signOutStaff(){
   closeMobileMenu();

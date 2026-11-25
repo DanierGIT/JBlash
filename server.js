@@ -559,6 +559,11 @@ app.post('/api/panel/egresos', requireStaff, async (req, res) => {
   res.status(201).json({ egreso: data });
 });
 
+app.get('/eylen-dm-logo.svg', (_req, res) => {
+  res.set('Cache-Control', 'public, max-age=3600');
+  res.type('image/svg+xml');
+  res.sendFile(path.join(__dirname, 'eylen-dm-logo.svg'));
+});
 app.get('/', (_req, res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, 'index.html'));
